@@ -42,6 +42,10 @@
     <min-version>${project.parent.version}</min-version>
   </conditions>
 
+  <packages>
+    <package>sonia.scm.statistic</package>
+  </packages>
+
   <resources>
     <script>/sonia/scm/statistic/sonia.statistic.js</script>
   </resources>
