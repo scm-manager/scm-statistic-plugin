@@ -29,30 +29,48 @@
 
 
 
-package sonia.scm.statistic.resources;
+package sonia.scm.statistic.dto;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import sonia.scm.statistic.StatisticCollector;
-import sonia.scm.statistic.StatisticData;
-import sonia.scm.statistic.dto.CommitsPerAuthor;
-import sonia.scm.statistic.dto.CommitsPerMonth;
+import com.google.common.collect.Multiset;
+
+import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
 
 //~--- JDK imports ------------------------------------------------------------
 
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import sonia.scm.statistic.StatisticData;
 
 /**
  *
  * @author Sebastian Sdorra
  */
-public class StatisticSubResource
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "commits-per-author")
+public class CommitsPerAuthor
 {
+
+  /**
+   * Constructs ...
+   *
+   */
+  public CommitsPerAuthor() {}
+
+  /**
+   * Constructs ...
+   *
+   *
+   * @param commitsPerAuthor
+   */
+  public CommitsPerAuthor(Multiset<String> commitsPerAuthor)
+  {
+    this.commitsPerAuthor = commitsPerAuthor;
+  }
 
   /**
    * Constructs ...
@@ -60,9 +78,9 @@ public class StatisticSubResource
    *
    * @param data
    */
-  public StatisticSubResource(StatisticData data)
+  public CommitsPerAuthor(StatisticData data)
   {
-    this.data = data;
+    this.commitsPerAuthor = data.getCommitsPerAuthor();
   }
 
   //~--- get methods ----------------------------------------------------------
@@ -71,55 +89,17 @@ public class StatisticSubResource
    * Method description
    *
    *
-   * @param repositoryId
-   *
-   * @param limit
-   *
-   * @return
-   *
-   * @throws Exception
-   */
-  @GET
-  @Path("commits-per-author")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  public CommitsPerAuthor getCommitPerAuthor(@QueryParam("limit")
-  @DefaultValue("10") int limit)
-  {
-
-    return StatisticCollector.collectCommitsPerAuthor(data, limit);
-  }
-
-  /**
-   * Method description
-   *
-   *
    * @return
    */
-  @GET
-  @Path("commits-per-month")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  public CommitsPerMonth getCommitPerMonth()
+  public Multiset<String> getCommitsPerAuthor()
   {
-
-    return StatisticCollector.collectCommitsPerMonth(data);
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  @GET
-  @Path("raw")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  public StatisticData getRaw()
-  {
-    return data;
+    return commitsPerAuthor;
   }
 
   //~--- fields ---------------------------------------------------------------
 
   /** Field description */
-  private StatisticData data;
+  @XmlElement(name = "author")
+  @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
+  private Multiset<String> commitsPerAuthor;
 }

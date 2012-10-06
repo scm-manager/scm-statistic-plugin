@@ -170,6 +170,22 @@ public class Day
    *
    * @return
    */
+  public String getDayString()
+  {
+    StringBuilder value = new StringBuilder();
+
+    value.append(getMonthString()).append("-");
+    append(value, day);
+
+    return value.toString();
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
   public int getMonth()
   {
     return month;
@@ -181,9 +197,55 @@ public class Day
    *
    * @return
    */
+  public String getMonthString()
+  {
+    StringBuilder value = new StringBuilder();
+
+    value.append(year).append("-");
+    append(value, month);
+
+    return value.toString();
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
   public int getYear()
   {
     return year;
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
+  public String getYearString()
+  {
+    return String.valueOf(year);
+  }
+
+  //~--- methods --------------------------------------------------------------
+
+  /**
+   * Method description
+   *
+   *
+   * @param value
+   * @param nr
+   */
+  private void append(StringBuilder value, int nr)
+  {
+    if (nr < 10)
+    {
+      value.append("0");
+    }
+
+    value.append(nr);
   }
 
   //~--- fields ---------------------------------------------------------------

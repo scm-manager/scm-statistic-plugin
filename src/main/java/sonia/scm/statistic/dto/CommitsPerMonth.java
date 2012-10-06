@@ -29,7 +29,7 @@
 
 
 
-package sonia.scm.statistic;
+package sonia.scm.statistic.dto;
 
 //~--- non-JDK imports --------------------------------------------------------
 
@@ -50,36 +50,25 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "commits-per-author")
-public class CommitsPerAuthor
+@XmlRootElement(name = "commits-per-month")
+public class CommitsPerMonth
 {
 
   /**
    * Constructs ...
    *
    */
-  public CommitsPerAuthor() {}
+  public CommitsPerMonth() {}
 
   /**
    * Constructs ...
    *
    *
-   * @param commitsPerAuthor
+   * @param commitsPerMonth
    */
-  public CommitsPerAuthor(Multiset<String> commitsPerAuthor)
+  public CommitsPerMonth(Multiset<String> commitsPerMonth)
   {
-    this.commitsPerAuthor = commitsPerAuthor;
-  }
-
-  /**
-   * Constructs ...
-   *
-   *
-   * @param data
-   */
-  public CommitsPerAuthor(StatisticData data)
-  {
-    this.commitsPerAuthor = data.getCommitsPerAuthor();
+    this.commitsPerMonth = commitsPerMonth;
   }
 
   //~--- get methods ----------------------------------------------------------
@@ -90,15 +79,15 @@ public class CommitsPerAuthor
    *
    * @return
    */
-  public Multiset<String> getCommitsPerAuthor()
+  public Multiset<String> getCommitsPerMonth()
   {
-    return commitsPerAuthor;
+    return commitsPerMonth;
   }
 
   //~--- fields ---------------------------------------------------------------
 
   /** Field description */
-  @XmlElement(name = "author")
+  @XmlElement(name = "month")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
-  private Multiset<String> commitsPerAuthor;
+  private Multiset<String> commitsPerMonth;
 }

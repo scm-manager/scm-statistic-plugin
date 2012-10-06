@@ -37,6 +37,11 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Multisets;
+import com.google.common.collect.SortedMultiset;
+import com.google.common.collect.TreeMultiset;
+
+import sonia.scm.statistic.dto.CommitsPerAuthor;
+import sonia.scm.statistic.dto.CommitsPerMonth;
 
 /**
  *
@@ -80,5 +85,25 @@ public class StatisticCollector
     authors.add("others", others);
 
     return new CommitsPerAuthor(authors);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param data
+   *
+   * @return
+   */
+  public static CommitsPerMonth collectCommitsPerMonth(StatisticData data)
+  {
+    Multiset<String> commitsPerMonth = TreeMultiset.create();
+
+    for (Entry<Day> e : data.getCommitsPerDay().entrySet())
+    {
+      commitsPerMonth.add(e.getElement().getMonthString(), e.getCount());
+    }
+
+    return new CommitsPerMonth(commitsPerMonth);
   }
 }

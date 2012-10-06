@@ -29,70 +29,38 @@
  * 
  */
 
-Ext.chart.Chart.CHART_URL = 'resources/extjs/resources/charts.swf';
 
 Ext.ns('Sonia.statistic');
 
-Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
-
-  initComponent: function(){
+Sonia.statistic.CommitsPerMonthPanel = Ext.extend(Ext.Panel, {
+  
+  repository: null,
+  
+  initComponent: function(){    
+    var store = new Sonia.rest.JsonStore({
+      proxy: new Ext.data.HttpProxy({
+        url: restUrl + 'plugins/statistic/' + this.repository.id + '/commits-per-month.json',
+        disableCaching: false
+      }),
+      fields: ['count', 'value'],
+      root: 'month'
+    });
+    
     var config = {
-      title: 'Statistics',
-      padding: 5,
-      bodyCssClass: 'x-panel-mc',
-      layout: 'table',
-      layoutConfig: {
-        columns: 1
-      },
-      defaults: {
-        style: 'font-size: 12px'
-      },
+      title: 'Commits per Month',
       items: [{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'Commits per Author',
-        handler: this.openCommitsPerAuthor,
-        scope: this
-      },{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'Commits per Month',
-        handler: this.openCommitsPerMonth,
-        scope: this
+        store: store,
+        xtype: 'linechart',
+        xField: 'value',
+        yField: 'count'
       }]
     }
     
     Ext.apply(this, Ext.apply(this.initialConfig, config));
-    Sonia.statistic.LinkPanel.superclass.initComponent.apply(this, arguments);
-  },
-  
-  openCommitsPerMonth: function(){
-    main.addTab({
-      id: 'commitsPerMonth;' + this.item.id,
-      xtype: 'statisticCommitsPerMonthPanel',
-      repository: this.item,
-      closable: true
-    });
-  },
-  
-  openCommitsPerAuthor: function(){
-    main.addTab({
-      id: 'commitsPerAuthor;' + this.item.id,
-      xtype: 'statisticCommitsPerAuthorPanel',
-      repository: this.item,
-      closable: true
-    });
+    Sonia.statistic.CommitsPerMonthPanel.superclass.initComponent.apply(this, arguments);
   }
   
 });
 
 // register xtype
-Ext.reg("statisticLinkPanel", Sonia.statistic.LinkPanel);
-
-// register panel
-Sonia.repository.openListeners.push(function(repository, panels){
-  panels.push({
-    xtype: 'statisticLinkPanel',
-    item: repository
-  });
-});
+Ext.reg("statisticCommitsPerMonthPanel", Sonia.statistic.CommitsPerMonthPanel);
