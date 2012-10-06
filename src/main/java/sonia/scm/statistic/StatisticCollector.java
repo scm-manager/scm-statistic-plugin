@@ -42,6 +42,7 @@ import com.google.common.collect.TreeMultiset;
 import sonia.scm.statistic.dto.CommitsPerAuthor;
 import sonia.scm.statistic.dto.CommitsPerHour;
 import sonia.scm.statistic.dto.CommitsPerMonth;
+import sonia.scm.statistic.dto.TopModifiedFiles;
 
 /**
  *
@@ -62,27 +63,14 @@ public class StatisticCollector
   public static CommitsPerAuthor collectCommitsPerAuthor(StatisticData data,
     int limit)
   {
-    Multiset<String> ordered =
-      Multisets.copyHighestCountFirst(data.getCommitsPerAuthor());
     Multiset<String> authors = HashMultiset.create();
+    int others = collectTopEntries(data.getCommitsPerAuthor(), authors, limit,
+                   true);
 
-    int i = 0;
-    int others = 0;
-
-    for (Entry<String> e : ordered.entrySet())
+    if (others > 0)
     {
-      if (i < limit)
-      {
-        authors.add(e.getElement(), e.getCount());
-        i++;
-      }
-      else
-      {
-        others += e.getCount();
-      }
+      authors.add("others", others);
     }
-
-    authors.add("others", others);
 
     return new CommitsPerAuthor(authors);
   }
@@ -145,5 +133,64 @@ public class StatisticCollector
     }
 
     return new CommitsPerMonth(commitsPerMonth);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param data
+   * @param limit
+   *
+   * @return
+   */
+  public static TopModifiedFiles collectTopModifiedFiles(StatisticData data,
+    int limit)
+  {
+    Multiset<String> files = HashMultiset.create();
+
+    collectTopEntries(data.getModifiedFiles(), files, limit, false);
+
+    return new TopModifiedFiles(files);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param source
+   * @param target
+   * @param limit
+   * @param countOthers
+   * @param <T>
+   *
+   * @return
+   */
+  private static <T> int collectTopEntries(Multiset<T> source,
+    Multiset<T> target, int limit, boolean countOthers)
+  {
+    Multiset<T> ordered = Multisets.copyHighestCountFirst(source);
+
+    int i = 0;
+    int others = 0;
+
+    for (Entry<T> e : ordered.entrySet())
+    {
+      if (i < limit)
+      {
+        target.add(e.getElement(), e.getCount());
+        i++;
+      }
+      else if (countOthers)
+      {
+        others += e.getCount();
+      }
+      else
+      {
+        break;
+      }
+    }
+
+    return others;
   }
 }

@@ -38,6 +38,7 @@ import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.dto.CommitsPerAuthor;
 import sonia.scm.statistic.dto.CommitsPerHour;
 import sonia.scm.statistic.dto.CommitsPerMonth;
+import sonia.scm.statistic.dto.TopModifiedFiles;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -143,6 +144,23 @@ public class StatisticSubResource
   public StatisticData getRaw()
   {
     return data;
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param limit
+   *
+   * @return
+   */
+  @GET
+  @Path("top-modified-files")
+  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  public TopModifiedFiles getTopModifiedFiles(@QueryParam("limit")
+  @DefaultValue("10") int limit)
+  {
+    return StatisticCollector.collectTopModifiedFiles(data, limit);
   }
 
   //~--- fields ---------------------------------------------------------------

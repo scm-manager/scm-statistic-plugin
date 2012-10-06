@@ -65,6 +65,12 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
         text: 'Commits per Hour',
         handler: this.openCommitsPerHour,
         scope: this
+      },{
+        xtype: 'link',
+        style: 'font-weight: bold',
+        text: 'Top modified Files',
+        handler: this.openTopModifiedFiles,
+        scope: this
       }]
     }
     
@@ -94,6 +100,15 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
     main.addTab({
       id: 'commitsPerHour;' + this.item.id,
       xtype: 'statisticCommitsPerHourPanel',
+      repository: this.item,
+      closable: true
+    });
+  },
+  
+  openTopModifiedFiles: function(){
+    main.addTab({
+      id: 'topModifiedFiles;' + this.item.id,
+      xtype: 'statisticTopModifiedFilesPanel',
       repository: this.item,
       closable: true
     });

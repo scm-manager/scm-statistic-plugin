@@ -51,6 +51,7 @@
     <script>/sonia/scm/statistic/sonia.statistic.commitsperauthor.js</script>
     <script>/sonia/scm/statistic/sonia.statistic.commitspermonth.js</script>
     <script>/sonia/scm/statistic/sonia.statistic.commitsperhour.js</script>
+    <script>/sonia/scm/statistic/sonia.statistic.topmodifiedfiles.js</script>
   </resources>
 
 </plugin>
