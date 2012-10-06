@@ -116,6 +116,19 @@ public class StatisticManager
    *
    * @param repository
    *
+   * @return
+   */
+  public boolean contains(Repository repository)
+  {
+    return file(repository).exists();
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param repository
+   *
    * @throws IOException
    */
   public void createStatistic(Repository repository) throws IOException
@@ -123,6 +136,7 @@ public class StatisticManager
     try
     {
       StatisticData data = createBootstrapStatistic(repository);
+
       store(repository, data);
     }
     catch (Exception ex)
@@ -151,7 +165,7 @@ public class StatisticManager
     try
     {
 
-      File statisticFile = new File(directory, repository.getId());
+      File statisticFile = file(repository);
 
       jaxbContext.createMarshaller().marshal(data, statisticFile);
     }
@@ -270,6 +284,19 @@ public class StatisticManager
     }
 
     return data;
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param repository
+   *
+   * @return
+   */
+  private File file(Repository repository)
+  {
+    return new File(directory, repository.getId());
   }
 
   //~--- fields ---------------------------------------------------------------

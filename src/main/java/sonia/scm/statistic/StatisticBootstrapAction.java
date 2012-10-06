@@ -139,7 +139,10 @@ public class StatisticBootstrapAction implements PrivilegedAction
 
       for (Repository repository : repositoryManager.getAll())
       {
-        service.execute(new BootstrapWorker(manager, repository));
+        if (!manager.contains(repository))
+        {
+          service.execute(new BootstrapWorker(manager, repository));
+        }
       }
     }
 
