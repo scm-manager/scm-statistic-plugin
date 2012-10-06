@@ -42,18 +42,12 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
       bodyCssClass: 'x-panel-mc',
       layout: 'table',
       layoutConfig: {
-        columns: 2,
-        tableAttrs: {
-          style: 'width: 80%;'
-        }
+        columns: 1
       },
       defaults: {
         style: 'font-size: 12px'
       },
       items: [{
-        xtype: 'label',
-        text: 'Statistic'
-      },{
         xtype: 'link',
         style: 'font-weight: bold',
         text: 'Commits per Author',
