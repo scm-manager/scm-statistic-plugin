@@ -85,7 +85,6 @@ public class StatisticSubResource
   public CommitsPerAuthor getCommitPerAuthor(@QueryParam("limit")
   @DefaultValue("10") int limit)
   {
-
     return StatisticCollector.collectCommitsPerAuthor(data, limit);
   }
 
@@ -100,8 +99,21 @@ public class StatisticSubResource
   @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
   public CommitsPerMonth getCommitPerMonth()
   {
-
     return StatisticCollector.collectCommitsPerMonth(data);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
+  @GET
+  @Path("commits-per-year")
+  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  public CommitsPerMonth getCommitPerYear()
+  {
+    return StatisticCollector.collectCommitsPerYear(data);
   }
 
   /**

@@ -29,100 +29,65 @@
 
 
 
-package sonia.scm.statistic;
+package sonia.scm.statistic.dto;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Multiset.Entry;
-import com.google.common.collect.Multisets;
-import com.google.common.collect.TreeMultiset;
 
-import sonia.scm.statistic.dto.CommitsPerAuthor;
-import sonia.scm.statistic.dto.CommitsPerMonth;
+import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
+
+//~--- JDK imports ------------------------------------------------------------
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
  * @author Sebastian Sdorra
  */
-public class StatisticCollector
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "commits-per-year")
+public class CommitsPerYear
 {
 
   /**
-   * Method description
+   * Constructs ...
    *
-   *
-   * @param data
-   * @param limit
-   *
-   * @return
    */
-  public static CommitsPerAuthor collectCommitsPerAuthor(StatisticData data,
-    int limit)
+  public CommitsPerYear() {}
+
+  /**
+   * Constructs ...
+   *
+   *
+   * @param commitsPerYear
+   */
+  public CommitsPerYear(Multiset<String> commitsPerYear)
   {
-    Multiset<String> ordered =
-      Multisets.copyHighestCountFirst(data.getCommitsPerAuthor());
-    Multiset<String> authors = HashMultiset.create();
-
-    int i = 0;
-    int others = 0;
-
-    for (Entry<String> e : ordered.entrySet())
-    {
-      if (i < limit)
-      {
-        authors.add(e.getElement(), e.getCount());
-        i++;
-      }
-      else
-      {
-        others += e.getCount();
-      }
-    }
-
-    authors.add("others", others);
-
-    return new CommitsPerAuthor(authors);
+    this.commitsPerYear = commitsPerYear;
   }
+
+  //~--- get methods ----------------------------------------------------------
 
   /**
    * Method description
    *
    *
-   * @param data
-   *
    * @return
    */
-  public static CommitsPerMonth collectCommitsPerMonth(StatisticData data)
+  public Multiset<String> getCommitsPerYear()
   {
-    Multiset<String> commitsPerMonth = TreeMultiset.create();
-
-    for (Entry<Day> e : data.getCommitsPerDay().entrySet())
-    {
-      commitsPerMonth.add(e.getElement().getMonthString(), e.getCount());
-    }
-
-    return new CommitsPerMonth(commitsPerMonth);
+    return commitsPerYear;
   }
-  
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   *
-   * @return
-   */
-  public static CommitsPerMonth collectCommitsPerYear(StatisticData data)
-  {
-    Multiset<String> commitsPerMonth = TreeMultiset.create();
 
-    for (Entry<Day> e : data.getCommitsPerDay().entrySet())
-    {
-      commitsPerMonth.add(e.getElement().getYearString(), e.getCount());
-    }
+  //~--- fields ---------------------------------------------------------------
 
-    return new CommitsPerMonth(commitsPerMonth);
-  }
+  /** Field description */
+  @XmlElement(name = "year")
+  @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
+  private Multiset<String> commitsPerYear;
 }
