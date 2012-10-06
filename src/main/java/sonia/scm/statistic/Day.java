@@ -62,22 +62,6 @@ public class Day
    * Constructs ...
    *
    *
-   * @param date
-   */
-  public Day(long date)
-  {
-    Calendar c = Calendar.getInstance();
-
-    c.setTimeInMillis(date);
-    year = c.get(Calendar.YEAR);
-    month = c.get(Calendar.MONTH) + 1;
-    day = c.get(Calendar.DAY_OF_MONTH);
-  }
-
-  /**
-   * Constructs ...
-   *
-   *
    * @param year
    * @param month
    * @param day
@@ -90,6 +74,42 @@ public class Day
   }
 
   //~--- methods --------------------------------------------------------------
+
+  /**
+   * Method description
+   *
+   *
+   * @param time
+   *
+   * @return
+   */
+  public static Day of(long time)
+  {
+    Calendar c = Calendar.getInstance();
+
+    c.setTimeInMillis(time);
+
+    return of(c);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param c
+   *
+   * @return
+   */
+  public static Day of(Calendar c)
+  {
+    //J-
+    return new Day(
+      c.get(Calendar.YEAR),
+      c.get(Calendar.MONTH) + 1,
+      c.get(Calendar.DAY_OF_MONTH)
+    );
+    //J+
+  }
 
   /**
    * Method description

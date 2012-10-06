@@ -36,8 +36,6 @@ package sonia.scm.statistic.xml;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-import sonia.scm.statistic.Day;
-
 //~--- JDK imports ------------------------------------------------------------
 
 import java.util.Set;
@@ -48,8 +46,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  *
  * @author Sebastian Sdorra
  */
-public class XmlMultisetDayAdapter
-  extends XmlAdapter<XmlMultisetDayElement[], Multiset<Day>>
+public class XmlMultisetIntegerAdapter
+  extends XmlAdapter<XmlMultisetIntegerElement[], Multiset<Integer>>
 {
 
   /**
@@ -63,15 +61,17 @@ public class XmlMultisetDayAdapter
    * @throws Exception
    */
   @Override
-  public XmlMultisetDayElement[] marshal(Multiset<Day> set) throws Exception
+  public XmlMultisetIntegerElement[] marshal(Multiset<Integer> set)
+    throws Exception
   {
-    Set<Day> days = set.elementSet();
-    XmlMultisetDayElement[] elements = new XmlMultisetDayElement[days.size()];
+    Set<Integer> values = set.elementSet();
+    XmlMultisetIntegerElement[] elements =
+      new XmlMultisetIntegerElement[values.size()];
     int i = 0;
 
-    for (Day d : days)
+    for (Integer v : values)
     {
-      elements[i] = new XmlMultisetDayElement(d, set.count(d));
+      elements[i] = new XmlMultisetIntegerElement(v, set.count(v));
       i++;
     }
 
@@ -89,14 +89,14 @@ public class XmlMultisetDayAdapter
    * @throws Exception
    */
   @Override
-  public Multiset<Day> unmarshal(XmlMultisetDayElement[] elements)
+  public Multiset<Integer> unmarshal(XmlMultisetIntegerElement[] elements)
     throws Exception
   {
-    Multiset<Day> multiset = HashMultiset.create();
+    Multiset<Integer> multiset = HashMultiset.create();
 
-    for (XmlMultisetDayElement e : elements)
+    for (XmlMultisetIntegerElement e : elements)
     {
-      multiset.add(e.getDay(), e.getCount());
+      multiset.add(e.getValue(), e.getCount());
     }
 
     return multiset;
