@@ -91,8 +91,8 @@ public class StatisticSubResource
 
   /**
    *  Method description
-   * 
-   * 
+   *
+   *
    *  @return
    */
   @GET
@@ -100,7 +100,7 @@ public class StatisticSubResource
   @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
   public CommitsPerHour getCommitPerHour()
   {
-    return new CommitsPerHour(data.getCommitsPerHour());
+    return StatisticCollector.collectCommitsPerHour(data);
   }
 
   /**
