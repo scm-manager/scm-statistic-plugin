@@ -162,6 +162,9 @@ public class StatisticManager
   public void store(Repository repository, StatisticData data)
     throws IOException
   {
+    if ( logger.isDebugEnabled() ){
+      logger.debug("update statistic for repository {}", repository.getName());
+    }
     try
     {
 
