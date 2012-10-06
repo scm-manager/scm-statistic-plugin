@@ -29,81 +29,56 @@
 
 
 
-package sonia.scm.statistic.resources;
+package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import sonia.scm.statistic.CommitsPerAuthor;
-import sonia.scm.statistic.StatisticCollector;
-import sonia.scm.statistic.StatisticData;
-
-//~--- JDK imports ------------------------------------------------------------
-
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multiset.Entry;
+import com.google.common.collect.Multisets;
 
 /**
  *
  * @author Sebastian Sdorra
  */
-public class StatisticSubResource
+public class StatisticCollector
 {
 
   /**
-   * Constructs ...
+   * Method description
    *
    *
    * @param data
-   */
-  public StatisticSubResource(StatisticData data)
-  {
-    this.data = data;
-  }
-
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repositoryId
-   *
    * @param limit
    *
    * @return
-   *
-   * @throws Exception
    */
-  @GET
-  @Path("commits-per-author")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  public CommitsPerAuthor getCommitPerAuthor(@QueryParam("limit")
-  @DefaultValue("10") int limit)
+  public static CommitsPerAuthor collectCommitsPerAuthor(StatisticData data,
+    int limit)
   {
+    Multiset<String> ordered =
+      Multisets.copyHighestCountFirst(data.getCommitsPerAuthor());
+    Multiset<String> authors = HashMultiset.create();
 
-    return StatisticCollector.collectCommitsPerAuthor(data, limit);
+    int i = 0;
+    int others = 0;
+
+    for (Entry<String> e : ordered.entrySet())
+    {
+      if (i < limit)
+      {
+        authors.add(e.getElement(), e.getCount());
+        i++;
+      }
+      else
+      {
+        others += e.getCount();
+      }
+    }
+
+    authors.add("others", others);
+
+    return new CommitsPerAuthor(authors);
   }
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  @GET
-  @Path("raw")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  public StatisticData getRaw()
-  {
-    return data;
-  }
-
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
-  private StatisticData data;
 }

@@ -29,13 +29,12 @@
 
 
 
-package sonia.scm.statistic.resources;
+package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.collect.Multiset;
 
-import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -60,6 +59,17 @@ public class CommitsPerAuthor
    *
    */
   public CommitsPerAuthor() {}
+
+  /**
+   * Constructs ...
+   *
+   *
+   * @param commitsPerAuthor
+   */
+  public CommitsPerAuthor(Multiset<String> commitsPerAuthor)
+  {
+    this.commitsPerAuthor = commitsPerAuthor;
+  }
 
   /**
    * Constructs ...
