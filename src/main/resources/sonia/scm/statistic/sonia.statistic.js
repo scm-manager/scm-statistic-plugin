@@ -59,6 +59,12 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
         text: 'Commits per Month',
         handler: this.openCommitsPerMonth,
         scope: this
+      },{
+        xtype: 'link',
+        style: 'font-weight: bold',
+        text: 'Commits per Hour',
+        handler: this.openCommitsPerHour,
+        scope: this
       }]
     }
     
@@ -79,6 +85,15 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
     main.addTab({
       id: 'commitsPerAuthor;' + this.item.id,
       xtype: 'statisticCommitsPerAuthorPanel',
+      repository: this.item,
+      closable: true
+    });
+  },
+  
+  openCommitsPerHour: function(){
+    main.addTab({
+      id: 'commitsPerHour;' + this.item.id,
+      xtype: 'statisticCommitsPerHourPanel',
       repository: this.item,
       closable: true
     });

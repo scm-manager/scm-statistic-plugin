@@ -29,21 +29,15 @@
 
 
 
-package sonia.scm.statistic;
+package sonia.scm.statistic.dto;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-import sonia.scm.repository.Changeset;
-import sonia.scm.statistic.xml.XmlMultisetDayAdapter;
 import sonia.scm.statistic.xml.XmlMultisetIntegerAdapter;
-import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
 
 //~--- JDK imports ------------------------------------------------------------
-
-import java.util.Calendar;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -56,68 +50,28 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "statistic-data")
-public class StatisticData
+@XmlRootElement(name = "commits-per-hour")
+public class CommitsPerHour
 {
 
   /**
    * Constructs ...
    *
    */
-  public StatisticData()
-  {
-    commitsPerAuthor = HashMultiset.create();
-    commitsPerDay = HashMultiset.create();
-    commitsPerHour = HashMultiset.create();
-  }
-
-  //~--- methods --------------------------------------------------------------
+  public CommitsPerHour() {}
 
   /**
-   * Method description
+   * Constructs ...
    *
    *
-   * @param c
-   *
-   * @return
+   * @param commitsPerHour
    */
-  public StatisticData add(Changeset c)
+  public CommitsPerHour(Multiset<Integer> commitsPerHour)
   {
-    commitsPerAuthor.add(c.getAuthor().getName());
-
-    Calendar cal = Calendar.getInstance();
-
-    cal.setTimeInMillis(c.getDate());
-
-    commitsPerDay.add(Day.of(cal));
-    commitsPerHour.add(cal.get(Calendar.HOUR_OF_DAY));
-
-    return this;
+    this.commitsPerHour = commitsPerHour;
   }
 
   //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<String> getCommitsPerAuthor()
-  {
-    return commitsPerAuthor;
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<Day> getCommitsPerDay()
-  {
-    return commitsPerDay;
-  }
 
   /**
    * Method description
@@ -133,17 +87,7 @@ public class StatisticData
   //~--- fields ---------------------------------------------------------------
 
   /** Field description */
-  @XmlElement(name = "commits-per-author")
-  @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
-  private Multiset<String> commitsPerAuthor;
-
-  /** Field description */
-  @XmlElement(name = "commits-per-day")
-  @XmlJavaTypeAdapter(XmlMultisetDayAdapter.class)
-  private Multiset<Day> commitsPerDay;
-
-  /** Field description */
-  @XmlElement(name = "commits-per-hour")
+  @XmlElement(name = "hour")
   @XmlJavaTypeAdapter(XmlMultisetIntegerAdapter.class)
   private Multiset<Integer> commitsPerHour;
 }

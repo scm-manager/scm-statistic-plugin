@@ -36,6 +36,7 @@ package sonia.scm.statistic.resources;
 import sonia.scm.statistic.StatisticCollector;
 import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.dto.CommitsPerAuthor;
+import sonia.scm.statistic.dto.CommitsPerHour;
 import sonia.scm.statistic.dto.CommitsPerMonth;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -86,6 +87,20 @@ public class StatisticSubResource
   @DefaultValue("10") int limit)
   {
     return StatisticCollector.collectCommitsPerAuthor(data, limit);
+  }
+
+  /**
+   *  Method description
+   * 
+   * 
+   *  @return
+   */
+  @GET
+  @Path("commits-per-hour")
+  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  public CommitsPerHour getCommitPerHour()
+  {
+    return new CommitsPerHour(data.getCommitsPerHour());
   }
 
   /**
