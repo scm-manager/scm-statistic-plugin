@@ -29,65 +29,47 @@
  * 
  */
 
-Ext.chart.Chart.CHART_URL = 'resources/extjs/resources/charts.swf';
-
 Ext.ns('Sonia.statistic');
 
-Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
-
-  initComponent: function(){
+Sonia.statistic.CommitsPerAuthorPanel = Ext.extend(Ext.Panel, {
+  
+  repository: null,
+  
+  initComponent: function(){    
+    var store = new Sonia.rest.JsonStore({
+      proxy: new Ext.data.HttpProxy({
+        url: restUrl + 'plugins/statistic/' + this.repository.id + '/commits-per-author.json',
+        disableCaching: false
+      }),
+      fields: ['count', 'value'],
+      root: 'author'
+    });
+    
     var config = {
-      title: 'Statistics',
-      padding: 5,
-      bodyCssClass: 'x-panel-mc',
-      layout: 'table',
-      layoutConfig: {
-        columns: 2,
-        tableAttrs: {
-          style: 'width: 80%;'
-        }
-      },
-      defaults: {
-        style: 'font-size: 12px'
-      },
+      title: 'Commits per Author',
       items: [{
-        xtype: 'label',
-        text: 'Statistic'
-      },{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'Commits per Author',
-        handler: this.openCommitsPerAuthor,
-        scope: this
+        store: store,
+        xtype: 'piechart',
+        dataField: 'count',
+        categoryField: 'value',
+        extraStyle: {
+          legend: {
+            display: 'bottom',
+            padding: 5,
+            font: {
+              family: 'Tahoma',
+              size: 13
+            }
+          }
+        }
       }]
     }
     
     Ext.apply(this, Ext.apply(this.initialConfig, config));
-    Sonia.statistic.LinkPanel.superclass.initComponent.apply(this, arguments);
-  },
-  
-  createCommitsPerAuthorPanel: function(){
-    return {
-      id: 'commitsPerAuthor;' + this.item.id,
-      xtype: 'statisticCommitsPerAuthorPanel',
-      repository: this.item,
-      closable: true
-    }
-  },
-  
-  openCommitsPerAuthor: function(){
-    main.addTab(this.createCommitsPerAuthorPanel());
+    Sonia.statistic.CommitsPerAuthorPanel.superclass.initComponent.apply(this, arguments);
   }
   
 });
 
 // register xtype
-Ext.reg("statisticLinkPanel", Sonia.statistic.LinkPanel);
-
-// register panel
-Sonia.repository.openListeners.push(function(repository, panels){
-  panels.push({
-    xtype: 'statisticLinkPanel',
-    item: repository
-  });
-});
+Ext.reg("statisticCommitsPerAuthorPanel", Sonia.statistic.CommitsPerAuthorPanel);

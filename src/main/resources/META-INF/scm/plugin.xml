@@ -48,6 +48,7 @@
 
   <resources>
     <script>/sonia/scm/statistic/sonia.statistic.js</script>
+    <script>/sonia/scm/statistic/sonia.statistic.commitsperauthor.js</script>
   </resources>
 
 </plugin>
