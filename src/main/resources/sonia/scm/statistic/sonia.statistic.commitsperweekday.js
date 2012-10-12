@@ -29,37 +29,38 @@
  * 
  */
 
+
 Ext.ns('Sonia.statistic');
 
-Sonia.statistic.CommitsPerHourPanel = Ext.extend(Ext.Panel, {
+Sonia.statistic.CommitsPerWeekdayPanel = Ext.extend(Ext.Panel, {
   
   repository: null,
   
   initComponent: function(){    
     var store = new Sonia.rest.JsonStore({
       proxy: new Ext.data.HttpProxy({
-        url: restUrl + 'plugins/statistic/' + this.repository.id + '/commits-per-hour.json',
+        url: restUrl + 'plugins/statistic/' + this.repository.id + '/commits-per-weekday.json',
         disableCaching: false
       }),
       fields: ['count', 'value'],
-      root: 'hour'
+      root: 'weekday'
     });
     
     var config = {
-      title: 'Commits per Hour',
+      title: 'Commits per Weekday',
       items: [{
         store: store,
         xtype: 'linechart',
-        xField: 'count',
-        yField: 'value'
+        xField: 'value',
+        yField: 'count'
       }]
     }
     
     Ext.apply(this, Ext.apply(this.initialConfig, config));
-    Sonia.statistic.CommitsPerHourPanel.superclass.initComponent.apply(this, arguments);
+    Sonia.statistic.CommitsPerMonthPanel.superclass.initComponent.apply(this, arguments);
   }
   
 });
 
 // register xtype
-Ext.reg("statisticCommitsPerHourPanel", Sonia.statistic.CommitsPerHourPanel);
+Ext.reg("statisticCommitsPerWeekdayPanel", Sonia.statistic.CommitsPerWeekdayPanel);

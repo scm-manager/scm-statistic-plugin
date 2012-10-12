@@ -38,6 +38,7 @@ import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.dto.CommitsPerAuthor;
 import sonia.scm.statistic.dto.CommitsPerHour;
 import sonia.scm.statistic.dto.CommitsPerMonth;
+import sonia.scm.statistic.dto.CommitsPerWeekday;
 import sonia.scm.statistic.dto.TopModifiedFiles;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -116,6 +117,20 @@ public class StatisticSubResource
   public CommitsPerMonth getCommitPerMonth()
   {
     return StatisticCollector.collectCommitsPerMonth(data);
+  }
+
+  /**
+   *  Method description
+   *
+   *
+   *  @return
+   */
+  @GET
+  @Path("commits-per-weekday")
+  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  public CommitsPerWeekday getCommitPerWeekday()
+  {
+    return StatisticCollector.collectCommitsPerWeekday(data);
   }
 
   /**

@@ -29,21 +29,15 @@
 
 
 
-package sonia.scm.statistic;
+package sonia.scm.statistic.dto;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-import sonia.scm.repository.Changeset;
-import sonia.scm.statistic.xml.XmlMultisetDayAdapter;
-import sonia.scm.statistic.xml.XmlMultisetIntegerAdapter;
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
 
 //~--- JDK imports ------------------------------------------------------------
-
-import java.util.Calendar;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -56,51 +50,25 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "statistic-data")
-public class StatisticData
+@XmlRootElement(name = "commits-per-weekday")
+public class CommitsPerWeekday
 {
 
   /**
    * Constructs ...
    *
    */
-  public StatisticData()
-  {
-    commitsPerAuthor = HashMultiset.create();
-    commitsPerDay = HashMultiset.create();
-    commitsPerHour = HashMultiset.create();
-    commitsPerWeekday = HashMultiset.create();
-    modifiedFiles = HashMultiset.create();
-  }
-
-  //~--- methods --------------------------------------------------------------
+  public CommitsPerWeekday() {}
 
   /**
-   * Method description
+   * Constructs ...
    *
    *
-   * @param c
-   *
-   * @return
+   * @param commitsPerWeekday
    */
-  public StatisticData add(Changeset c)
+  public CommitsPerWeekday(Multiset<String> commitsPerWeekday)
   {
-    commitsPerAuthor.add(c.getAuthor().getName());
-
-    Calendar cal = Calendar.getInstance();
-
-    cal.setTimeInMillis(c.getDate());
-    commitsPerWeekday.add(cal.get(Calendar.DAY_OF_WEEK));
-
-    commitsPerDay.add(Day.of(cal));
-    commitsPerHour.add(cal.get(Calendar.HOUR_OF_DAY));
-
-    for (String file : c.getModifications().getModified())
-    {
-      modifiedFiles.add(file);
-    }
-
-    return this;
+    this.commitsPerWeekday = commitsPerWeekday;
   }
 
   //~--- get methods ----------------------------------------------------------
@@ -111,79 +79,15 @@ public class StatisticData
    *
    * @return
    */
-  public Multiset<String> getCommitsPerAuthor()
-  {
-    return commitsPerAuthor;
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<Day> getCommitsPerDay()
-  {
-    return commitsPerDay;
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<Integer> getCommitsPerHour()
-  {
-    return commitsPerHour;
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<Integer> getCommitsPerWeekday()
+  public Multiset<String> getCommitsPerWeekday()
   {
     return commitsPerWeekday;
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<String> getModifiedFiles()
-  {
-    return modifiedFiles;
   }
 
   //~--- fields ---------------------------------------------------------------
 
   /** Field description */
-  @XmlElement(name = "commits-per-author")
+  @XmlElement(name = "weekday")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
-  private Multiset<String> commitsPerAuthor;
-
-  /** Field description */
-  @XmlElement(name = "commits-per-day")
-  @XmlJavaTypeAdapter(XmlMultisetDayAdapter.class)
-  private Multiset<Day> commitsPerDay;
-
-  /** Field description */
-  @XmlElement(name = "commits-per-hour")
-  @XmlJavaTypeAdapter(XmlMultisetIntegerAdapter.class)
-  private Multiset<Integer> commitsPerHour;
-
-  /** Field description */
-  @XmlElement(name = "commits-per-weekday")
-  @XmlJavaTypeAdapter(XmlMultisetIntegerAdapter.class)
-  private Multiset<Integer> commitsPerWeekday;
-
-  /** Field description */
-  @XmlElement(name = "modified-files")
-  @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
-  private Multiset<String> modifiedFiles;
+  private Multiset<String> commitsPerWeekday;
 }

@@ -62,6 +62,12 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
       },{
         xtype: 'link',
         style: 'font-weight: bold',
+        text: 'Commits per Weekday',
+        handler: this.openCommitsPerWeekday,
+        scope: this
+      },{
+        xtype: 'link',
+        style: 'font-weight: bold',
         text: 'Commits per Hour',
         handler: this.openCommitsPerHour,
         scope: this
@@ -82,6 +88,15 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
     main.addTab({
       id: 'commitsPerMonth;' + this.item.id,
       xtype: 'statisticCommitsPerMonthPanel',
+      repository: this.item,
+      closable: true
+    });
+  },
+  
+  openCommitsPerWeekday: function(){
+    main.addTab({
+      id: 'commitsPerWeekday;' + this.item.id,
+      xtype: 'statisticCommitsPerWeekdayPanel',
       repository: this.item,
       closable: true
     });

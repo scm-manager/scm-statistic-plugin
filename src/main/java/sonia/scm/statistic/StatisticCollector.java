@@ -34,15 +34,23 @@ package sonia.scm.statistic;
 //~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Multisets;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeMultiset;
+import com.google.common.primitives.Ints;
 
 import sonia.scm.statistic.dto.CommitsPerAuthor;
 import sonia.scm.statistic.dto.CommitsPerHour;
 import sonia.scm.statistic.dto.CommitsPerMonth;
+import sonia.scm.statistic.dto.CommitsPerWeekday;
 import sonia.scm.statistic.dto.TopModifiedFiles;
+
+//~--- JDK imports ------------------------------------------------------------
+
+import java.util.Calendar;
 
 /**
  *
@@ -105,7 +113,7 @@ public class StatisticCollector
    */
   public static CommitsPerMonth collectCommitsPerMonth(StatisticData data)
   {
-    Multiset<String> commitsPerMonth = TreeMultiset.create();
+    Multiset<String> commitsPerMonth = LinkedHashMultiset.create();
 
     for (Entry<Day> e : data.getCommitsPerDay().entrySet())
     {
@@ -113,6 +121,37 @@ public class StatisticCollector
     }
 
     return new CommitsPerMonth(commitsPerMonth);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param data
+   *
+   * @return
+   */
+  public static CommitsPerWeekday collectCommitsPerWeekday(StatisticData data)
+  {
+    Multiset<String> weekdays = LinkedHashMultiset.create();
+    Ordering<Entry<Integer>> intOrdering = new Ordering<Entry<Integer>>()
+    {
+      @Override
+      public int compare(Entry<Integer> left, Entry<Integer> right)
+      {
+        return Ints.compare(left.getElement(), right.getElement());
+      }
+    };
+
+    Multiset<Integer> weekdaysInt = data.getCommitsPerWeekday();
+
+    for (Entry<Integer> e :
+      intOrdering.immutableSortedCopy(weekdaysInt.entrySet()))
+    {
+      weekdays.add(getWeekdayAsString(e.getElement()), e.getCount());
+    }
+
+    return new CommitsPerWeekday(weekdays);
   }
 
   /**
@@ -192,5 +231,60 @@ public class StatisticCollector
     }
 
     return others;
+  }
+
+  //~--- get methods ----------------------------------------------------------
+
+  /**
+   * Method description
+   *
+   *
+   * @param weekday
+   *
+   * @return
+   */
+  private static String getWeekdayAsString(int weekday)
+  {
+    String label = "unknown";
+
+    switch (weekday)
+    {
+      case Calendar.MONDAY :
+        label = "Monday";
+
+        break;
+
+      case Calendar.TUESDAY :
+        label = "Tuesday";
+
+        break;
+
+      case Calendar.WEDNESDAY :
+        label = "Wednesday";
+
+        break;
+
+      case Calendar.THURSDAY :
+        label = "Thursday";
+
+        break;
+
+      case Calendar.FRIDAY :
+        label = "Friday";
+
+        break;
+
+      case Calendar.SATURDAY :
+        label = "Saturday";
+
+        break;
+
+      case Calendar.SUNDAY :
+        label = "Sunday";
+
+        break;
+    }
+
+    return label;
   }
 }
