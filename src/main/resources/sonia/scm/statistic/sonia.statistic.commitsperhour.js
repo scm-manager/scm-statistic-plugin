@@ -50,8 +50,8 @@ Sonia.statistic.CommitsPerHourPanel = Ext.extend(Ext.Panel, {
       items: [{
         store: store,
         xtype: 'linechart',
-        xField: 'count',
-        yField: 'value'
+        xField: 'value',
+        yField: 'count'
       }]
     }
     
