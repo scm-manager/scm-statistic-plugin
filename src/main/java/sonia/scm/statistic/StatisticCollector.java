@@ -113,7 +113,7 @@ public class StatisticCollector
    */
   public static CommitsPerMonth collectCommitsPerMonth(StatisticData data)
   {
-    Multiset<String> commitsPerMonth = LinkedHashMultiset.create();
+    Multiset<String> commitsPerMonth = TreeMultiset.create();
 
     for (Entry<Day> e : data.getCommitsPerDay().entrySet())
     {
