@@ -30,6 +30,7 @@
  */
 
 
+
 package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
@@ -163,9 +164,11 @@ public class StatisticManager
   public void store(Repository repository, StatisticData data)
     throws IOException
   {
-    if ( logger.isDebugEnabled() ){
+    if (logger.isDebugEnabled())
+    {
       logger.debug("update statistic for repository {}", repository.getName());
     }
+
     try
     {
 
@@ -268,7 +271,7 @@ public class StatisticManager
       LogCommandBuilder log = service.getLogCommand();
 
       ChangesetPagingResult result = log.setDisableCache(true).setPagingStart(
-                                       PAGE_SIZE).setPagingLimit(
+                                       0).setPagingLimit(
                                        PAGE_SIZE).getChangesets();
 
       append(data, result);
