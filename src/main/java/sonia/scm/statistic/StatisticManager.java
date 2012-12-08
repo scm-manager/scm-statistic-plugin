@@ -43,7 +43,7 @@ import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sonia.scm.SCMContextProvider;
+import sonia.scm.plugin.ext.Extension;
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.ChangesetPagingResult;
 import sonia.scm.repository.Repository;
@@ -51,20 +51,18 @@ import sonia.scm.repository.RepositoryException;
 import sonia.scm.repository.api.LogCommandBuilder;
 import sonia.scm.repository.api.RepositoryService;
 import sonia.scm.repository.api.RepositoryServiceFactory;
-import sonia.scm.util.IOUtil;
+import sonia.scm.store.DataStore;
+import sonia.scm.store.DataStoreFactory;
 
 //~--- JDK imports ------------------------------------------------------------
 
-import java.io.File;
 import java.io.IOException;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
 /**
  *
  * @author Sebastian Sdorra
  */
+@Extension
 @Singleton
 public class StatisticManager
 {
@@ -72,15 +70,14 @@ public class StatisticManager
   /** Field description */
   private static final int PAGE_SIZE = 100;
 
+  /** Field description */
+  private static final String STORE = "statistic";
+
   /**
    * the logger for StatisticManager
    */
   private static final Logger logger =
     LoggerFactory.getLogger(StatisticManager.class);
-
-  /** Field description */
-  private static final String DIRECTORY_NAME =
-    "var".concat(File.separator).concat("statistic");
 
   //~--- constructors ---------------------------------------------------------
 
@@ -91,23 +88,14 @@ public class StatisticManager
    *
    * @param context
    * @param serviceFactory
+   * @param storeFactory
    */
   @Inject
-  public StatisticManager(SCMContextProvider context,
-    RepositoryServiceFactory serviceFactory)
+  public StatisticManager(RepositoryServiceFactory serviceFactory,
+    DataStoreFactory storeFactory)
   {
     this.serviceFactory = serviceFactory;
-    this.directory = new File(context.getBaseDirectory(), DIRECTORY_NAME);
-    IOUtil.mkdirs(directory);
-
-    try
-    {
-      jaxbContext = JAXBContext.newInstance(StatisticData.class);
-    }
-    catch (JAXBException ex)
-    {
-      throw new RuntimeException("could not create jaxb context", ex);
-    }
+    this.store = storeFactory.getStore(StatisticData.class, STORE);
   }
 
   //~--- methods --------------------------------------------------------------
@@ -122,7 +110,7 @@ public class StatisticManager
    */
   public boolean contains(Repository repository)
   {
-    return file(repository).exists();
+    return store.get(repository.getId()) != null;
   }
 
   /**
@@ -169,22 +157,7 @@ public class StatisticManager
       logger.debug("update statistic for repository {}", repository.getName());
     }
 
-    try
-    {
-
-      File statisticFile = file(repository);
-
-      jaxbContext.createMarshaller().marshal(data, statisticFile);
-    }
-    catch (Exception ex)
-    {
-
-      Throwables.propagateIfPossible(ex, IOException.class);
-
-      throw new StatisticException(
-        "could not statistic statistic for repository ".concat(
-          repository.getName()));
-    }
+    store.put(repository.getId(), data);
   }
 
   //~--- get methods ----------------------------------------------------------
@@ -201,22 +174,9 @@ public class StatisticManager
    */
   public StatisticData get(Repository repository) throws IOException
   {
-    StatisticData data = null;
-    File statisticFile = new File(directory, repository.getId());
+    StatisticData data = store.get(repository.getId());
 
-    if (statisticFile.exists())
-    {
-      try
-      {
-        data = (StatisticData) jaxbContext.createUnmarshaller().unmarshal(
-          statisticFile);
-      }
-      catch (Exception ex)
-      {
-        throw new StatisticException("could not read statistic file", ex);
-      }
-    }
-    else
+    if (data == null)
     {
       data = new StatisticData();
     }
@@ -293,27 +253,11 @@ public class StatisticManager
     return data;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   *
-   * @return
-   */
-  private File file(Repository repository)
-  {
-    return new File(directory, repository.getId());
-  }
-
   //~--- fields ---------------------------------------------------------------
 
   /** Field description */
-  private File directory;
-
-  /** Field description */
-  private JAXBContext jaxbContext;
-
-  /** Field description */
   private RepositoryServiceFactory serviceFactory;
+
+  /** Field description */
+  private DataStore<StatisticData> store;
 }

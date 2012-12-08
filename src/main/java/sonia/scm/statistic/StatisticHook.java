@@ -30,17 +30,21 @@
  */
 
 
+
 package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sonia.scm.EagerSingleton;
+import sonia.scm.event.Subscriber;
 import sonia.scm.plugin.ext.Extension;
 import sonia.scm.repository.Changeset;
-import sonia.scm.repository.PostReceiveRepositoryHook;
 import sonia.scm.repository.RepositoryHookEvent;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -52,13 +56,15 @@ import java.io.IOException;
  * @author Sebastian Sdorra
  */
 @Extension
-public class StatisticHook extends PostReceiveRepositoryHook
+@EagerSingleton
+@Subscriber(async = true)
+public class StatisticHook
 {
 
   /**
    * the logger for StatisticHook
    */
-  private static final org.slf4j.Logger logger =
+  private static final Logger logger =
     LoggerFactory.getLogger(StatisticHook.class);
 
   //~--- constructors ---------------------------------------------------------
@@ -83,7 +89,7 @@ public class StatisticHook extends PostReceiveRepositoryHook
    *
    * @param event
    */
-  @Override
+  @Subscribe
   public void onEvent(RepositoryHookEvent event)
   {
     if (logger.isDebugEnabled())
