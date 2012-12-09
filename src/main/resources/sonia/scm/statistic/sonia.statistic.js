@@ -76,6 +76,12 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
         text: 'Top modified Files',
         handler: this.openTopModifiedFiles,
         scope: this
+      },{
+        xtype: 'link',
+        style: 'font-weight: bold',
+        text: 'File modification count',
+        handler: this.openFileModificationCount,
+        scope: this
       }]
     }
     
@@ -123,6 +129,15 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
     main.addTab({
       id: 'topModifiedFiles;' + this.item.id,
       xtype: 'statisticTopModifiedFilesPanel',
+      repository: this.item,
+      closable: true
+    });
+  },
+  
+  openFileModificationCount: function(){
+    main.addTab({
+      id: 'fileModificationCount;' + this.item.id,
+      xtype: 'statisticFileModificationCount',
       repository: this.item,
       closable: true
     });

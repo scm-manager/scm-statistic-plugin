@@ -30,6 +30,7 @@
  */
 
 
+
 package sonia.scm.statistic.resources;
 
 //~--- non-JDK imports --------------------------------------------------------
@@ -40,6 +41,7 @@ import sonia.scm.statistic.dto.CommitsPerAuthor;
 import sonia.scm.statistic.dto.CommitsPerHour;
 import sonia.scm.statistic.dto.CommitsPerMonth;
 import sonia.scm.statistic.dto.CommitsPerWeekday;
+import sonia.scm.statistic.dto.FileModificationCount;
 import sonia.scm.statistic.dto.TopModifiedFiles;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -146,6 +148,20 @@ public class StatisticSubResource
   public CommitsPerMonth getCommitPerYear()
   {
     return StatisticCollector.collectCommitsPerYear(data);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
+  @GET
+  @Path("file-modification-count")
+  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  public FileModificationCount getFileModificationCount()
+  {
+    return StatisticCollector.collectFileModificationCount(data);
   }
 
   /**

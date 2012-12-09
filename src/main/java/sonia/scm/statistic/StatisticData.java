@@ -39,6 +39,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
 import sonia.scm.repository.Changeset;
+import sonia.scm.repository.Modifications;
 import sonia.scm.repository.Person;
 import sonia.scm.statistic.xml.XmlMultisetDayAdapter;
 import sonia.scm.statistic.xml.XmlMultisetIntegerAdapter;
@@ -63,6 +64,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class StatisticData
 {
 
+  /** Field description */
+  public static final String MODIFICATION_ADDED = "added";
+
+  /** Field description */
+  public static final String MODIFICATION_MODIFIED = "modified";
+
+  /** Field description */
+  public static final String MODIFICATION_REMOVED = "removed";
+
+  //~--- constructors ---------------------------------------------------------
+
   /**
    * Constructs ...
    *
@@ -74,6 +86,7 @@ public class StatisticData
     commitsPerHour = HashMultiset.create();
     commitsPerWeekday = HashMultiset.create();
     modifiedFiles = HashMultiset.create();
+    fileModificationCount = HashMultiset.create();
   }
 
   //~--- methods --------------------------------------------------------------
@@ -103,10 +116,16 @@ public class StatisticData
     commitsPerDay.add(Day.of(cal));
     commitsPerHour.add(cal.get(Calendar.HOUR_OF_DAY));
 
-    for (String file : c.getModifications().getModified())
+    Modifications mods = c.getModifications();
+
+    for (String file : mods.getModified())
     {
       modifiedFiles.add(file);
     }
+
+    fileModificationCount.add(MODIFICATION_ADDED, mods.getAdded().size());
+    fileModificationCount.add(MODIFICATION_MODIFIED, mods.getModified().size());
+    fileModificationCount.add(MODIFICATION_REMOVED, mods.getRemoved().size());
 
     return this;
   }
@@ -163,6 +182,17 @@ public class StatisticData
    *
    * @return
    */
+  public Multiset<String> getFileModificationCount()
+  {
+    return fileModificationCount;
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
   public Multiset<String> getModifiedFiles()
   {
     return modifiedFiles;
@@ -189,6 +219,11 @@ public class StatisticData
   @XmlElement(name = "commits-per-weekday")
   @XmlJavaTypeAdapter(XmlMultisetIntegerAdapter.class)
   private Multiset<Integer> commitsPerWeekday;
+
+  /** Field description */
+  @XmlElement(name = "file-modification-count")
+  @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
+  private Multiset<String> fileModificationCount;
 
   /** Field description */
   @XmlElement(name = "modified-files")

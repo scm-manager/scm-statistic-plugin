@@ -30,6 +30,7 @@
  */
 
 
+
 package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
@@ -47,6 +48,7 @@ import sonia.scm.statistic.dto.CommitsPerAuthor;
 import sonia.scm.statistic.dto.CommitsPerHour;
 import sonia.scm.statistic.dto.CommitsPerMonth;
 import sonia.scm.statistic.dto.CommitsPerWeekday;
+import sonia.scm.statistic.dto.FileModificationCount;
 import sonia.scm.statistic.dto.TopModifiedFiles;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -173,6 +175,20 @@ public class StatisticCollector
     }
 
     return new CommitsPerMonth(commitsPerMonth);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param data
+   *
+   * @return
+   */
+  public static FileModificationCount collectFileModificationCount(
+    StatisticData data)
+  {
+    return new FileModificationCount(data.getFileModificationCount());
   }
 
   /**
