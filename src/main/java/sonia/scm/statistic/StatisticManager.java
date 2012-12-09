@@ -230,9 +230,13 @@ public class StatisticManager
 
       LogCommandBuilder log = service.getLogCommand();
 
-      ChangesetPagingResult result = log.setDisableCache(true).setPagingStart(
-                                       0).setPagingLimit(
-                                       PAGE_SIZE).getChangesets();
+      // do not cache the whole changesets of a repository
+      //J-
+      ChangesetPagingResult result = log.setDisableCache(true)
+        .setPagingStart(0)
+        .setPagingLimit(PAGE_SIZE)
+        .getChangesets();
+      //J+
 
       append(data, result);
 
@@ -240,8 +244,11 @@ public class StatisticManager
 
       for (int i = PAGE_SIZE; i < total; i = i + PAGE_SIZE)
       {
-        result =
-          log.setPagingStart(i).setPagingLimit(PAGE_SIZE).getChangesets();
+        //J-
+        result = log.setPagingStart(i)
+          .setPagingLimit(PAGE_SIZE)
+          .getChangesets();
+        //J+
         append(data, result);
       }
     }
