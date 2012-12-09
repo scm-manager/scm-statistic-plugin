@@ -35,6 +35,7 @@ package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
@@ -50,6 +51,8 @@ import sonia.scm.repository.RepositoryHookEvent;
 //~--- JDK imports ------------------------------------------------------------
 
 import java.io.IOException;
+
+import java.util.Set;
 
 /**
  *
@@ -100,11 +103,19 @@ public class StatisticHook
 
     try
     {
+      Set<String> collectedChangesets = Sets.newHashSet();
       StatisticData data = statisticManager.get(event.getRepository());
 
       for (Changeset c : event.getChangesets())
       {
-        data.add(c);
+        if (collectedChangesets.contains(c.getId()))
+        {
+          data.add(c);
+        }
+        else
+        {
+          collectedChangesets.add(c.getId());
+        }
       }
 
       statisticManager.store(event.getRepository(), data);
