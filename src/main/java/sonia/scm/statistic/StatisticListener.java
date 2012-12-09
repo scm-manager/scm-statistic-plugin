@@ -149,10 +149,11 @@ public class StatisticListener
         if (!collectedChangesets.contains(c.getId()))
         {
           data.add(c);
+          collectedChangesets.add(c.getId());
         }
         else
         {
-          collectedChangesets.add(c.getId());
+          logger.trace("changeset {} already added to statistic", c.getId());
         }
       }
 
