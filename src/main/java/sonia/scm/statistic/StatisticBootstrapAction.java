@@ -136,7 +136,7 @@ public class StatisticBootstrapAction implements PrivilegedAction
     public void run()
     {
       ExecutorService service =
-        new SubjectAwareExecutorService(Executors.newFixedThreadPool(4));
+        new SubjectAwareExecutorService(Executors.newFixedThreadPool(2));
 
       for (Repository repository : repositoryManager.getAll())
       {
@@ -145,6 +145,8 @@ public class StatisticBootstrapAction implements PrivilegedAction
           service.execute(new BootstrapWorker(manager, repository));
         }
       }
+      // shutdown executor after all bootstrap jobs are finished
+      service.shutdown();
     }
 
     //~--- fields -------------------------------------------------------------
