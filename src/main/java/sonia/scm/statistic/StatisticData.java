@@ -30,6 +30,7 @@
  */
 
 
+
 package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
@@ -38,6 +39,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
 import sonia.scm.repository.Changeset;
+import sonia.scm.repository.Person;
 import sonia.scm.statistic.xml.XmlMultisetDayAdapter;
 import sonia.scm.statistic.xml.XmlMultisetIntegerAdapter;
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
@@ -86,7 +88,12 @@ public class StatisticData
    */
   public StatisticData add(Changeset c)
   {
-    commitsPerAuthor.add(c.getAuthor().getName());
+    Person author = c.getAuthor();
+
+    if (author != null)
+    {
+      commitsPerAuthor.add(author.getName());
+    }
 
     Calendar cal = Calendar.getInstance();
 
