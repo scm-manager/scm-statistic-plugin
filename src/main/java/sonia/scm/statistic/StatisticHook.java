@@ -47,6 +47,7 @@ import sonia.scm.event.Subscriber;
 import sonia.scm.plugin.ext.Extension;
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.RepositoryHookEvent;
+import sonia.scm.repository.RepositoryHookType;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -94,6 +95,20 @@ public class StatisticHook
    */
   @Subscribe
   public void onEvent(RepositoryHookEvent event)
+  {
+    if (event.getType() == RepositoryHookType.POST_RECEIVE)
+    {
+      handleHookEvent(event);
+    }
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param event
+   */
+  private void handleHookEvent(RepositoryHookEvent event)
   {
     if (logger.isDebugEnabled())
     {
