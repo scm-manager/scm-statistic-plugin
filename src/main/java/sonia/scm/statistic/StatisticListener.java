@@ -47,6 +47,8 @@ import sonia.scm.HandlerEvent;
 import sonia.scm.event.Subscriber;
 import sonia.scm.plugin.ext.Extension;
 import sonia.scm.repository.Changeset;
+import sonia.scm.repository.PostReceiveRepositoryHook;
+import sonia.scm.repository.PostReceiveRepositoryHookEvent;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryEvent;
 import sonia.scm.repository.RepositoryHookEvent;
@@ -97,41 +99,7 @@ public class StatisticListener
    * @param event
    */
   @Subscribe
-  public void onHookEvent(RepositoryHookEvent event)
-  {
-    if (event.getType() == RepositoryHookType.POST_RECEIVE)
-    {
-      handleHookEvent(event);
-    }
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @param event
-   */
-  @Subscribe
-  public void onRepositoryEvent(RepositoryEvent event)
-  {
-    if (event.getEventType() == HandlerEvent.DELETE)
-    {
-      Repository repository = event.getItem();
-
-      logger.trace("receive delete event for repository {}",
-        repository.getId());
-      statisticManager.remove(repository);
-    }
-
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @param event
-   */
-  private void handleHookEvent(RepositoryHookEvent event)
+  public void onHookEvent(PostReceiveRepositoryHookEvent event)
   {
     if (logger.isDebugEnabled())
     {
@@ -163,6 +131,26 @@ public class StatisticListener
     {
       logger.error("could not update statistic", ex);
     }
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param event
+   */
+  @Subscribe
+  public void onRepositoryEvent(RepositoryEvent event)
+  {
+    if (event.getEventType() == HandlerEvent.DELETE)
+    {
+      Repository repository = event.getItem();
+
+      logger.trace("receive delete event for repository {}",
+        repository.getId());
+      statisticManager.remove(repository);
+    }
+
   }
 
   //~--- fields ---------------------------------------------------------------
