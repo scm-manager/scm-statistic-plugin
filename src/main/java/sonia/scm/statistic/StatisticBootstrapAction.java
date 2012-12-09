@@ -30,10 +30,12 @@
  */
 
 
+
 package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.inject.Inject;
 
 import org.apache.shiro.SecurityUtils;
@@ -53,6 +55,7 @@ import java.io.IOException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 /**
  *
@@ -60,6 +63,12 @@ import java.util.concurrent.Executors;
  */
 public class StatisticBootstrapAction implements PrivilegedAction
 {
+
+  /** Field description */
+  private static final String THREAD_EXECUTOR = "StatisticExcecutor";
+
+  /** Field description */
+  private static final String THREAD_WORKER = "StatisticWorker-%s";
 
   /**
    * the logger for StatisticBootstrapAction
@@ -97,7 +106,7 @@ public class StatisticBootstrapAction implements PrivilegedAction
     Runnable runnable = new BootstrapExecutor(repositoryMananger, manager);
 
     subject.associateWith(runnable);
-    new Thread(runnable).start();
+    new Thread(runnable, THREAD_EXECUTOR).start();
   }
 
   //~--- inner classes --------------------------------------------------------
@@ -135,8 +144,11 @@ public class StatisticBootstrapAction implements PrivilegedAction
     @Override
     public void run()
     {
+      ThreadFactory factory =
+        new ThreadFactoryBuilder().setNameFormat(THREAD_WORKER).build();
       ExecutorService service =
-        new SubjectAwareExecutorService(Executors.newFixedThreadPool(2));
+        new SubjectAwareExecutorService(Executors.newFixedThreadPool(2,
+          factory));
 
       for (Repository repository : repositoryManager.getAll())
       {
@@ -145,6 +157,7 @@ public class StatisticBootstrapAction implements PrivilegedAction
           service.execute(new BootstrapWorker(manager, repository));
         }
       }
+
       // shutdown executor after all bootstrap jobs are finished
       service.shutdown();
     }
