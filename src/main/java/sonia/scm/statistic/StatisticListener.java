@@ -43,9 +43,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sonia.scm.EagerSingleton;
+import sonia.scm.HandlerEvent;
 import sonia.scm.event.Subscriber;
 import sonia.scm.plugin.ext.Extension;
 import sonia.scm.repository.Changeset;
+import sonia.scm.repository.Repository;
+import sonia.scm.repository.RepositoryEvent;
 import sonia.scm.repository.RepositoryHookEvent;
 import sonia.scm.repository.RepositoryHookType;
 
@@ -62,14 +65,14 @@ import java.util.Set;
 @Extension
 @EagerSingleton
 @Subscriber(async = true)
-public class StatisticHook
+public class StatisticListener
 {
 
   /**
-   * the logger for StatisticHook
+   * the logger for StatisticListener
    */
   private static final Logger logger =
-    LoggerFactory.getLogger(StatisticHook.class);
+    LoggerFactory.getLogger(StatisticListener.class);
 
   //~--- constructors ---------------------------------------------------------
 
@@ -80,7 +83,7 @@ public class StatisticHook
    * @param statisticManager
    */
   @Inject
-  public StatisticHook(StatisticManager statisticManager)
+  public StatisticListener(StatisticManager statisticManager)
   {
     this.statisticManager = statisticManager;
   }
@@ -94,12 +97,32 @@ public class StatisticHook
    * @param event
    */
   @Subscribe
-  public void onEvent(RepositoryHookEvent event)
+  public void onHookEvent(RepositoryHookEvent event)
   {
     if (event.getType() == RepositoryHookType.POST_RECEIVE)
     {
       handleHookEvent(event);
     }
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param event
+   */
+  @Subscribe
+  public void onRepositoryEvent(RepositoryEvent event)
+  {
+    if (event.getEventType() == HandlerEvent.DELETE)
+    {
+      Repository repository = event.getItem();
+
+      logger.trace("receive delete event for repository {}",
+        repository.getId());
+      statisticManager.remove(repository);
+    }
+
   }
 
   /**

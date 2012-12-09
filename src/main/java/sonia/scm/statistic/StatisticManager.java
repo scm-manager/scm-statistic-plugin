@@ -152,6 +152,18 @@ public class StatisticManager
    *
    *
    * @param repository
+   */
+  public void remove(Repository repository)
+  {
+    logger.debug("remove statistic for repository {}", repository.getId());
+    store.remove(repository.getId());
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param repository
    * @param data
    *
    * @throws IOException
