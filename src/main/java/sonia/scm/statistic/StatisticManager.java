@@ -40,17 +40,22 @@ import com.google.common.io.Closeables;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sonia.scm.plugin.ext.Extension;
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.ChangesetPagingResult;
+import sonia.scm.repository.PermissionType;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryException;
 import sonia.scm.repository.api.LogCommandBuilder;
 import sonia.scm.repository.api.RepositoryService;
 import sonia.scm.repository.api.RepositoryServiceFactory;
+import sonia.scm.security.RepositoryPermission;
 import sonia.scm.store.DataStore;
 import sonia.scm.store.DataStoreFactory;
 
@@ -152,6 +157,8 @@ public class StatisticManager
   public void store(Repository repository, StatisticData data)
     throws IOException
   {
+    checkPermissions(repository);
+
     if (logger.isDebugEnabled())
     {
       logger.debug("update statistic for repository {}", repository.getName());
@@ -174,6 +181,8 @@ public class StatisticManager
    */
   public StatisticData get(Repository repository) throws IOException
   {
+    checkPermissions(repository);
+
     StatisticData data = store.get(repository.getId());
 
     if (data == null)
@@ -206,6 +215,20 @@ public class StatisticManager
    *
    *
    * @param repository
+   */
+  private void checkPermissions(Repository repository)
+  {
+    Subject subject = SecurityUtils.getSubject();
+
+    subject.checkPermission(new RepositoryPermission(repository,
+      PermissionType.READ));
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param repository
    *
    *
    * @return
@@ -215,6 +238,8 @@ public class StatisticManager
   private StatisticData createBootstrapStatistic(Repository repository)
     throws IOException, RepositoryException
   {
+    checkPermissions(repository);
+
     if (logger.isDebugEnabled())
     {
       logger.debug("create bootstrap statistic for repository {}",
