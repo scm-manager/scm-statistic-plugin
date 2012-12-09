@@ -73,6 +73,9 @@ public class StatisticData
   /** Field description */
   public static final String MODIFICATION_REMOVED = "removed";
 
+  /** Field description */
+  private static final int VERSION = 1;
+
   //~--- constructors ---------------------------------------------------------
 
   /**
@@ -198,6 +201,17 @@ public class StatisticData
     return modifiedFiles;
   }
 
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
+  public int getVersion()
+  {
+    return version;
+  }
+
   //~--- fields ---------------------------------------------------------------
 
   /** Field description */
@@ -229,4 +243,7 @@ public class StatisticData
   @XmlElement(name = "modified-files")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
   private Multiset<String> modifiedFiles;
+
+  /** Field description */
+  private int version = VERSION;
 }
