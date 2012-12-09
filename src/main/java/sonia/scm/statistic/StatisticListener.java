@@ -146,7 +146,7 @@ public class StatisticListener
 
       for (Changeset c : event.getChangesets())
       {
-        if (collectedChangesets.contains(c.getId()))
+        if (!collectedChangesets.contains(c.getId()))
         {
           data.add(c);
         }
