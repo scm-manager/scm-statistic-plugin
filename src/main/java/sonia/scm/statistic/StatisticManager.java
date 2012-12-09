@@ -128,6 +128,8 @@ public class StatisticManager
    */
   public void createStatistic(Repository repository) throws IOException
   {
+    checkPermissions(repository, PermissionType.WRITE);
+
     try
     {
       StatisticData data = createBootstrapStatistic(repository);
@@ -157,7 +159,7 @@ public class StatisticManager
   public void store(Repository repository, StatisticData data)
     throws IOException
   {
-    checkPermissions(repository);
+    checkPermissions(repository, PermissionType.WRITE);
 
     if (logger.isDebugEnabled())
     {
@@ -181,7 +183,7 @@ public class StatisticManager
    */
   public StatisticData get(Repository repository) throws IOException
   {
-    checkPermissions(repository);
+    checkPermissions(repository, PermissionType.READ);
 
     StatisticData data = store.get(repository.getId());
 
@@ -215,13 +217,13 @@ public class StatisticManager
    *
    *
    * @param repository
+   * @param type
    */
-  private void checkPermissions(Repository repository)
+  private void checkPermissions(Repository repository, PermissionType type)
   {
     Subject subject = SecurityUtils.getSubject();
 
-    subject.checkPermission(new RepositoryPermission(repository,
-      PermissionType.READ));
+    subject.checkPermission(new RepositoryPermission(repository, type));
   }
 
   /**
@@ -238,7 +240,7 @@ public class StatisticManager
   private StatisticData createBootstrapStatistic(Repository repository)
     throws IOException, RepositoryException
   {
-    checkPermissions(repository);
+    checkPermissions(repository, PermissionType.WRITE);
 
     if (logger.isDebugEnabled())
     {
