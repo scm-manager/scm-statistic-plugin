@@ -56,6 +56,8 @@ import sonia.scm.repository.api.LogCommandBuilder;
 import sonia.scm.repository.api.RepositoryService;
 import sonia.scm.repository.api.RepositoryServiceFactory;
 import sonia.scm.security.RepositoryPermission;
+import sonia.scm.statistic.collector.ChangesetCollector;
+import sonia.scm.statistic.collector.ChangesetCollectorFactory;
 import sonia.scm.store.DataStore;
 import sonia.scm.store.DataStoreFactory;
 
@@ -213,21 +215,6 @@ public class StatisticManager
    * Method description
    *
    *
-   * @param data
-   * @param result
-   */
-  private void append(StatisticData data, ChangesetPagingResult result)
-  {
-    for (Changeset c : result)
-    {
-      data.add(c);
-    }
-  }
-
-  /**
-   * Method description
-   *
-   *
    * @param repository
    * @param type
    */
@@ -261,40 +248,11 @@ public class StatisticManager
     }
 
     StatisticData data = new StatisticData();
-    RepositoryService service = null;
 
-    try
-    {
-      service = serviceFactory.create(repository);
+    ChangesetCollector collector =
+      ChangesetCollectorFactory.createCollector(serviceFactory, repository);
 
-      LogCommandBuilder log = service.getLogCommand();
-
-      // do not cache the whole changesets of a repository
-      //J-
-      ChangesetPagingResult result = log.setDisableCache(true)
-        .setPagingStart(0)
-        .setPagingLimit(PAGE_SIZE)
-        .getChangesets();
-      //J+
-
-      append(data, result);
-
-      int total = result.getTotal();
-
-      for (int i = PAGE_SIZE; i < total; i = i + PAGE_SIZE)
-      {
-        //J-
-        result = log.setPagingStart(i)
-          .setPagingLimit(PAGE_SIZE)
-          .getChangesets();
-        //J+
-        append(data, result);
-      }
-    }
-    finally
-    {
-      Closeables.closeQuietly(service);
-    }
+    collector.collect(data, PAGE_SIZE);
 
     return data;
   }
