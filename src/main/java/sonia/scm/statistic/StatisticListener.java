@@ -47,12 +47,9 @@ import sonia.scm.HandlerEvent;
 import sonia.scm.event.Subscriber;
 import sonia.scm.plugin.ext.Extension;
 import sonia.scm.repository.Changeset;
-import sonia.scm.repository.PostReceiveRepositoryHook;
 import sonia.scm.repository.PostReceiveRepositoryHookEvent;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryEvent;
-import sonia.scm.repository.RepositoryHookEvent;
-import sonia.scm.repository.RepositoryHookType;
 
 //~--- JDK imports ------------------------------------------------------------
 
