@@ -106,20 +106,11 @@ public class StatisticListener
 
     try
     {
-      Set<String> collectedChangesets = Sets.newHashSet();
       StatisticData data = statisticManager.get(event.getRepository());
 
       for (Changeset c : event.getChangesets())
       {
-        if (!collectedChangesets.contains(c.getId()))
-        {
-          data.add(c);
-          collectedChangesets.add(c.getId());
-        }
-        else
-        {
-          logger.trace("changeset {} already added to statistic", c.getId());
-        }
+        data.add(c);
       }
 
       statisticManager.store(event.getRepository(), data);

@@ -37,6 +37,10 @@ package sonia.scm.statistic;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.Modifications;
@@ -48,10 +52,12 @@ import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
 //~--- JDK imports ------------------------------------------------------------
 
 import java.util.Calendar;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -76,6 +82,12 @@ public class StatisticData
   /** Field description */
   private static final int VERSION = 1;
 
+  /**
+   * the logger for StatisticData
+   */
+  private static final Logger logger =
+    LoggerFactory.getLogger(StatisticData.class);
+
   //~--- constructors ---------------------------------------------------------
 
   /**
@@ -84,6 +96,7 @@ public class StatisticData
    */
   public StatisticData()
   {
+    changesets = Sets.newHashSet();
     commitsPerAuthor = HashMultiset.create();
     commitsPerDay = HashMultiset.create();
     commitsPerHour = HashMultiset.create();
@@ -104,36 +117,30 @@ public class StatisticData
    */
   public StatisticData add(Changeset c)
   {
-    Person author = c.getAuthor();
-
-    if (author != null)
+    if (!changesets.contains(c.getId()))
     {
-      commitsPerAuthor.add(author.getName());
+      append(c);
     }
-
-    Calendar cal = Calendar.getInstance();
-
-    cal.setTimeInMillis(c.getDate());
-    commitsPerWeekday.add(cal.get(Calendar.DAY_OF_WEEK));
-
-    commitsPerDay.add(Day.of(cal));
-    commitsPerHour.add(cal.get(Calendar.HOUR_OF_DAY));
-
-    Modifications mods = c.getModifications();
-
-    for (String file : mods.getModified())
+    else if (logger.isDebugEnabled())
     {
-      modifiedFiles.add(file);
+      logger.debug("statistic already contains changeset {}", c.getId());
     }
-
-    fileModificationCount.add(MODIFICATION_ADDED, mods.getAdded().size());
-    fileModificationCount.add(MODIFICATION_MODIFIED, mods.getModified().size());
-    fileModificationCount.add(MODIFICATION_REMOVED, mods.getRemoved().size());
 
     return this;
   }
 
   //~--- get methods ----------------------------------------------------------
+
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
+  public Set<String> getChangesets()
+  {
+    return changesets;
+  }
 
   /**
    * Method description
@@ -212,7 +219,51 @@ public class StatisticData
     return version;
   }
 
+  //~--- methods --------------------------------------------------------------
+
+  /**
+   * Method description
+   *
+   *
+   * @param c
+   */
+  private void append(Changeset c)
+  {
+    changesets.add(c.getId());
+
+    Person author = c.getAuthor();
+
+    if (author != null)
+    {
+      commitsPerAuthor.add(author.getName());
+    }
+
+    Calendar cal = Calendar.getInstance();
+
+    cal.setTimeInMillis(c.getDate());
+    commitsPerWeekday.add(cal.get(Calendar.DAY_OF_WEEK));
+
+    commitsPerDay.add(Day.of(cal));
+    commitsPerHour.add(cal.get(Calendar.HOUR_OF_DAY));
+
+    Modifications mods = c.getModifications();
+
+    for (String file : mods.getModified())
+    {
+      modifiedFiles.add(file);
+    }
+
+    fileModificationCount.add(MODIFICATION_ADDED, mods.getAdded().size());
+    fileModificationCount.add(MODIFICATION_MODIFIED, mods.getModified().size());
+    fileModificationCount.add(MODIFICATION_REMOVED, mods.getRemoved().size());
+  }
+
   //~--- fields ---------------------------------------------------------------
+
+  /** Field description */
+  @XmlElement(name = "id")
+  @XmlElementWrapper(name = "changesets")
+  private Set<String> changesets;
 
   /** Field description */
   @XmlElement(name = "commits-per-author")
