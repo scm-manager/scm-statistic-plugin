@@ -35,6 +35,7 @@ package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.google.common.base.Strings;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
@@ -233,7 +234,7 @@ public class StatisticData
 
     Person author = c.getAuthor();
 
-    if (author != null)
+    if ((author != null) &&!Strings.isNullOrEmpty(author.getName()))
     {
       commitsPerAuthor.add(author.getName());
     }
