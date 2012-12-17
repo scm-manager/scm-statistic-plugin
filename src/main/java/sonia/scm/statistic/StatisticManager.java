@@ -36,7 +36,6 @@ package sonia.scm.statistic;
 //~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.base.Throwables;
-import com.google.common.io.Closeables;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -47,13 +46,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sonia.scm.plugin.ext.Extension;
-import sonia.scm.repository.Changeset;
-import sonia.scm.repository.ChangesetPagingResult;
 import sonia.scm.repository.PermissionType;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryException;
-import sonia.scm.repository.api.LogCommandBuilder;
-import sonia.scm.repository.api.RepositoryService;
 import sonia.scm.repository.api.RepositoryServiceFactory;
 import sonia.scm.security.RepositoryPermission;
 import sonia.scm.statistic.collector.ChangesetCollector;

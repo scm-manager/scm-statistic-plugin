@@ -30,14 +30,13 @@
  */
 
 
+
 package sonia.scm.statistic.xml;
 
 //~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-
-import sonia.scm.statistic.Day;
 
 //~--- JDK imports ------------------------------------------------------------
 

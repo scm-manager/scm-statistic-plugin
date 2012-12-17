@@ -35,7 +35,6 @@ package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
@@ -54,8 +53,6 @@ import sonia.scm.repository.RepositoryEvent;
 //~--- JDK imports ------------------------------------------------------------
 
 import java.io.IOException;
-
-import java.util.Set;
 
 /**
  *
