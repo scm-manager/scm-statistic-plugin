@@ -51,6 +51,7 @@ import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryException;
 import sonia.scm.repository.api.RepositoryServiceFactory;
 import sonia.scm.security.RepositoryPermission;
+import sonia.scm.security.Role;
 import sonia.scm.statistic.collector.ChangesetCollector;
 import sonia.scm.statistic.collector.ChangesetCollectorFactory;
 import sonia.scm.store.DataStore;
@@ -152,7 +153,12 @@ public class StatisticManager
    */
   public void remove(Repository repository)
   {
-    logger.debug("remove statistic for repository {}", repository.getId());
+    logger.debug("try to remove statistic for repository {}",
+      repository.getId());
+
+    Subject subject = SecurityUtils.getSubject();
+
+    subject.checkRole(Role.ADMIN);
     store.remove(repository.getId());
   }
 
