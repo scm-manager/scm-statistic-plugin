@@ -35,6 +35,54 @@ Ext.ns('Sonia.statistic');
 Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
 
   initComponent: function(){
+    var links = [{
+      xtype: 'link',
+      style: 'font-weight: bold',
+      text: 'Commits per Author',
+      handler: this.openCommitsPerAuthor,
+      scope: this
+    },{
+      xtype: 'link',
+      style: 'font-weight: bold',
+      text: 'Commits per Month',
+      handler: this.openCommitsPerMonth,
+      scope: this
+    },{
+      xtype: 'link',
+      style: 'font-weight: bold',
+      text: 'Commits per Weekday',
+      handler: this.openCommitsPerWeekday,
+      scope: this
+    },{
+      xtype: 'link',
+      style: 'font-weight: bold',
+      text: 'Commits per Hour',
+      handler: this.openCommitsPerHour,
+      scope: this
+    },{
+      xtype: 'link',
+      style: 'font-weight: bold',
+      text: 'Top modified Files',
+      handler: this.openTopModifiedFiles,
+      scope: this
+    },{
+      xtype: 'link',
+      style: 'font-weight: bold',
+      text: 'File modification count',
+      handler: this.openFileModificationCount,
+      scope: this
+    }];
+  
+    if ( admin ){
+      links.push({
+        xtype: 'link',
+        style: 'font-weight: bold',
+        text: 'Rebuild statistic',
+        handler: this.rebuildStatistic,
+        scope: this
+      });
+    }
+    
     var config = {
       title: 'Statistics',
       padding: 5,
@@ -46,47 +94,51 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
       defaults: {
         style: 'font-size: 12px'
       },
-      items: [{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'Commits per Author',
-        handler: this.openCommitsPerAuthor,
-        scope: this
-      },{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'Commits per Month',
-        handler: this.openCommitsPerMonth,
-        scope: this
-      },{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'Commits per Weekday',
-        handler: this.openCommitsPerWeekday,
-        scope: this
-      },{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'Commits per Hour',
-        handler: this.openCommitsPerHour,
-        scope: this
-      },{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'Top modified Files',
-        handler: this.openTopModifiedFiles,
-        scope: this
-      },{
-        xtype: 'link',
-        style: 'font-weight: bold',
-        text: 'File modification count',
-        handler: this.openFileModificationCount,
-        scope: this
-      }]
+      items: links
     }
     
     Ext.apply(this, Ext.apply(this.initialConfig, config));
     Sonia.statistic.LinkPanel.superclass.initComponent.apply(this, arguments);
+  },
+  
+  rebuildStatistic: function(){
+    Ext.MessageBox.show({
+      title: 'Rebuild statistic',
+      msg: 'Rebuild statistic for repository ' + this.item.name + '?',
+      buttons: Ext.MessageBox.OKCANCEL,
+      icon: Ext.MessageBox.QUESTION,
+      fn: function(result){
+        if ( result == 'ok' ){
+
+          if ( debug ){
+            console.debug('rebuild statistic for ' + this.item.name);
+          }
+          
+          var el = this.el;
+          var tid = setTimeout( function(){el.mask('Loading ...');}, 100);
+
+          Ext.Ajax.request({
+            url: restUrl + 'plugins/statistic/' + this.item.id + '/rebuild.json',
+            method: 'POST',
+            scope: this,
+            success: function(){
+              clearTimeout(tid);
+              el.unmask();
+            },
+            failure: function(result){
+              clearTimeout(tid);
+              el.unmask();
+              main.handleFailure(
+                result.status, 
+                'Rebuild failed', 
+                'Could not rebuild statistic'
+              );
+            }
+          });
+        } // canceled
+      },
+      scope: this
+    });
   },
   
   openCommitsPerMonth: function(){

@@ -42,16 +42,11 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.concurrent.SubjectAwareExecutorService;
 import org.apache.shiro.subject.Subject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryManager;
 import sonia.scm.web.security.PrivilegedAction;
 
 //~--- JDK imports ------------------------------------------------------------
-
-import java.io.IOException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,15 +61,6 @@ public class StatisticBootstrapAction implements PrivilegedAction
 
   /** Field description */
   private static final String THREAD_EXECUTOR = "StatisticExcecutor";
-
-  /** Field description */
-  private static final String THREAD_WORKER = "StatisticWorker-%s";
-
-  /**
-   * the logger for StatisticBootstrapAction
-   */
-  private static final Logger logger =
-    LoggerFactory.getLogger(StatisticBootstrapAction.class);
 
   //~--- constructors ---------------------------------------------------------
 
@@ -145,7 +131,8 @@ public class StatisticBootstrapAction implements PrivilegedAction
     public void run()
     {
       ThreadFactory factory =
-        new ThreadFactoryBuilder().setNameFormat(THREAD_WORKER).build();
+        new ThreadFactoryBuilder().setNameFormat(
+          StatisticBootstrapWorker.THREADNAME_PATTERN).build();
       ExecutorService service =
         new SubjectAwareExecutorService(Executors.newFixedThreadPool(2,
           factory));
@@ -154,7 +141,7 @@ public class StatisticBootstrapAction implements PrivilegedAction
       {
         if (!manager.contains(repository))
         {
-          service.execute(new BootstrapWorker(manager, repository));
+          service.execute(new StatisticBootstrapWorker(manager, repository));
         }
       }
 
@@ -169,60 +156,6 @@ public class StatisticBootstrapAction implements PrivilegedAction
 
     /** Field description */
     private RepositoryManager repositoryManager;
-  }
-
-
-  /**
-   * Class description
-   *
-   *
-   * @version        Enter version here..., 12/08/02
-   * @author         Enter your name here...
-   */
-  private static class BootstrapWorker implements Runnable
-  {
-
-    /**
-     * Constructs ...
-     *
-     *
-     * @param manager
-     * @param repository
-     */
-    public BootstrapWorker(StatisticManager manager, Repository repository)
-    {
-      this.manager = manager;
-      this.repository = repository;
-    }
-
-    //~--- methods ------------------------------------------------------------
-
-    /**
-     * Method description
-     *
-     */
-    @Override
-    public void run()
-    {
-      try
-      {
-        manager.createStatistic(repository);
-      }
-      catch (IOException ex)
-      {
-        logger.error(
-          "could not create statistic for repository ".concat(
-            repository.getName()), ex);
-      }
-    }
-
-    //~--- fields -------------------------------------------------------------
-
-    /** Field description */
-    private StatisticManager manager;
-
-    /** Field description */
-    private Repository repository;
   }
 
 

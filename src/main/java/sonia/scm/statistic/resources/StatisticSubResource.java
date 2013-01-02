@@ -35,8 +35,10 @@ package sonia.scm.statistic.resources;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import sonia.scm.repository.Repository;
 import sonia.scm.statistic.StatisticCollector;
 import sonia.scm.statistic.StatisticData;
+import sonia.scm.statistic.StatisticManager;
 import sonia.scm.statistic.dto.CommitsPerAuthor;
 import sonia.scm.statistic.dto.CommitsPerHour;
 import sonia.scm.statistic.dto.CommitsPerMonth;
@@ -46,8 +48,11 @@ import sonia.scm.statistic.dto.TopModifiedFiles;
 
 //~--- JDK imports ------------------------------------------------------------
 
+import java.io.IOException;
+
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -64,11 +69,32 @@ public class StatisticSubResource
    * Constructs ...
    *
    *
+   *
+   * @param manager
+   * @param repository
    * @param data
    */
-  public StatisticSubResource(StatisticData data)
+  public StatisticSubResource(StatisticManager manager, Repository repository,
+    StatisticData data)
   {
+    this.manager = manager;
+    this.repository = repository;
     this.data = data;
+  }
+
+  //~--- methods --------------------------------------------------------------
+
+  /**
+   * Method description
+   *
+   *
+   * @throws IOException
+   */
+  @POST
+  @Path("rebuild")
+  public void rebuild() throws IOException
+  {
+    manager.rebuild(repository);
   }
 
   //~--- get methods ----------------------------------------------------------
@@ -199,4 +225,10 @@ public class StatisticSubResource
 
   /** Field description */
   private StatisticData data;
+
+  /** Field description */
+  private StatisticManager manager;
+
+  /** Field description */
+  private Repository repository;
 }

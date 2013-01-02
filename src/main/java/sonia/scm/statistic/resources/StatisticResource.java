@@ -30,6 +30,7 @@
  */
 
 
+
 package sonia.scm.statistic.resources;
 
 //~--- non-JDK imports --------------------------------------------------------
@@ -91,7 +92,7 @@ public class StatisticResource
     Repository repository = repositoryManager.get(repositoryId);
     StatisticData data = statisticManager.get(repository);
 
-    return new StatisticSubResource(data);
+    return new StatisticSubResource(statisticManager, repository, data);
   }
 
   //~--- fields ---------------------------------------------------------------
