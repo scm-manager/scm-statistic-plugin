@@ -36,6 +36,14 @@
 
   <information>
     <author>Sebastian Sdorra</author>
+    <screenshots>
+      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.01.png</screenshot>
+      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.02.png</screenshot>
+      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.03.png</screenshot>
+      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.04.png</screenshot>
+      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.05.png</screenshot>
+      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.06.png</screenshot>
+    </screenshots>
   </information>
 
   <conditions>
@@ -45,15 +53,6 @@
   <packages>
     <package>sonia.scm.statistic</package>
   </packages>
-  
-  <screenshots>
-    <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.01.png</screenshot>
-    <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.02.png</screenshot>
-    <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.03.png</screenshot>
-    <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.04.png</screenshot>
-    <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.05.png</screenshot>
-    <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.06.png</screenshot>
-  </screenshots>
 
   <resources>
     <script>/sonia/scm/statistic/sonia.statistic.js</script>
