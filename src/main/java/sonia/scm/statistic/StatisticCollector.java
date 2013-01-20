@@ -35,6 +35,8 @@ package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
@@ -50,6 +52,7 @@ import sonia.scm.statistic.dto.CommitsPerMonth;
 import sonia.scm.statistic.dto.CommitsPerWeekday;
 import sonia.scm.statistic.dto.FileModificationCount;
 import sonia.scm.statistic.dto.TopModifiedFiles;
+import sonia.scm.statistic.dto.TopWords;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -214,6 +217,44 @@ public class StatisticCollector
    * Method description
    *
    *
+   * @param data
+   * @param limit
+   *
+   * @return
+   */
+  public static TopWords collectTopWords(StatisticData data, int limit)
+  {
+    Multiset<String> words = HashMultiset.create();
+
+    collectTopEntries(data.getWordCount(), words, limit, false);
+
+    return new TopWords(words);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param data
+   * @param predicate
+   * @param limit
+   *
+   * @return
+   */
+  public static TopWords collectTopWords(StatisticData data,
+    Predicate<String> predicate, int limit)
+  {
+    Multiset<String> words = HashMultiset.create();
+
+    collectTopEntries(data.getWordCount(), words, limit, false, predicate);
+
+    return new TopWords(words);
+  }
+
+  /**
+   * Method description
+   *
+   *
    * @param source
    * @param target
    * @param limit
@@ -225,6 +266,27 @@ public class StatisticCollector
   private static <T> int collectTopEntries(Multiset<T> source,
     Multiset<T> target, int limit, boolean countOthers)
   {
+    Predicate<T> predicate = Predicates.alwaysTrue();
+
+    return collectTopEntries(source, target, limit, countOthers, predicate);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param source
+   * @param target
+   * @param limit
+   * @param countOthers
+   * @param predicate
+   * @param <T>
+   *
+   * @return
+   */
+  private static <T> int collectTopEntries(Multiset<T> source,
+    Multiset<T> target, int limit, boolean countOthers, Predicate<T> predicate)
+  {
     Multiset<T> ordered = Multisets.copyHighestCountFirst(source);
 
     int i = 0;
@@ -232,18 +294,21 @@ public class StatisticCollector
 
     for (Entry<T> e : ordered.entrySet())
     {
-      if (i < limit)
+      if (predicate.apply(e.getElement()))
       {
-        target.add(e.getElement(), e.getCount());
-        i++;
-      }
-      else if (countOthers)
-      {
-        others += e.getCount();
-      }
-      else
-      {
-        break;
+        if (i < limit)
+        {
+          target.add(e.getElement(), e.getCount());
+          i++;
+        }
+        else if (countOthers)
+        {
+          others += e.getCount();
+        }
+        else
+        {
+          break;
+        }
       }
     }
 

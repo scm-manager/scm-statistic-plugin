@@ -35,8 +35,10 @@ package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 
@@ -81,13 +83,17 @@ public class StatisticData
   public static final String MODIFICATION_REMOVED = "removed";
 
   /** Field description */
-  private static final int VERSION = 1;
+  private static final int VERSION = 2;
 
   /**
    * the logger for StatisticData
    */
   private static final Logger logger =
     LoggerFactory.getLogger(StatisticData.class);
+
+  /** Field description */
+  private static final Set<String> PUNCTATION_MARKS = ImmutableSet.of(".", ",",
+                                                        "!", "?");
 
   //~--- constructors ---------------------------------------------------------
 
@@ -104,6 +110,7 @@ public class StatisticData
     commitsPerWeekday = HashMultiset.create();
     modifiedFiles = HashMultiset.create();
     fileModificationCount = HashMultiset.create();
+    wordCount = HashMultiset.create();
   }
 
   //~--- methods --------------------------------------------------------------
@@ -220,6 +227,17 @@ public class StatisticData
     return version;
   }
 
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
+  public Multiset<String> getWordCount()
+  {
+    return wordCount;
+  }
+
   //~--- methods --------------------------------------------------------------
 
   /**
@@ -257,6 +275,59 @@ public class StatisticData
     fileModificationCount.add(MODIFICATION_ADDED, mods.getAdded().size());
     fileModificationCount.add(MODIFICATION_MODIFIED, mods.getModified().size());
     fileModificationCount.add(MODIFICATION_REMOVED, mods.getRemoved().size());
+
+    // data version 2
+    String description = c.getDescription();
+
+    if (!Strings.isNullOrEmpty(description))
+    {
+      Iterable<String> words = split(description);
+
+      for (String word : words)
+      {
+        appendWord(word);
+      }
+    }
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param word
+   */
+  private void appendWord(String word)
+  {
+    for (String punctationMark : PUNCTATION_MARKS)
+    {
+      if (word.endsWith(punctationMark))
+      {
+        word = word.substring(0, word.length() - 1);
+      }
+
+      if (word.startsWith(punctationMark))
+      {
+        word = word.substring(1);
+      }
+    }
+
+    if (word.length() > 0)
+    {
+      wordCount.add(word);
+    }
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param desc
+   *
+   * @return
+   */
+  private Iterable<String> split(String desc)
+  {
+    return Splitter.on(" ").omitEmptyStrings().trimResults().split(desc);
   }
 
   //~--- fields ---------------------------------------------------------------
@@ -298,4 +369,9 @@ public class StatisticData
 
   /** Field description */
   private int version = VERSION;
+
+  /** Field description */
+  @XmlElement(name = "word-count")
+  @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
+  private Multiset<String> wordCount;
 }

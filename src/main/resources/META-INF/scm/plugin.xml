@@ -62,6 +62,7 @@
     <script>/sonia/scm/statistic/sonia.statistic.commitsperhour.js</script>
     <script>/sonia/scm/statistic/sonia.statistic.topmodifiedfiles.js</script>
     <script>/sonia/scm/statistic/sonia.statistic.filemodificationcount.js</script>
+    <script>/sonia/scm/statistic/sonia.statistic.topwords.js</script>
   </resources>
 
 </plugin>

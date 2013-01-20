@@ -35,6 +35,12 @@ package sonia.scm.statistic.resources;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
+
 import sonia.scm.repository.Repository;
 import sonia.scm.statistic.StatisticCollector;
 import sonia.scm.statistic.StatisticData;
@@ -45,10 +51,14 @@ import sonia.scm.statistic.dto.CommitsPerMonth;
 import sonia.scm.statistic.dto.CommitsPerWeekday;
 import sonia.scm.statistic.dto.FileModificationCount;
 import sonia.scm.statistic.dto.TopModifiedFiles;
+import sonia.scm.statistic.dto.TopWords;
 
 //~--- JDK imports ------------------------------------------------------------
 
 import java.io.IOException;
+
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -219,6 +229,57 @@ public class StatisticSubResource
   @DefaultValue("10") int limit)
   {
     return StatisticCollector.collectTopModifiedFiles(data, limit);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param limit
+   * @param excludes
+   *
+   * @return
+   */
+  @GET
+  @Path("top-words")
+  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  public TopWords getTopWords(@QueryParam("limit")
+  @DefaultValue("10") int limit, @QueryParam("excludes") String excludes)
+  {
+    TopWords words;
+
+    if (Strings.isNullOrEmpty(excludes))
+    {
+      words = StatisticCollector.collectTopWords(data, limit);
+    }
+    else
+    {
+      Predicate<String> excludePredicate =
+        Predicates.not(Predicates.in(createExcludes(excludes)));
+
+      words = StatisticCollector.collectTopWords(data, excludePredicate, limit);
+    }
+
+    return words;
+  }
+
+  //~--- methods --------------------------------------------------------------
+
+  /**
+   * Method description
+   *
+   *
+   * @param excludes
+   *
+   * @return
+   */
+  private Set<String> createExcludes(String excludes)
+  {
+    Iterator<String> wordIterator =
+      Splitter.on(",").trimResults().omitEmptyStrings().split(
+        excludes).iterator();
+
+    return ImmutableSet.copyOf(wordIterator);
   }
 
   //~--- fields ---------------------------------------------------------------
