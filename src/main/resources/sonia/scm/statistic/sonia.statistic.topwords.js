@@ -33,7 +33,7 @@ Ext.ns('Sonia.statistic');
 Sonia.statistic.TopWordsPanel = Ext.extend(Ext.Panel, {
   
   repository: null,
-  excludes: 'to,of,for,and,or,as,than,that,then,in,with',
+  excludes: 'to,of,for,and,or,as,than,that,then,in,with,this,the,be,is,a,on,from,not,so,it',
   
   initComponent: function(){    
     var store = new Sonia.rest.JsonStore({

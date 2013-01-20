@@ -93,7 +93,8 @@ public class StatisticData
 
   /** Field description */
   private static final Set<String> PUNCTATION_MARKS = ImmutableSet.of(".", ",",
-                                                        "!", "?");
+                                                        "!", "?", "[", "]",
+                                                        "(", ")", "{", "}");
 
   //~--- constructors ---------------------------------------------------------
 
