@@ -83,7 +83,7 @@ public class StatisticData
   public static final String MODIFICATION_REMOVED = "removed";
 
   /** Field description */
-  private static final int VERSION = 2;
+  static final int VERSION = 2;
 
   /**
    * the logger for StatisticData

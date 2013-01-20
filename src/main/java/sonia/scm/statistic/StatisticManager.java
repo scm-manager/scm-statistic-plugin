@@ -144,9 +144,17 @@ public class StatisticManager
           repository.getName()));
     }
   }
-  
-  public void rebuild(Repository repository){
+
+  /**
+   * Method description
+   *
+   *
+   * @param repository
+   */
+  public void rebuild(Repository repository)
+  {
     logger.warn("rebuild statistic for repository {}", repository.getId());
+
     Subject subject = SecurityUtils.getSubject();
 
     subject.checkRole(Role.ADMIN);

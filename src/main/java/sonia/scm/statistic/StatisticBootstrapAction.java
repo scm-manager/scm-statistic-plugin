@@ -42,11 +42,16 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.concurrent.SubjectAwareExecutorService;
 import org.apache.shiro.subject.Subject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryManager;
 import sonia.scm.web.security.PrivilegedAction;
 
 //~--- JDK imports ------------------------------------------------------------
+
+import java.io.IOException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,6 +66,12 @@ public class StatisticBootstrapAction implements PrivilegedAction
 
   /** Field description */
   private static final String THREAD_EXECUTOR = "StatisticExcecutor";
+
+  /**
+   * the logger for BootstrapExecutor
+   */
+  private static final Logger logger =
+    LoggerFactory.getLogger(BootstrapExecutor.class);
 
   //~--- constructors ---------------------------------------------------------
 
@@ -139,9 +150,28 @@ public class StatisticBootstrapAction implements PrivilegedAction
 
       for (Repository repository : repositoryManager.getAll())
       {
-        if (!manager.contains(repository))
+        try
         {
-          service.execute(new StatisticBootstrapWorker(manager, repository));
+          StatisticData data = manager.get(repository);
+
+          if (data == null)
+          {
+            service.execute(new StatisticBootstrapWorker(manager, repository));
+          }
+          else if (data.getVersion() != StatisticData.VERSION)
+          {
+            logger.warn(
+              "data version version of {} is {} and not {}, so we have to reindex",
+              repository.getId(), data.getVersion(), StatisticData.VERSION);
+            manager.remove(repository);
+            service.execute(new StatisticBootstrapWorker(manager, repository));
+          }
+        }
+        catch (IOException ex)
+        {
+          logger.warn(
+            "could not create bootstrap statistic for repository ".concat(
+              repository.getId()), ex);
         }
       }
 
