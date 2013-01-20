@@ -152,19 +152,23 @@ public class StatisticBootstrapAction implements PrivilegedAction
       {
         try
         {
-          StatisticData data = manager.get(repository);
-
-          if (data == null)
+          if (!manager.contains(repository))
           {
             service.execute(new StatisticBootstrapWorker(manager, repository));
           }
-          else if (data.getVersion() != StatisticData.VERSION)
+          else
           {
-            logger.warn(
-              "data version version of {} is {} and not {}, so we have to reindex",
-              repository.getId(), data.getVersion(), StatisticData.VERSION);
-            manager.remove(repository);
-            service.execute(new StatisticBootstrapWorker(manager, repository));
+            StatisticData data = manager.get(repository);
+
+            if (data.getVersion() != StatisticData.VERSION)
+            {
+              logger.warn(
+                "data version version of {} is {} and not {}, so we have to reindex",
+                repository.getId(), data.getVersion(), StatisticData.VERSION);
+              manager.remove(repository);
+              service.execute(new StatisticBootstrapWorker(manager,
+                repository));
+            }
           }
         }
         catch (IOException ex)
