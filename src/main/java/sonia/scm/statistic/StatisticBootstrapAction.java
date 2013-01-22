@@ -141,35 +141,13 @@ public class StatisticBootstrapAction implements PrivilegedAction
     @Override
     public void run()
     {
-      ThreadFactory factory =
-        new ThreadFactoryBuilder().setNameFormat(
-          StatisticBootstrapWorker.THREADNAME_PATTERN).build();
-      ExecutorService service =
-        new SubjectAwareExecutorService(Executors.newFixedThreadPool(2,
-          factory));
+      ExecutorService executor = createExecutorService();
 
       for (Repository repository : repositoryManager.getAll())
       {
         try
         {
-          if (!manager.contains(repository))
-          {
-            service.execute(new StatisticBootstrapWorker(manager, repository));
-          }
-          else
-          {
-            StatisticData data = manager.get(repository);
-
-            if (data.getVersion() != StatisticData.VERSION)
-            {
-              logger.warn(
-                "data version version of {} is {} and not {}, so we have to reindex",
-                repository.getId(), data.getVersion(), StatisticData.VERSION);
-              manager.remove(repository);
-              service.execute(new StatisticBootstrapWorker(manager,
-                repository));
-            }
-          }
+          handleRepository(executor, repository);
         }
         catch (IOException ex)
         {
@@ -180,7 +158,76 @@ public class StatisticBootstrapAction implements PrivilegedAction
       }
 
       // shutdown executor after all bootstrap jobs are finished
-      service.shutdown();
+      executor.shutdown();
+    }
+
+    /**
+     * Method description
+     *
+     *
+     * @return
+     */
+    private ExecutorService createExecutorService()
+    {
+      ThreadFactory factory = createThreadFactory();
+
+      //J-
+      return new SubjectAwareExecutorService(
+        Executors.newFixedThreadPool(2,
+        factory)
+      );
+      //J+
+    }
+
+    /**
+     * Method description
+     *
+     *
+     * @return
+     */
+    private ThreadFactory createThreadFactory()
+    {
+      //J-
+      return new ThreadFactoryBuilder().setNameFormat(
+          StatisticBootstrapWorker.THREADNAME_PATTERN)
+        .build();
+      //J+
+    }
+
+    /**
+     * Method description
+     *
+     *
+     * @param executor
+     * @param repository
+     *
+     * @throws IOException
+     */
+    private void handleRepository(ExecutorService executor,
+      Repository repository)
+      throws IOException
+    {
+      if (!manager.contains(repository))
+      {
+        executor.execute(new StatisticBootstrapWorker(manager, repository));
+      }
+      else
+      {
+        StatisticData data = manager.get(repository);
+
+        if (data.getVersion() != StatisticData.VERSION)
+        {
+          logger.warn(
+            "data version version of {} is {} and not {}, so we have to reindex",
+            repository.getId(), data.getVersion(), StatisticData.VERSION);
+          manager.remove(repository);
+          executor.execute(new StatisticBootstrapWorker(manager, repository));
+        }
+        else if (logger.isDebugEnabled())
+        {
+          logger.debug("index of {} is ok", repository.getId());
+        }
+      }
     }
 
     //~--- fields -------------------------------------------------------------
