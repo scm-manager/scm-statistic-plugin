@@ -180,9 +180,7 @@ public class StatisticManager
     logger.debug("try to remove statistic for repository {}",
       repository.getId());
 
-    Subject subject = SecurityUtils.getSubject();
-
-    subject.checkRole(Role.ADMIN);
+    checkPermissions(repository, PermissionType.OWNER);
     store.remove(repository.getId());
   }
 
