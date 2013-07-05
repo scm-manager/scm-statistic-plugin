@@ -1,7 +1,7 @@
 # netbeans temp & private files
 /?target/
-release.properties
 nbactions.*\.xml
+nb-configuration\.xml
 # MacOS X Files
 \.DS_Store$
 \._\.DS_Store$
@@ -22,3 +22,6 @@ Desktop DF$
 \.project
 \.classpath
 \.settings
+# idea files
+\.iml
+\.idea$
