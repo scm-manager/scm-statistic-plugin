@@ -46,7 +46,6 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sonia.scm.config.ScmConfiguration;
 import sonia.scm.plugin.ext.Extension;
 import sonia.scm.repository.PermissionType;
 import sonia.scm.repository.Repository;
@@ -90,15 +89,13 @@ public class StatisticManager
    * Constructs ...
    *
    *
-   * @param configuration
    * @param serviceFactory
    * @param storeFactory
    */
   @Inject
-  public StatisticManager(ScmConfiguration configuration,
-    RepositoryServiceFactory serviceFactory, DataStoreFactory storeFactory)
+  public StatisticManager(RepositoryServiceFactory serviceFactory,
+    DataStoreFactory storeFactory)
   {
-    this.configuration = configuration;
     this.serviceFactory = serviceFactory;
     this.store = storeFactory.getStore(StatisticData.class, STORE);
   }
@@ -246,7 +243,7 @@ public class StatisticManager
   @VisibleForTesting
   void checkPermissions(Repository repository, PermissionType type)
   {
-    if (!((type == PermissionType.READ) && isPublicReadable(repository)))
+    if ((type != PermissionType.READ) ||!repository.isPublicReadable())
     {
       Subject subject = SecurityUtils.getSubject();
 
@@ -286,26 +283,7 @@ public class StatisticManager
     return data;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   *
-   * @return
-   */
-  private boolean isPublicReadable(Repository repository)
-  {
-    return configuration.isAnonymousAccessEnabled()
-      && repository.isPublicReadable();
-  }
-
   //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
-  private ScmConfiguration configuration;
 
   /** Field description */
   private RepositoryServiceFactory serviceFactory;

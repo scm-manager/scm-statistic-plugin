@@ -38,6 +38,8 @@ package sonia.scm.statistic;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.realm.SimpleAccountRealm;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.Subject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,13 +49,13 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import sonia.scm.AbstractTestBase;
-import sonia.scm.config.ScmConfiguration;
 import sonia.scm.repository.PermissionType;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.api.RepositoryServiceFactory;
 import sonia.scm.store.DataStore;
 import sonia.scm.store.DataStoreFactory;
-import sonia.scm.util.MockUtil;
+import sonia.scm.user.User;
+import sonia.scm.user.UserTestData;
 
 import static org.mockito.Mockito.*;
 
@@ -74,7 +76,7 @@ public class StatisticManagerTest extends AbstractTestBase
   {
     setSubject();
 
-    StatisticManager manager = create(false);
+    StatisticManager manager = create();
 
     manager.checkPermissions(new Repository(), PermissionType.READ);
   }
@@ -88,7 +90,7 @@ public class StatisticManagerTest extends AbstractTestBase
   {
     setSubject();
 
-    StatisticManager manager = create(true);
+    StatisticManager manager = create();
 
     manager.checkPermissions(new Repository(), PermissionType.READ);
   }
@@ -102,7 +104,7 @@ public class StatisticManagerTest extends AbstractTestBase
   {
     setSubject();
 
-    StatisticManager manager = create(true);
+    StatisticManager manager = create();
     Repository repository = new Repository();
 
     repository.setPublicReadable(true);
@@ -113,17 +115,27 @@ public class StatisticManagerTest extends AbstractTestBase
   /**
    * Method description
    *
-   *
-   * @param anonymousAccess
+   */
+  @Test(expected = UnauthorizedException.class)
+  public void testCheckPermissionsPublicWritableFailure()
+  {
+    setSubject();
+
+    StatisticManager manager = create();
+    Repository repository = new Repository();
+
+    repository.setPublicReadable(true);
+
+    manager.checkPermissions(repository, PermissionType.WRITE);
+  }
+
+  /**
+   * Method description
    *
    * @return
    */
-  private StatisticManager create(boolean anonymousAccess)
+  private StatisticManager create()
   {
-    ScmConfiguration configuration = new ScmConfiguration();
-
-    configuration.setAnonymousAccessEnabled(anonymousAccess);
-
     RepositoryServiceFactory repositoryServiceFactory =
       PowerMockito.mock(RepositoryServiceFactory.class);
     DataStoreFactory dataStoreFactory = mock(DataStoreFactory.class);
@@ -138,8 +150,7 @@ public class StatisticManagerTest extends AbstractTestBase
     ).thenReturn(store);
     //J+
 
-    return new StatisticManager(configuration, repositoryServiceFactory,
-      dataStoreFactory);
+    return new StatisticManager(repositoryServiceFactory, dataStoreFactory);
   }
 
   //~--- set methods ----------------------------------------------------------
@@ -150,8 +161,18 @@ public class StatisticManagerTest extends AbstractTestBase
    */
   private void setSubject()
   {
-    setSubject(
-      MockUtil.createUserSubject(
-        new DefaultSecurityManager(new SimpleAccountRealm())));
+
+    DefaultSecurityManager dsm =
+      new DefaultSecurityManager(new SimpleAccountRealm());
+    SimplePrincipalCollection collection = new SimplePrincipalCollection();
+    User user = UserTestData.createTrillian();
+
+    collection.add(user.getName(), "junit");
+    collection.add(user, "junit");
+
+    Subject subject = new Subject.Builder(dsm).principals(
+                        collection).authenticated(true).buildSubject();
+
+    setSubject(subject);
   }
 }
