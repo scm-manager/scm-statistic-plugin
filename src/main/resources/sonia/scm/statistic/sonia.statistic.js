@@ -32,7 +32,7 @@ Ext.chart.Chart.CHART_URL = 'resources/extjs/resources/charts.swf';
 
 Ext.ns('Sonia.statistic');
 
-Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
+Sonia.statistic.LinkPanel = Ext.extend(Ext.Panel, {
 
   initComponent: function(){
     var links = [{
@@ -94,14 +94,15 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
       padding: 5,
       bodyCssClass: 'x-panel-mc',
       layout: 'table',
+      defaults: {
+        bodyStyle: 'padding: 5px'
+      },
+      autoScroll: true,
       layoutConfig: {
         columns: 1
       },
-      defaults: {
-        style: 'font-size: 12px'
-      },
       items: links
-    }
+    };
     
     Ext.apply(this, Ext.apply(this.initialConfig, config));
     Sonia.statistic.LinkPanel.superclass.initComponent.apply(this, arguments);
@@ -114,7 +115,7 @@ Sonia.statistic.LinkPanel = Ext.extend(Sonia.repository.PropertiesFormPanel, {
       buttons: Ext.MessageBox.OKCANCEL,
       icon: Ext.MessageBox.QUESTION,
       fn: function(result){
-        if ( result == 'ok' ){
+        if ( result === 'ok' ){
 
           if ( debug ){
             console.debug('rebuild statistic for ' + this.item.name);
