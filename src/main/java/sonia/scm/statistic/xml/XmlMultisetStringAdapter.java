@@ -35,12 +35,15 @@ package sonia.scm.statistic.xml;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
 //~--- JDK imports ------------------------------------------------------------
 
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -51,6 +54,23 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class XmlMultisetStringAdapter
   extends XmlAdapter<XmlMultisetStringElement[], Multiset<String>>
 {
+
+  /**
+   * valid char matcher for XML 1.0
+   * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
+   */
+  //J-
+  private static final Pattern VALIDCHARS = Pattern.compile(
+    "[^" 
+    + "\u0009\r\n"
+    + "\u0020-\uD7FF"
+    + "\uE000-\uFFFD"
+    + "\ud800\udc00-\udbff\udfff"
+    + "]"
+  );
+  //J+
+
+  //~--- methods --------------------------------------------------------------
 
   /**
    * Method description
@@ -73,7 +93,8 @@ public class XmlMultisetStringAdapter
 
     for (String value : values)
     {
-      elements[i] = new XmlMultisetStringElement(value, set.count(value));
+      elements[i] = new XmlMultisetStringElement(stripInvalidChars(value),
+        set.count(value));
       i++;
     }
 
@@ -102,5 +123,19 @@ public class XmlMultisetStringAdapter
     }
 
     return multiset;
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @param value
+   *
+   * @return
+   */
+  @VisibleForTesting
+  String stripInvalidChars(String value)
+  {
+    return VALIDCHARS.matcher(Strings.nullToEmpty(value)).replaceAll("");
   }
 }

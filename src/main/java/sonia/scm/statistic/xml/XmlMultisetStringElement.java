@@ -30,7 +30,12 @@
  */
 
 
+
 package sonia.scm.statistic.xml;
+
+//~--- non-JDK imports --------------------------------------------------------
+
+import com.google.common.base.Objects;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -62,6 +67,47 @@ public class XmlMultisetStringElement
   {
     this.value = value;
     this.count = count;
+  }
+
+  //~--- methods --------------------------------------------------------------
+
+  /**
+   * Method description
+   *
+   *
+   * @param obj
+   *
+   * @return
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (obj == null)
+    {
+      return false;
+    }
+
+    if (getClass() != obj.getClass())
+    {
+      return false;
+    }
+
+    final XmlMultisetStringElement other = (XmlMultisetStringElement) obj;
+
+    return Objects.equal(value, other.value)
+      && Objects.equal(count, other.count);
+  }
+
+  /**
+   * Method description
+   *
+   *
+   * @return
+   */
+  @Override
+  public int hashCode()
+  {
+    return Objects.hashCode(value, count);
   }
 
   //~--- get methods ----------------------------------------------------------
