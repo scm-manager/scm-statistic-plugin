@@ -143,10 +143,7 @@ public class StatisticManagerTest extends AbstractTestBase
 
     //J-
     when(
-      dataStoreFactory.getStore(
-        any(Class.class),
-        anyString()
-      )
+      dataStoreFactory.withType(any(Class.class)).withName(anyString()).build()
     ).thenReturn(store);
     //J+
 
