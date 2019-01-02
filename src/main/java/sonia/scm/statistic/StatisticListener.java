@@ -101,14 +101,15 @@ public class StatisticListener
 
     try
     {
-      StatisticData data = statisticManager.get(event.getRepository());
+      //StatisticData data = statisticManager.get(event.getRepository());
+      Statistics statistics = new Statistics(event.getRepository()); //TODO: get RepoServiceFactory
 
       for (Changeset c : event.getContext().getChangesetProvider().getChangesets())
       {
         data.add(c);
       }
 
-      statisticManager.store(event.getRepository(), data);
+      statisticManager.store(event.getRepository(), data); //TODO
     }
     catch (IOException ex)
     {
