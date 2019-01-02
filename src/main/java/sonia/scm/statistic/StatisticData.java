@@ -48,15 +48,19 @@ import org.slf4j.LoggerFactory;
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.Modifications;
 import sonia.scm.repository.Person;
+import sonia.scm.repository.Repository;
+import sonia.scm.repository.api.RepositoryServiceFactory;
 import sonia.scm.statistic.xml.XmlMultisetDayAdapter;
 import sonia.scm.statistic.xml.XmlMultisetIntegerAdapter;
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
 
 //~--- JDK imports ------------------------------------------------------------
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -95,6 +99,9 @@ public class StatisticData
   private static final Set<String> PUNCTATION_MARKS = ImmutableSet.of(".", ",",
                                                         "!", "?", "[", "]",
                                                         "(", ")", "{", "}");
+
+  @Inject Repository repository;
+  @Inject RepositoryServiceFactory repositoryServiceFactory;
 
   //~--- constructors ---------------------------------------------------------
 
@@ -266,17 +273,20 @@ public class StatisticData
     commitsPerDay.add(Day.of(cal));
     commitsPerHour.add(cal.get(Calendar.HOUR_OF_DAY));
 
-    Modifications mods = c.getModifications();
+    try {
+      Modifications mods = repositoryServiceFactory.create(repository).getModificationsCommand().getModifications();
 
-    for (String file : mods.getModified())
-    {
-      modifiedFiles.add(file);
+      for (String file : mods.getModified()) {
+        modifiedFiles.add(file);
+      }
+
+      fileModificationCount.add(MODIFICATION_ADDED, mods.getAdded().size());
+      fileModificationCount.add(MODIFICATION_MODIFIED, mods.getModified().size());
+      fileModificationCount.add(MODIFICATION_REMOVED, mods.getRemoved().size());
     }
-
-    fileModificationCount.add(MODIFICATION_ADDED, mods.getAdded().size());
-    fileModificationCount.add(MODIFICATION_MODIFIED, mods.getModified().size());
-    fileModificationCount.add(MODIFICATION_REMOVED, mods.getRemoved().size());
-
+    catch(IOException ex) {
+      logger.error("could not get modifications", ex);
+    }
     // data version 2
     String description = c.getDescription();
 

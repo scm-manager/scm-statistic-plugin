@@ -35,16 +35,15 @@ package sonia.scm.statistic;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sonia.scm.EagerSingleton;
-import sonia.scm.HandlerEvent;
-import sonia.scm.event.Subscriber;
-import sonia.scm.plugin.ext.Extension;
+import sonia.scm.HandlerEventType;
+import com.github.legman.Subscribe;
+import sonia.scm.plugin.Extension;
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.PostReceiveRepositoryHookEvent;
 import sonia.scm.repository.Repository;
@@ -60,7 +59,6 @@ import java.io.IOException;
  */
 @Extension
 @EagerSingleton
-@Subscriber(async = true)
 public class StatisticListener
 {
 
@@ -105,7 +103,7 @@ public class StatisticListener
     {
       StatisticData data = statisticManager.get(event.getRepository());
 
-      for (Changeset c : event.getChangesets())
+      for (Changeset c : event.getContext().getChangesetProvider().getChangesets())
       {
         data.add(c);
       }
@@ -127,7 +125,7 @@ public class StatisticListener
   @Subscribe
   public void onRepositoryEvent(RepositoryEvent event)
   {
-    if (event.getEventType() == HandlerEvent.DELETE)
+    if (event.getEventType() == HandlerEventType.DELETE)
     {
       Repository repository = event.getItem();
 

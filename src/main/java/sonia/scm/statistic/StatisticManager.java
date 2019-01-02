@@ -46,10 +46,10 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sonia.scm.plugin.ext.Extension;
+import sonia.scm.plugin.Extension;
 import sonia.scm.repository.PermissionType;
 import sonia.scm.repository.Repository;
-import sonia.scm.repository.RepositoryException;
+import sonia.scm.repository.InternalRepositoryException;
 import sonia.scm.repository.api.RepositoryServiceFactory;
 import sonia.scm.security.RepositoryPermission;
 import sonia.scm.security.Role;
@@ -97,7 +97,7 @@ public class StatisticManager
     DataStoreFactory storeFactory)
   {
     this.serviceFactory = serviceFactory;
-    this.store = storeFactory.getStore(StatisticData.class, STORE);
+    this.store = storeFactory.withType(StatisticData.class).withName(STORE).build();
   }
 
   //~--- methods --------------------------------------------------------------
@@ -260,10 +260,10 @@ public class StatisticManager
    *
    * @return
    * @throws IOException
-   * @throws RepositoryException
+   * @throws InternalRepositoryException
    */
   private StatisticData createBootstrapStatistic(Repository repository)
-    throws IOException, RepositoryException
+    throws IOException, InternalRepositoryException
   {
     checkPermissions(repository, PermissionType.WRITE);
 

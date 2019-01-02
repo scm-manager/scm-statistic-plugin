@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.ChangesetPagingResult;
 import sonia.scm.repository.Repository;
-import sonia.scm.repository.RepositoryException;
+import sonia.scm.repository.InternalRepositoryException;
 import sonia.scm.repository.api.LogCommandBuilder;
 import sonia.scm.repository.api.RepositoryService;
 import sonia.scm.repository.api.RepositoryServiceFactory;
@@ -92,11 +92,11 @@ public abstract class AbstractChangesetCollector implements ChangesetCollector
    * @param pageSize
    *
    * @throws IOException
-   * @throws RepositoryException
+   * @throws InternalRepositoryException
    */
   protected abstract void collectChangesets(
     RepositoryService repositoryService, StatisticData data, int pageSize)
-    throws IOException, RepositoryException;
+    throws IOException, InternalRepositoryException;
 
   /**
    * Method description
@@ -106,10 +106,9 @@ public abstract class AbstractChangesetCollector implements ChangesetCollector
    * @param pageSize
    */
   @Override
-  public void collect(StatisticData data, int pageSize)
+  public void collect(StatisticData data, int pageSize) throws IOException
   {
     RepositoryService repositoryService = null;
-
     try
     {
       repositoryService = repositoryServiceFactory.create(repository);
@@ -123,7 +122,8 @@ public abstract class AbstractChangesetCollector implements ChangesetCollector
     }
     finally
     {
-      Closeables.closeQuietly(repositoryService);
+      //closeQuietly is depcrecated; thus, we used close with 'swalloIOException'=true
+      Closeables.close(repositoryService, true); //as swallowIOException is true, a possible IOException is not propagated
     }
   }
 
@@ -136,11 +136,11 @@ public abstract class AbstractChangesetCollector implements ChangesetCollector
    * @param pageSize
    *
    * @throws IOException
-   * @throws RepositoryException
+   * @throws InternalRepositoryException
    */
   protected void append(LogCommandBuilder logCommand, StatisticData data,
     int pageSize)
-    throws IOException, RepositoryException
+    throws IOException, InternalRepositoryException
   {
 
     // do not cache the whole changesets of a repository

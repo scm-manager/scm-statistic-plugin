@@ -36,7 +36,7 @@ package sonia.scm.statistic;
 
 import com.google.inject.Inject;
 
-import sonia.scm.plugin.ext.Extension;
+import sonia.scm.plugin.Extension;
 import sonia.scm.web.security.AdministrationContext;
 
 //~--- JDK imports ------------------------------------------------------------

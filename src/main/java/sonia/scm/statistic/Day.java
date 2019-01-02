@@ -35,6 +35,7 @@ package sonia.scm.statistic;
 //~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -164,7 +165,7 @@ public class Day
   public String toString()
   {
     //J-
-    return Objects.toStringHelper(this)
+    return MoreObjects.toStringHelper(this)
                   .add("year", year)
                   .add("month", month)
                   .add("day", day)

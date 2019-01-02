@@ -36,6 +36,8 @@ package sonia.scm.statistic.collector;
 
 import sonia.scm.statistic.StatisticData;
 
+import java.io.IOException;
+
 /**
  *
  * @author Sebastian Sdorra
@@ -50,5 +52,5 @@ public interface ChangesetCollector
    * @param data
    * @param pageSize
    */
-  public void collect(StatisticData data, int pageSize);
+  public void collect(StatisticData data, int pageSize) throws IOException;
 }

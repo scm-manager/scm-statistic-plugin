@@ -35,7 +35,7 @@ package sonia.scm.statistic.collector;
 //~--- non-JDK imports --------------------------------------------------------
 
 import sonia.scm.repository.Repository;
-import sonia.scm.repository.RepositoryException;
+import sonia.scm.repository.InternalRepositoryException;
 import sonia.scm.repository.api.LogCommandBuilder;
 import sonia.scm.repository.api.RepositoryService;
 import sonia.scm.repository.api.RepositoryServiceFactory;
@@ -76,12 +76,12 @@ public class CombinedBranchCollector extends AbstractChangesetCollector
    * @param pageSize
    *
    * @throws IOException
-   * @throws RepositoryException
+   * @throws InternalRepositoryException
    */
   @Override
   protected void collectChangesets(RepositoryService repositoryService,
     StatisticData data, int pageSize)
-    throws IOException, RepositoryException
+    throws IOException, InternalRepositoryException
   {
     LogCommandBuilder logCommand = repositoryService.getLogCommand();
 
