@@ -29,74 +29,35 @@
  *
  */
 
-
 package sonia.scm.statistic.xml;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import sonia.scm.statistic.Day;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XmlMultisetDayElement
-{
+public class XmlMultisetDayElement {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public XmlMultisetDayElement() {}
+  public XmlMultisetDayElement() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param day
-   * @param count
-   */
-  public XmlMultisetDayElement(Day day, int count)
-  {
+  public XmlMultisetDayElement(Day day, int count) {
     this.day = day;
     this.count = count;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public int getCount()
-  {
+  public int getCount() {
     return count;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Day getDay()
-  {
+  public Day getDay() {
     return day;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private int count;
-
-  /** Field description */
   private Day day;
 }

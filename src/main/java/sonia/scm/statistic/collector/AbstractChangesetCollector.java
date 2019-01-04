@@ -29,163 +29,55 @@
  *
  */
 
-
 package sonia.scm.statistic.collector;
-
-//~--- non-JDK imports --------------------------------------------------------
-
-import com.google.common.io.Closeables;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.ChangesetPagingResult;
-import sonia.scm.repository.Repository;
 import sonia.scm.repository.InternalRepositoryException;
 import sonia.scm.repository.api.LogCommandBuilder;
-import sonia.scm.repository.api.RepositoryService;
-import sonia.scm.repository.api.RepositoryServiceFactory;
-import sonia.scm.statistic.StatisticData;
-
-//~--- JDK imports ------------------------------------------------------------
+import sonia.scm.statistic.Statistics;
 
 import java.io.IOException;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public abstract class AbstractChangesetCollector implements ChangesetCollector
-{
+public abstract class AbstractChangesetCollector implements ChangesetCollector {
 
-  /**
-   * the logger for AbstractChangesetCollector
-   */
-  private static final Logger logger =
-    LoggerFactory.getLogger(AbstractChangesetCollector.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AbstractChangesetCollector.class);
+  private final Statistics statistics;
 
-  //~--- constructors ---------------------------------------------------------
-
-  /**
-   * Constructs ...
-   *
-   *
-   * @param repositoryServiceFactory
-   * @param repository
-   */
-  protected AbstractChangesetCollector(
-    RepositoryServiceFactory repositoryServiceFactory, Repository repository)
-  {
-    this.repositoryServiceFactory = repositoryServiceFactory;
-    this.repository = repository;
+  protected AbstractChangesetCollector(Statistics statistics) {
+    this.statistics = statistics;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repositoryService
-   * @param data
-   * @param pageSize
-   *
-   * @throws IOException
-   * @throws InternalRepositoryException
-   */
-  protected abstract void collectChangesets(
-    RepositoryService repositoryService, StatisticData data, int pageSize)
-    throws IOException, InternalRepositoryException;
-
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   * @param pageSize
-   */
-  @Override
-  public void collect(StatisticData data, int pageSize) throws IOException
-  {
-    RepositoryService repositoryService = null;
-    try
-    {
-      repositoryService = repositoryServiceFactory.create(repository);
-      collectChangesets(repositoryService, data, pageSize);
-    }
-    catch (Exception ex)
-    {
-      logger.error(
-        "could retrieve changesets for repository ".concat(
-          repository.getName()), ex);
-    }
-    finally
-    {
-      //closeQuietly is depcrecated; thus, we used close with 'swalloIOException'=true
-      Closeables.close(repositoryService, true); //as swallowIOException is true, a possible IOException is not propagated
-    }
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @param logCommand
-   * @param data
-   * @param pageSize
-   *
-   * @throws IOException
-   * @throws InternalRepositoryException
-   */
-  protected void append(LogCommandBuilder logCommand, StatisticData data,
-    int pageSize)
-    throws IOException, InternalRepositoryException
-  {
+  protected void append(LogCommandBuilder logCommand, Statistics statistics, int pageSize)
+    throws IOException, InternalRepositoryException {
 
     // do not cache the whole changesets of a repository
-    //J-
     ChangesetPagingResult result = logCommand.setDisableCache(true)
       .setPagingStart(0)
       .setPagingLimit(pageSize)
       .getChangesets();
-    //J+
 
-    append(data, result);
+    append(statistics, result);
 
     int total = result.getTotal();
 
-    for (int i = pageSize; i < total; i = i + pageSize)
-    {
-      //J-
+    for (int i = pageSize; i < total; i = i + pageSize) {
       result = logCommand.setPagingStart(i)
         .setPagingLimit(pageSize)
         .getChangesets();
-      //J+
-      append(data, result);
+
+      append(statistics, result);
     }
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   * @param result
-   */
-  private void append(StatisticData data, ChangesetPagingResult result)
-  {
-    for (Changeset c : result)
-    {
-      data.add(c);
+  private void append(Statistics statistics, ChangesetPagingResult result) throws IOException {
+    for (Changeset c : result) {
+      statistics.add(c);
     }
   }
-
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
-  private Repository repository;
-
-  /** Field description */
-  private RepositoryServiceFactory repositoryServiceFactory;
 }

@@ -29,77 +29,40 @@
  *
  */
 
-
-
 package sonia.scm.statistic.resources;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.inject.Inject;
-
+import sonia.scm.repository.NamespaceAndName;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryManager;
 import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.StatisticManager;
 
-//~--- JDK imports ------------------------------------------------------------
-
-import java.io.IOException;
-
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @Path("v2/plugins/statistic")
-public class StatisticResource
-{
+public class StatisticResource {
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param repositoryManager
-   * @param statisticManager
-   */
   @Inject
   public StatisticResource(RepositoryManager repositoryManager,
-    StatisticManager statisticManager)
-  {
+                           StatisticManager statisticManager) {
     this.repositoryManager = repositoryManager;
     this.statisticManager = statisticManager;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repositoryId
-   *
-   * @return
-   *
-   * @throws IOException
-   */
-  @Path("{repositoryId}")
-  public StatisticSubResource getSubResource(
-    @PathParam("repositoryId") String repositoryId)
-    throws IOException
-  {
-    Repository repository = repositoryManager.get(repositoryId);
-    StatisticData data = statisticManager.get(repository);
+  @Path("{namespace}/{name}")
+  public StatisticSubResource getSubResource(@PathParam("namespace") String namespace, @PathParam("name") String name) {
+    NamespaceAndName namespaceAndName = new NamespaceAndName(namespace, name);
+    Repository repository = repositoryManager.get(namespaceAndName);
+    StatisticData data = statisticManager.getData(repository);
 
     return new StatisticSubResource(statisticManager, repository, data);
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private RepositoryManager repositoryManager;
-
-  /** Field description */
   private StatisticManager statisticManager;
 }

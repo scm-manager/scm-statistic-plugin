@@ -29,28 +29,17 @@
  *
  */
 
-
 package sonia.scm.statistic.collector;
 
-//~--- non-JDK imports --------------------------------------------------------
-
-import sonia.scm.statistic.StatisticData;
+import sonia.scm.statistic.Statistics;
 
 import java.io.IOException;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public interface ChangesetCollector
-{
+public interface ChangesetCollector {
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   * @param pageSize
-   */
-  public void collect(StatisticData data, int pageSize) throws IOException;
+  void collect(Statistics statistics, int pageSize) throws IOException;
+
 }

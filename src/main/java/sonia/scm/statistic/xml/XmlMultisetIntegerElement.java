@@ -29,70 +29,34 @@
  *
  */
 
-
 package sonia.scm.statistic.xml;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XmlMultisetIntegerElement
-{
+public class XmlMultisetIntegerElement {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public XmlMultisetIntegerElement() {}
+  public XmlMultisetIntegerElement() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param value
-   * @param count
-   */
-  public XmlMultisetIntegerElement(int value, int count)
-  {
+  public XmlMultisetIntegerElement(int value, int count) {
     this.value = value;
     this.count = count;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public int getCount()
-  {
+  public int getCount() {
     return count;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public int getValue()
-  {
+  public int getValue() {
     return value;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private int count;
-
-  /** Field description */
   private int value;
+
 }

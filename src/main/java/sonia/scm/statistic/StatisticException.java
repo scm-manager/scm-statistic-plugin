@@ -29,62 +29,29 @@
  *
  */
 
-
 package sonia.scm.statistic;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import java.io.IOException;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public class StatisticException extends IOException
-{
+public class StatisticException extends IOException {
 
-  /** Field description */
   private static final long serialVersionUID = -8213558958545347973L;
 
-  //~--- constructors ---------------------------------------------------------
+  public StatisticException() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   */
-  public StatisticException() {}
-
-  /**
-   * Constructs ...
-   *
-   *
-   * @param message
-   */
-  public StatisticException(String message)
-  {
+  public StatisticException(String message) {
     super(message);
   }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param cause
-   */
-  public StatisticException(Throwable cause)
-  {
+  public StatisticException(Throwable cause) {
     super(cause);
   }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param message
-   * @param cause
-   */
-  public StatisticException(String message, Throwable cause)
-  {
+  public StatisticException(String message, Throwable cause) {
     super(message, cause);
   }
 }

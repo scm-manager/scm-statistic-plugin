@@ -29,62 +29,29 @@
  *
  */
 
-
 package sonia.scm.statistic.collector;
 
-//~--- non-JDK imports --------------------------------------------------------
-
-import sonia.scm.repository.Repository;
 import sonia.scm.repository.InternalRepositoryException;
 import sonia.scm.repository.api.LogCommandBuilder;
-import sonia.scm.repository.api.RepositoryService;
-import sonia.scm.repository.api.RepositoryServiceFactory;
-import sonia.scm.statistic.StatisticData;
-
-//~--- JDK imports ------------------------------------------------------------
+import sonia.scm.statistic.Statistics;
 
 import java.io.IOException;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public class CombinedBranchCollector extends AbstractChangesetCollector
-{
+public class CombinedBranchCollector extends AbstractChangesetCollector {
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param repositoryServiceFactory
-   * @param repository
-   */
-  public CombinedBranchCollector(
-    RepositoryServiceFactory repositoryServiceFactory, Repository repository)
-  {
-    super(repositoryServiceFactory, repository);
+  CombinedBranchCollector(Statistics statistics) {
+    super(statistics);
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repositoryService
-   * @param data
-   * @param pageSize
-   *
-   * @throws IOException
-   * @throws InternalRepositoryException
-   */
   @Override
-  protected void collectChangesets(RepositoryService repositoryService,
-    StatisticData data, int pageSize)
-    throws IOException, InternalRepositoryException
-  {
-    LogCommandBuilder logCommand = repositoryService.getLogCommand();
+  public void collect(Statistics statistics, int pageSize)
+    throws IOException, InternalRepositoryException {
+    LogCommandBuilder logCommand = statistics.getRepositoryService().getLogCommand();
 
-    append(logCommand, data, pageSize);
+    append(logCommand, statistics, pageSize);
   }
+
 }

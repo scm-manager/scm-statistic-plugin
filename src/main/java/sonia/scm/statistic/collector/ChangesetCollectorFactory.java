@@ -29,57 +29,24 @@
  *
  */
 
-
 package sonia.scm.statistic.collector;
 
-//~--- non-JDK imports --------------------------------------------------------
-
-import com.google.common.collect.ImmutableSet;
-
-import sonia.scm.repository.Repository;
-import sonia.scm.repository.api.RepositoryServiceFactory;
-
-//~--- JDK imports ------------------------------------------------------------
-
-import java.util.Set;
+import sonia.scm.repository.Feature;
+import sonia.scm.statistic.Statistics;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public class ChangesetCollectorFactory
-{
+public final class ChangesetCollectorFactory {
 
-  /** Field description */
-  private static final Set<String> NON_COMBINED_BRANCH = ImmutableSet.of("git");
-
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repositoryServiceFactory
-   * @param repository
-   *
-   * @return
-   */
-  public static ChangesetCollector createCollector(
-    RepositoryServiceFactory repositoryServiceFactory, Repository repository)
-  {
-    ChangesetCollector collector;
-
-    if (NON_COMBINED_BRANCH.contains(repository.getType()))
-    {
-      collector = new NonCombinedBranchCollector(repositoryServiceFactory,
-        repository);
-    }
-    else
-    {
-      collector = new CombinedBranchCollector(repositoryServiceFactory,
-        repository);
-    }
-
-    return collector;
+  private ChangesetCollectorFactory() {
   }
+
+  public static ChangesetCollector createCollector(Statistics statistics) {
+    if (statistics.getRepositoryService().isSupported(Feature.COMBINED_DEFAULT_BRANCH)) {
+      return new CombinedBranchCollector(statistics);
+    }
+    return new NonCombinedBranchCollector(statistics);
+  }
+
 }

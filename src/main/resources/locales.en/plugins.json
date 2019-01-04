@@ -1,5 +1,12 @@
 {
   "scm-statistic-plugin": {
-    "nav-link": "Statistic"
+    "nav-link": "Statistic",
+    "charts": {
+      "commits-per-author": "commitsPerAuthor",
+      "commits-per-day": "commitsPerDay",
+      "commits-per-hour": "commitsPerHour",
+      "commits-per-weekday": "commitsPerWeekday",
+      on */\n  @XmlElement(name = \"file-modification-count\")\n  @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)\n  private Multiset<String> fileModificationCount;\n\n  /** Field description */\n  @XmlElement(name = \"modified-files\")\n  @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)\n  private Multiset<String> modifiedFiles;\n\n  /** Field description */\n  private int version = VERSION;\n\n  /** Field description */\n  @XmlElement(name = \"word-count"
+    }
   }
 }

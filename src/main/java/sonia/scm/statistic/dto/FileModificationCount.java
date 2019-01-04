@@ -29,16 +29,10 @@
  *
  */
 
-
 package sonia.scm.statistic.dto;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.common.collect.Multiset;
-
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,48 +41,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "file-modification-count")
-public class FileModificationCount
-{
+public class FileModificationCount {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public FileModificationCount() {}
+  public FileModificationCount() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param modifications
-   */
-  public FileModificationCount(Multiset<String> modifications)
-  {
+  public FileModificationCount(Multiset<String> modifications) {
     this.modifications = modifications;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<String> getModifications()
-  {
+  public Multiset<String> getModifications() {
     return modifications;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   @XmlElement(name = "modification")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
   private Multiset<String> modifications;
+
 }

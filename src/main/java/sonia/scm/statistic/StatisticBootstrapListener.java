@@ -29,66 +29,34 @@
  *
  */
 
-
 package sonia.scm.statistic;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.inject.Inject;
-
 import sonia.scm.plugin.Extension;
 import sonia.scm.web.security.AdministrationContext;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @Extension
-public class StatisticBootstrapListener implements ServletContextListener
-{
+public class StatisticBootstrapListener implements ServletContextListener {
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param adminContext
-   */
   @Inject
-  public StatisticBootstrapListener(AdministrationContext adminContext)
-  {
+  public StatisticBootstrapListener(AdministrationContext adminContext) {
     this.adminContext = adminContext;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param event
-   */
   @Override
-  public void contextDestroyed(ServletContextEvent event) {}
+  public void contextDestroyed(ServletContextEvent event) {
+  }
 
-  /**
-   * Method description
-   *
-   *
-   * @param event
-   */
   @Override
-  public void contextInitialized(ServletContextEvent event)
-  {
+  public void contextInitialized(ServletContextEvent event) {
     adminContext.runAsAdmin(StatisticBootstrapAction.class);
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private AdministrationContext adminContext;
 }

@@ -29,78 +29,43 @@
  *
  */
 
-
 package sonia.scm.statistic.dto;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.common.collect.Multiset;
-
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import sonia.scm.statistic.StatisticData;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "commits-per-author")
-public class CommitsPerAuthor
-{
+public class CommitsPerAuthor {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public CommitsPerAuthor() {}
+  public CommitsPerAuthor() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param commitsPerAuthor
-   */
-  public CommitsPerAuthor(Multiset<String> commitsPerAuthor)
-  {
+  public CommitsPerAuthor(Multiset<String> commitsPerAuthor) {
     this.commitsPerAuthor = commitsPerAuthor;
   }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param data
-   */
-  public CommitsPerAuthor(StatisticData data)
-  {
+  public CommitsPerAuthor(StatisticData data) {
     this.commitsPerAuthor = data.getCommitsPerAuthor();
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<String> getCommitsPerAuthor()
-  {
+  public Multiset<String> getCommitsPerAuthor() {
     return commitsPerAuthor;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   @XmlElement(name = "author")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
   private Multiset<String> commitsPerAuthor;
+
 }

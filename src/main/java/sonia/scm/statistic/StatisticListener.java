@@ -29,17 +29,11 @@
  *
  */
 
-
-
 package sonia.scm.statistic;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import sonia.scm.EagerSingleton;
 import sonia.scm.HandlerEventType;
 import com.github.legman.Subscribe;
@@ -49,96 +43,46 @@ import sonia.scm.repository.PostReceiveRepositoryHookEvent;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryEvent;
 
-//~--- JDK imports ------------------------------------------------------------
-
 import java.io.IOException;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @Extension
 @EagerSingleton
-public class StatisticListener
-{
+public class StatisticListener {
+  private static final Logger LOG = LoggerFactory.getLogger(StatisticListener.class);
 
-  /**
-   * the logger for StatisticListener
-   */
-  private static final Logger logger =
-    LoggerFactory.getLogger(StatisticListener.class);
-
-  //~--- constructors ---------------------------------------------------------
-
-  /**
-   * Constructs ...
-   *
-   *
-   * @param statisticManager
-   */
   @Inject
-  public StatisticListener(StatisticManager statisticManager)
-  {
+  public StatisticListener(StatisticManager statisticManager) {
     this.statisticManager = statisticManager;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param event
-   */
   @Subscribe
-  public void onHookEvent(PostReceiveRepositoryHookEvent event)
-  {
-    if (logger.isDebugEnabled())
-    {
-      logger.debug("update statistic of repository {}",
-        event.getRepository().getName());
-    }
+  public void onHookEvent(PostReceiveRepositoryHookEvent event) {
+    LOG.debug("update statistic of repository {}", event.getRepository().getName());
 
-    try
-    {
-      //StatisticData data = statisticManager.get(event.getRepository());
-      Statistics statistics = new Statistics(event.getRepository()); //TODO: get RepoServiceFactory
-
-      for (Changeset c : event.getContext().getChangesetProvider().getChangesets())
-      {
-        data.add(c);
+    try (Statistics statistics = statisticManager.get(event.getRepository())) {
+      for (Changeset c : event.getContext().getChangesetProvider().getChangesets()) {
+        statistics.add(c);
       }
-
-      statisticManager.store(event.getRepository(), data); //TODO
-    }
-    catch (IOException ex)
-    {
-      logger.error("could not update statistic", ex);
+      statistics.commit();
+    } catch (IOException ex) {
+      LOG.error("could not update statistic", ex);
     }
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param event
-   */
   @Subscribe
-  public void onRepositoryEvent(RepositoryEvent event)
-  {
-    if (event.getEventType() == HandlerEventType.DELETE)
-    {
+  public void onRepositoryEvent(RepositoryEvent event) {
+    if (event.getEventType() == HandlerEventType.DELETE) {
       Repository repository = event.getItem();
 
-      logger.trace("receive delete event for repository {}",
+      LOG.trace("receive delete event for repository {}",
         repository.getId());
       statisticManager.remove(repository);
     }
 
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private StatisticManager statisticManager;
 }

@@ -27,18 +27,11 @@
  *
  */
 
-
-
 package sonia.scm.statistic.dto;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.common.collect.Multiset;
-
 import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,59 +40,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "top-words")
-public class TopWords
-{
+public class TopWords {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public TopWords() {}
+  public TopWords() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param wordCount
-   */
-  public TopWords(Multiset<String> wordCount)
-  {
+  public TopWords(Multiset<String> wordCount) {
     this.wordCount = wordCount;
   }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param data
-   */
-  public TopWords(StatisticData data)
-  {
+  public TopWords(StatisticData data) {
     this(data.getWordCount());
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<String> getWordCount()
-  {
+  public Multiset<String> getWordCount() {
     return wordCount;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   @XmlElement(name = "word")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
   private Multiset<String> wordCount;
+
 }

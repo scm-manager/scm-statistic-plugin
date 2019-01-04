@@ -27,83 +27,41 @@
  *
  */
 
-
-
 package sonia.scm.statistic;
-
-//~--- non-JDK imports --------------------------------------------------------
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import sonia.scm.repository.Repository;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import java.io.IOException;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public class StatisticBootstrapWorker implements Runnable
-{
+public class StatisticBootstrapWorker implements Runnable {
 
-  /** Field description */
   static final String THREADNAME = "StatisticWorker";
-
-  /** Field description */
   static final String THREADNAME_PATTERN = THREADNAME.concat("-%s");
+  private static final Logger LOG = LoggerFactory.getLogger(StatisticBootstrapWorker.class);
 
-  /**
-   * the logger for StatisticBootstrapWorker
-   */
-  private static final Logger logger =
-    LoggerFactory.getLogger(StatisticBootstrapWorker.class);
-
-  //~--- constructors ---------------------------------------------------------
-
-  /**
-   * Constructs ...
-   *
-   *
-   * @param manager
-   * @param repository
-   */
   public StatisticBootstrapWorker(StatisticManager manager,
-    Repository repository)
-  {
+                                  Repository repository) {
     this.manager = manager;
     this.repository = repository;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   */
   @Override
-  public void run()
-  {
-    try
-    {
+  public void run() {
+    try {
 
       manager.createStatistic(repository);
-    }
-    catch (IOException ex)
-    {
-      logger.error(
+    } catch (IOException ex) {
+      LOG.error(
         "could not create statistic for repository ".concat(
           repository.getName()), ex);
     }
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private StatisticManager manager;
-
-  /** Field description */
   private Repository repository;
 }

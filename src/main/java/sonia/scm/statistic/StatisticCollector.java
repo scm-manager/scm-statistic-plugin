@@ -29,11 +29,7 @@
  *
  */
 
-
-
 package sonia.scm.statistic;
-
-//~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -54,97 +50,51 @@ import sonia.scm.statistic.dto.FileModificationCount;
 import sonia.scm.statistic.dto.TopModifiedFiles;
 import sonia.scm.statistic.dto.TopWords;
 
-//~--- JDK imports ------------------------------------------------------------
-
 import java.util.Calendar;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public class StatisticCollector
-{
+public class StatisticCollector {
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   * @param limit
-   *
-   * @return
-   */
   public static CommitsPerAuthor collectCommitsPerAuthor(StatisticData data,
-    int limit)
-  {
+                                                         int limit) {
     Multiset<String> authors = HashMultiset.create();
     int others = collectTopEntries(data.getCommitsPerAuthor(), authors, limit,
-                   true);
+      true);
 
-    if (others > 0)
-    {
+    if (others > 0) {
       authors.add("others", others);
     }
 
     return new CommitsPerAuthor(authors);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   *
-   * @return
-   */
-  public static CommitsPerHour collectCommitsPerHour(StatisticData data)
-  {
+  public static CommitsPerHour collectCommitsPerHour(StatisticData data) {
     Multiset<Integer> commitsPerHour = TreeMultiset.create();
 
-    for (Entry<Integer> e : data.getCommitsPerHour().entrySet())
-    {
+    for (Entry<Integer> e : data.getCommitsPerHour().entrySet()) {
       commitsPerHour.add(e.getElement(), e.getCount());
     }
 
     return new CommitsPerHour(commitsPerHour);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   *
-   * @return
-   */
-  public static CommitsPerMonth collectCommitsPerMonth(StatisticData data)
-  {
+  public static CommitsPerMonth collectCommitsPerMonth(StatisticData data) {
     Multiset<String> commitsPerMonth = TreeMultiset.create();
 
-    for (Entry<Day> e : data.getCommitsPerDay().entrySet())
-    {
+    for (Entry<Day> e : data.getCommitsPerDay().entrySet()) {
       commitsPerMonth.add(e.getElement().getMonthString(), e.getCount());
     }
 
     return new CommitsPerMonth(commitsPerMonth);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   *
-   * @return
-   */
-  public static CommitsPerWeekday collectCommitsPerWeekday(StatisticData data)
-  {
+  public static CommitsPerWeekday collectCommitsPerWeekday(StatisticData data) {
     Multiset<String> weekdays = LinkedHashMultiset.create();
-    Ordering<Entry<Integer>> intOrdering = new Ordering<Entry<Integer>>()
-    {
+    Ordering<Entry<Integer>> intOrdering = new Ordering<Entry<Integer>>() {
       @Override
-      public int compare(Entry<Integer> left, Entry<Integer> right)
-      {
+      public int compare(Entry<Integer> left, Entry<Integer> right) {
         return Ints.compare(left.getElement(), right.getElement());
       }
     };
@@ -152,60 +102,30 @@ public class StatisticCollector
     Multiset<Integer> weekdaysInt = data.getCommitsPerWeekday();
 
     for (Entry<Integer> e :
-      intOrdering.immutableSortedCopy(weekdaysInt.entrySet()))
-    {
+      intOrdering.immutableSortedCopy(weekdaysInt.entrySet())) {
       weekdays.add(getWeekdayAsString(e.getElement()), e.getCount());
     }
 
     return new CommitsPerWeekday(weekdays);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   *
-   * @return
-   */
-  public static CommitsPerMonth collectCommitsPerYear(StatisticData data)
-  {
+  public static CommitsPerMonth collectCommitsPerYear(StatisticData data) {
     Multiset<String> commitsPerMonth = TreeMultiset.create();
 
-    for (Entry<Day> e : data.getCommitsPerDay().entrySet())
-    {
+    for (Entry<Day> e : data.getCommitsPerDay().entrySet()) {
       commitsPerMonth.add(e.getElement().getYearString(), e.getCount());
     }
 
     return new CommitsPerMonth(commitsPerMonth);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   *
-   * @return
-   */
   public static FileModificationCount collectFileModificationCount(
-    StatisticData data)
-  {
+    StatisticData data) {
     return new FileModificationCount(data.getFileModificationCount());
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   * @param limit
-   *
-   * @return
-   */
   public static TopModifiedFiles collectTopModifiedFiles(StatisticData data,
-    int limit)
-  {
+                                                         int limit) {
     Multiset<String> files = HashMultiset.create();
 
     collectTopEntries(data.getModifiedFiles(), files, limit, false);
@@ -213,17 +133,7 @@ public class StatisticCollector
     return new TopModifiedFiles(files);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   * @param limit
-   *
-   * @return
-   */
-  public static TopWords collectTopWords(StatisticData data, int limit)
-  {
+  public static TopWords collectTopWords(StatisticData data, int limit) {
     Multiset<String> words = HashMultiset.create();
 
     collectTopEntries(data.getWordCount(), words, limit, false);
@@ -231,19 +141,8 @@ public class StatisticCollector
     return new TopWords(words);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param data
-   * @param predicate
-   * @param limit
-   *
-   * @return
-   */
   public static TopWords collectTopWords(StatisticData data,
-    Predicate<String> predicate, int limit)
-  {
+                                         Predicate<String> predicate, int limit) {
     Multiset<String> words = HashMultiset.create();
 
     collectTopEntries(data.getWordCount(), words, limit, false, predicate);
@@ -251,62 +150,28 @@ public class StatisticCollector
     return new TopWords(words);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param source
-   * @param target
-   * @param limit
-   * @param countOthers
-   * @param <T>
-   *
-   * @return
-   */
   private static <T> int collectTopEntries(Multiset<T> source,
-    Multiset<T> target, int limit, boolean countOthers)
-  {
+                                           Multiset<T> target, int limit, boolean countOthers) {
     Predicate<T> predicate = Predicates.alwaysTrue();
 
     return collectTopEntries(source, target, limit, countOthers, predicate);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param source
-   * @param target
-   * @param limit
-   * @param countOthers
-   * @param predicate
-   * @param <T>
-   *
-   * @return
-   */
   private static <T> int collectTopEntries(Multiset<T> source,
-    Multiset<T> target, int limit, boolean countOthers, Predicate<T> predicate)
-  {
+                                           Multiset<T> target, int limit, boolean countOthers, Predicate<T> predicate) {
     Multiset<T> ordered = Multisets.copyHighestCountFirst(source);
 
     int i = 0;
     int others = 0;
 
-    for (Entry<T> e : ordered.entrySet())
-    {
-      if (predicate.apply(e.getElement()))
-      {
-        if (i < limit)
-        {
+    for (Entry<T> e : ordered.entrySet()) {
+      if (predicate.apply(e.getElement())) {
+        if (i < limit) {
           target.add(e.getElement(), e.getCount());
           i++;
-        }
-        else if (countOthers)
-        {
+        } else if (countOthers) {
           others += e.getCount();
-        }
-        else
-        {
+        } else {
           break;
         }
       }
@@ -315,55 +180,36 @@ public class StatisticCollector
     return others;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param weekday
-   *
-   * @return
-   */
-  private static String getWeekdayAsString(int weekday)
-  {
+  private static String getWeekdayAsString(int weekday) {
     String label = "unknown";
 
-    switch (weekday)
-    {
-      case Calendar.MONDAY :
+    switch (weekday) {
+      case Calendar.MONDAY:
         label = "Monday";
-
         break;
 
-      case Calendar.TUESDAY :
+      case Calendar.TUESDAY:
         label = "Tuesday";
-
         break;
 
-      case Calendar.WEDNESDAY :
+      case Calendar.WEDNESDAY:
         label = "Wednesday";
-
         break;
 
-      case Calendar.THURSDAY :
+      case Calendar.THURSDAY:
         label = "Thursday";
-
         break;
 
-      case Calendar.FRIDAY :
+      case Calendar.FRIDAY:
         label = "Friday";
-
         break;
 
-      case Calendar.SATURDAY :
+      case Calendar.SATURDAY:
         label = "Saturday";
-
         break;
 
-      case Calendar.SUNDAY :
+      case Calendar.SUNDAY:
         label = "Sunday";
-
         break;
     }
 

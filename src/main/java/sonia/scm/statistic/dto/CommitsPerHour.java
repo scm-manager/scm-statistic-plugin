@@ -29,16 +29,10 @@
  *
  */
 
-
 package sonia.scm.statistic.dto;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.common.collect.Multiset;
-
 import sonia.scm.statistic.xml.XmlMultisetIntegerAdapter;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,48 +41,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "commits-per-hour")
-public class CommitsPerHour
-{
+public class CommitsPerHour {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public CommitsPerHour() {}
+  public CommitsPerHour() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param commitsPerHour
-   */
-  public CommitsPerHour(Multiset<Integer> commitsPerHour)
-  {
+  public CommitsPerHour(Multiset<Integer> commitsPerHour) {
     this.commitsPerHour = commitsPerHour;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<Integer> getCommitsPerHour()
-  {
+  public Multiset<Integer> getCommitsPerHour() {
     return commitsPerHour;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   @XmlElement(name = "hour")
   @XmlJavaTypeAdapter(XmlMultisetIntegerAdapter.class)
   private Multiset<Integer> commitsPerHour;
+
 }

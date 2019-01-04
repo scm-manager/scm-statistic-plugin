@@ -29,16 +29,10 @@
  *
  */
 
-
 package sonia.scm.statistic.dto;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.common.collect.Multiset;
-
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,48 +41,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "top-modified-files")
-public class TopModifiedFiles
-{
+public class TopModifiedFiles {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public TopModifiedFiles() {}
+  public TopModifiedFiles() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param topModifiedFiles
-   */
-  public TopModifiedFiles(Multiset<String> topModifiedFiles)
-  {
+  public TopModifiedFiles(Multiset<String> topModifiedFiles) {
     this.topModifiedFiles = topModifiedFiles;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<String> getTopModifiedFiles()
-  {
+  public Multiset<String> getTopModifiedFiles() {
     return topModifiedFiles;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   @XmlElement(name = "file")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
   private Multiset<String> topModifiedFiles;
+
 }

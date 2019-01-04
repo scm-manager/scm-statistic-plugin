@@ -29,49 +29,29 @@
  *
  */
 
-
 package sonia.scm.statistic.xml;
-
-//~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-//~--- JDK imports ------------------------------------------------------------
-
 import java.util.Set;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 public class XmlMultisetIntegerAdapter
-  extends XmlAdapter<XmlMultisetIntegerElement[], Multiset<Integer>>
-{
+  extends XmlAdapter<XmlMultisetIntegerElement[], Multiset<Integer>> {
 
-  /**
-   * Method description
-   *
-   *
-   * @param set
-   *
-   * @return
-   *
-   * @throws Exception
-   */
   @Override
   public XmlMultisetIntegerElement[] marshal(Multiset<Integer> set)
-    throws Exception
-  {
+    throws Exception {
     Set<Integer> values = set.elementSet();
     XmlMultisetIntegerElement[] elements =
       new XmlMultisetIntegerElement[values.size()];
     int i = 0;
 
-    for (Integer v : values)
-    {
+    for (Integer v : values) {
       elements[i] = new XmlMultisetIntegerElement(v, set.count(v));
       i++;
     }
@@ -79,24 +59,12 @@ public class XmlMultisetIntegerAdapter
     return elements;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param elements
-   *
-   * @return
-   *
-   * @throws Exception
-   */
   @Override
   public Multiset<Integer> unmarshal(XmlMultisetIntegerElement[] elements)
-    throws Exception
-  {
+    throws Exception {
     Multiset<Integer> multiset = HashMultiset.create();
 
-    for (XmlMultisetIntegerElement e : elements)
-    {
+    for (XmlMultisetIntegerElement e : elements) {
       multiset.add(e.getValue(), e.getCount());
     }
 

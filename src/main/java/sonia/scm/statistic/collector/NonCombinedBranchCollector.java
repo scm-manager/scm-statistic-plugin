@@ -29,73 +29,40 @@
  *
  */
 
-
 package sonia.scm.statistic.collector;
-
-//~--- non-JDK imports --------------------------------------------------------
 
 import sonia.scm.repository.Branch;
 import sonia.scm.repository.Branches;
-import sonia.scm.repository.Repository;
 import sonia.scm.repository.InternalRepositoryException;
 import sonia.scm.repository.api.LogCommandBuilder;
 import sonia.scm.repository.api.RepositoryService;
-import sonia.scm.repository.api.RepositoryServiceFactory;
-import sonia.scm.statistic.StatisticData;
-
-//~--- JDK imports ------------------------------------------------------------
+import sonia.scm.statistic.Statistics;
 
 import java.io.IOException;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public class NonCombinedBranchCollector extends AbstractChangesetCollector
-{
+public class NonCombinedBranchCollector extends AbstractChangesetCollector {
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param repositoryServiceFactory
-   * @param repository
-   */
-  public NonCombinedBranchCollector(
-    RepositoryServiceFactory repositoryServiceFactory, Repository repository)
-  {
-    super(repositoryServiceFactory, repository);
+  NonCombinedBranchCollector(Statistics statistics) {
+    super(statistics);
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repositoryService
-   * @param data
-   * @param pageSize
-   *
-   * @throws IOException
-   * @throws InternalRepositoryException
-   */
   @Override
-  protected void collectChangesets(RepositoryService repositoryService,
-    StatisticData data, int pageSize)
-    throws IOException, InternalRepositoryException
-  {
+  public void collect(Statistics statistics, int pageSize)
+    throws IOException, InternalRepositoryException {
+    RepositoryService repositoryService = statistics.getRepositoryService();
     Branches branches = repositoryService.getBranchesCommand().getBranches();
 
-    if (branches != null)
-    {
+    if (branches != null) {
       LogCommandBuilder logCommand = repositoryService.getLogCommand();
 
-      for (Branch branch : branches)
-      {
+      for (Branch branch : branches) {
         logCommand.setBranch(branch.getName());
-        append(logCommand, data, pageSize);
+        append(logCommand, statistics, pageSize);
       }
     }
   }
+
 }

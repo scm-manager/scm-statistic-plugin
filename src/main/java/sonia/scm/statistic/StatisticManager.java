@@ -29,112 +29,62 @@
  *
  */
 
-
-
 package sonia.scm.statistic;
 
-//~--- non-JDK imports --------------------------------------------------------
-
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import sonia.scm.plugin.Extension;
-import sonia.scm.repository.PermissionType;
 import sonia.scm.repository.Repository;
-import sonia.scm.repository.InternalRepositoryException;
+import sonia.scm.repository.RepositoryPermissions;
 import sonia.scm.repository.api.RepositoryServiceFactory;
-import sonia.scm.security.RepositoryPermission;
 import sonia.scm.security.Role;
 import sonia.scm.statistic.collector.ChangesetCollector;
 import sonia.scm.statistic.collector.ChangesetCollectorFactory;
 import sonia.scm.store.DataStore;
 import sonia.scm.store.DataStoreFactory;
 
-//~--- JDK imports ------------------------------------------------------------
-
 import java.io.IOException;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @Extension
 @Singleton
-public class StatisticManager
-{
+public class StatisticManager {
 
-  /** Field description */
   private static final int PAGE_SIZE = 100;
-
-  /** Field description */
   private static final String STORE = "statistic";
-
-  /**
-   * the logger for StatisticManager
-   */
-  private static final Logger logger =
+  private static final Logger LOG =
     LoggerFactory.getLogger(StatisticManager.class);
 
-  //~--- constructors ---------------------------------------------------------
+  private RepositoryServiceFactory serviceFactory;
+  private DataStoreFactory storeFactory;
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param serviceFactory
-   * @param storeFactory
-   */
   @Inject
-  public StatisticManager(RepositoryServiceFactory serviceFactory,
-    DataStoreFactory storeFactory)
-  {
+  public StatisticManager(RepositoryServiceFactory serviceFactory, DataStoreFactory storeFactory) {
     this.serviceFactory = serviceFactory;
-    this.store = storeFactory.withType(StatisticData.class).withName(STORE).build();
+    this.storeFactory = storeFactory;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   *
-   * @return
-   */
-  public boolean contains(Repository repository)
-  {
-    return store.get(repository.getId()) != null;
+  private DataStore<StatisticData> getStore(Repository repository) {
+    return storeFactory.withType(StatisticData.class).withName(STORE).forRepository(repository).build();
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   *
-   * @throws IOException
-   */
-  public void createStatistic(Repository repository) throws IOException
-  {
-    checkPermissions(repository, PermissionType.WRITE);
+  public boolean contains(Repository repository) {
+    return getStore(repository).get(repository.getId()) != null;
+  }
 
-    try
-    {
-      StatisticData data = createBootstrapStatistic(repository);
+  public void createStatistic(Repository repository) throws IOException {
+    RepositoryPermissions.modify(repository).check();
 
-      store(repository, data);
-    }
-    catch (Exception ex)
-    {
+    try {
+      createBootstrapStatistic(repository);
+    } catch (Exception ex) {
 
       Throwables.propagateIfPossible(ex, IOException.class);
 
@@ -144,15 +94,8 @@ public class StatisticManager
     }
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   */
-  public void rebuild(Repository repository)
-  {
-    logger.warn("rebuild statistic for repository {}", repository.getId());
+  public void rebuild(Repository repository) {
+    LOG.warn("rebuild statistic for repository {}", repository.getId());
 
     Subject subject = SecurityUtils.getSubject();
 
@@ -168,126 +111,55 @@ public class StatisticManager
     thread.start();
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   */
-  public void remove(Repository repository)
-  {
-    logger.debug("try to remove statistic for repository {}",
+  public void remove(Repository repository) {
+    LOG.debug("try to remove statistic for repository {}",
       repository.getId());
 
-    checkPermissions(repository, PermissionType.OWNER);
-    store.remove(repository.getId());
+    RepositoryPermissions.modify(repository).check();
+    getStore(repository).remove(repository.getId());
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   * @param data
-   *
-   * @throws IOException
-   */
-  public void store(Repository repository, StatisticData data)
-    throws IOException
-  {
-    checkPermissions(repository, PermissionType.WRITE);
+  void store(Statistics statistics)
+    throws IOException {
+    Repository repository = statistics.getRepository();
+    RepositoryPermissions.modify(repository).check();
 
-    if (logger.isDebugEnabled())
-    {
-      logger.debug("update statistic for repository {}", repository.getName());
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("update statistic for repository {}", repository.getName());
     }
 
-    store.put(repository.getId(), data);
+    getStore(repository).put(repository.getId(), statistics.getStatisticData());
   }
 
-  //~--- get methods ----------------------------------------------------------
+  public Statistics get(Repository repository) throws IOException {
+    StatisticData data = getData(repository);
+    return new Statistics(this, serviceFactory.create(repository), data);
+  }
 
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   *
-   * @return
-   *
-   * @throws IOException
-   */
-  public StatisticData get(Repository repository) throws IOException
-  {
-    checkPermissions(repository, PermissionType.READ);
+  public StatisticData getData(Repository repository) {
+    RepositoryPermissions.read(repository).check();
 
-    StatisticData data = store.get(repository.getId());
+    StatisticData data = getStore(repository).get(repository.getId());
 
-    if (data == null)
-    {
+    if (data == null) {
       data = new StatisticData();
     }
-
     return data;
   }
 
-  //~--- methods --------------------------------------------------------------
+  private void createBootstrapStatistic(Repository repository) throws IOException {
+    RepositoryPermissions.modify(repository).check();
 
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   * @param type
-   */
-  @VisibleForTesting
-  void checkPermissions(Repository repository, PermissionType type)
-  {
-    if ((type != PermissionType.READ) ||!repository.isPublicReadable())
-    {
-      Subject subject = SecurityUtils.getSubject();
-
-      subject.checkPermission(new RepositoryPermission(repository, type));
-    }
-  }
-
-  /**
-   * Method description
-   *
-   *
-   * @param repository
-   *
-   *
-   * @return
-   * @throws IOException
-   * @throws InternalRepositoryException
-   */
-  private StatisticData createBootstrapStatistic(Repository repository)
-    throws IOException, InternalRepositoryException
-  {
-    checkPermissions(repository, PermissionType.WRITE);
-
-    if (logger.isDebugEnabled())
-    {
-      logger.debug("create bootstrap statistic for repository {}",
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("create bootstrap statistic for repository {}",
         repository.getId());
     }
 
-    StatisticData data = new StatisticData();
+    try (Statistics statistics = new Statistics(this, serviceFactory.create(repository), new StatisticData())) {
+      ChangesetCollector collector = ChangesetCollectorFactory.createCollector(statistics);
 
-    ChangesetCollector collector =
-      ChangesetCollectorFactory.createCollector(serviceFactory, repository);
-
-    collector.collect(data, PAGE_SIZE);
-
-    return data;
+      collector.collect(statistics, PAGE_SIZE);
+    }
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
-  private RepositoryServiceFactory serviceFactory;
-
-  /** Field description */
-  private DataStore<StatisticData> store;
 }

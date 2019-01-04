@@ -29,11 +29,7 @@
  *
  */
 
-
-
 package sonia.scm.statistic.resources;
-
-//~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -53,8 +49,6 @@ import sonia.scm.statistic.dto.FileModificationCount;
 import sonia.scm.statistic.dto.TopModifiedFiles;
 import sonia.scm.statistic.dto.TopWords;
 
-//~--- JDK imports ------------------------------------------------------------
-
 import java.io.IOException;
 
 import java.util.Iterator;
@@ -69,191 +63,91 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public class StatisticSubResource
-{
+public class StatisticSubResource {
 
-  /**
-   * Constructs ...
-   *
-   *
-   *
-   * @param manager
-   * @param repository
-   * @param data
-   */
   public StatisticSubResource(StatisticManager manager, Repository repository,
-    StatisticData data)
-  {
+                              StatisticData data) {
     this.manager = manager;
     this.repository = repository;
     this.data = data;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @throws IOException
-   */
   @POST
   @Path("rebuild")
-  public void rebuild() throws IOException
-  {
+  public void rebuild() throws IOException {
     manager.rebuild(repository);
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param repositoryId
-   *
-   * @param limit
-   *
-   * @return
-   *
-   * @throws Exception
-   */
   @GET
   @Path("commits-per-author")
   @Produces(MediaType.APPLICATION_JSON)
   public CommitsPerAuthor getCommitPerAuthor(@QueryParam("limit")
-  @DefaultValue("10") int limit)
-  {
+                                             @DefaultValue("10") int limit) {
     return StatisticCollector.collectCommitsPerAuthor(data, limit);
   }
 
-  /**
-   *  Method description
-   *
-   *
-   *  @return
-   */
   @GET
   @Path("commits-per-hour")
   @Produces(MediaType.APPLICATION_JSON)
-  public CommitsPerHour getCommitPerHour()
-  {
+  public CommitsPerHour getCommitPerHour() {
     return StatisticCollector.collectCommitsPerHour(data);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
   @GET
   @Path("commits-per-month")
   @Produces(MediaType.APPLICATION_JSON)
-  public CommitsPerMonth getCommitPerMonth()
-  {
+  public CommitsPerMonth getCommitPerMonth() {
     return StatisticCollector.collectCommitsPerMonth(data);
   }
 
-  /**
-   *  Method description
-   *
-   *
-   *  @return
-   */
   @GET
   @Path("commits-per-weekday")
   @Produces(MediaType.APPLICATION_JSON)
-  public CommitsPerWeekday getCommitPerWeekday()
-  {
+  public CommitsPerWeekday getCommitPerWeekday() {
     return StatisticCollector.collectCommitsPerWeekday(data);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
   @GET
   @Path("commits-per-year")
   @Produces(MediaType.APPLICATION_JSON)
-  public CommitsPerMonth getCommitPerYear()
-  {
+  public CommitsPerMonth getCommitPerYear() {
     return StatisticCollector.collectCommitsPerYear(data);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
   @GET
   @Path("file-modification-count")
   @Produces(MediaType.APPLICATION_JSON)
-  public FileModificationCount getFileModificationCount()
-  {
+  public FileModificationCount getFileModificationCount() {
     return StatisticCollector.collectFileModificationCount(data);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
   @GET
   @Path("raw")
   @Produces(MediaType.APPLICATION_JSON)
-  public StatisticData getRaw()
-  {
+  public StatisticData getRaw() {
     return data;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param limit
-   *
-   * @return
-   */
   @GET
   @Path("top-modified-files")
   @Produces(MediaType.APPLICATION_JSON)
   public TopModifiedFiles getTopModifiedFiles(@QueryParam("limit")
-  @DefaultValue("10") int limit)
-  {
+                                              @DefaultValue("10") int limit) {
     return StatisticCollector.collectTopModifiedFiles(data, limit);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param limit
-   * @param excludes
-   *
-   * @return
-   */
   @GET
   @Path("top-words")
   @Produces(MediaType.APPLICATION_JSON)
   public TopWords getTopWords(@QueryParam("limit")
-  @DefaultValue("10") int limit, @QueryParam("excludes") String excludes)
-  {
+                              @DefaultValue("10") int limit, @QueryParam("excludes") String excludes) {
     TopWords words;
 
-    if (Strings.isNullOrEmpty(excludes))
-    {
+    if (Strings.isNullOrEmpty(excludes)) {
       words = StatisticCollector.collectTopWords(data, limit);
-    }
-    else
-    {
+    } else {
       Predicate<String> excludePredicate =
         Predicates.not(Predicates.in(createExcludes(excludes)));
 
@@ -263,18 +157,7 @@ public class StatisticSubResource
     return words;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param excludes
-   *
-   * @return
-   */
-  private Set<String> createExcludes(String excludes)
-  {
+  private Set<String> createExcludes(String excludes) {
     Iterator<String> wordIterator =
       Splitter.on(",").trimResults().omitEmptyStrings().split(
         excludes).iterator();
@@ -282,14 +165,8 @@ public class StatisticSubResource
     return ImmutableSet.copyOf(wordIterator);
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private StatisticData data;
-
-  /** Field description */
   private StatisticManager manager;
-
-  /** Field description */
   private Repository repository;
+
 }

@@ -29,16 +29,10 @@
  *
  */
 
-
 package sonia.scm.statistic.dto;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.common.collect.Multiset;
-
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,48 +41,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "commits-per-year")
-public class CommitsPerYear
-{
+public class CommitsPerYear {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public CommitsPerYear() {}
+  public CommitsPerYear() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param commitsPerYear
-   */
-  public CommitsPerYear(Multiset<String> commitsPerYear)
-  {
+  public CommitsPerYear(Multiset<String> commitsPerYear) {
     this.commitsPerYear = commitsPerYear;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<String> getCommitsPerYear()
-  {
+  public Multiset<String> getCommitsPerYear() {
     return commitsPerYear;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   @XmlElement(name = "year")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
   private Multiset<String> commitsPerYear;
+
 }

@@ -26,67 +26,36 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * http://bitbucket.org/sdorra/scm-manager
- *
+ *mvn
  */
 
-
 package sonia.scm.statistic;
-
-//~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.base.Objects;
 import com.google.common.base.MoreObjects;
 
-//~--- JDK imports ------------------------------------------------------------
-
 import java.util.Calendar;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlRootElement(name = "day")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Day
-{
+public class Day {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public Day() {}
+  public Day() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param year
-   * @param month
-   * @param day
-   */
-  public Day(int year, int month, int day)
-  {
+  public Day(int year, int month, int day) {
     this.year = year;
     this.month = month;
     this.day = day;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param time
-   *
-   * @return
-   */
-  public static Day of(long time)
-  {
+  public static Day of(long time) {
     Calendar c = Calendar.getInstance();
 
     c.setTimeInMillis(time);
@@ -94,106 +63,50 @@ public class Day
     return of(c);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param c
-   *
-   * @return
-   */
-  public static Day of(Calendar c)
-  {
-    //J-
+  public static Day of(Calendar c) {
     return new Day(
       c.get(Calendar.YEAR),
       c.get(Calendar.MONTH) + 1,
       c.get(Calendar.DAY_OF_MONTH)
     );
-    //J+
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @param obj
-   *
-   * @return
-   */
   @Override
-  public boolean equals(Object obj)
-  {
-    if (obj == null)
-    {
+  public boolean equals(Object obj) {
+    if (obj == null) {
       return false;
     }
 
-    if (getClass() != obj.getClass())
-    {
+    if (getClass() != obj.getClass()) {
       return false;
     }
 
     final Day other = (Day) obj;
 
-    //J-
     return Objects.equal(year, other.year)
-        && Objects.equal(month, other.month)
-        && Objects.equal(day, other.day);
-    //J+
+      && Objects.equal(month, other.month)
+      && Objects.equal(day, other.day);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     return Objects.hashCode(year, month, day);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
   @Override
-  public String toString()
-  {
-    //J-
+  public String toString() {
     return MoreObjects.toStringHelper(this)
-                  .add("year", year)
-                  .add("month", month)
-                  .add("day", day)
-                  .toString();
-    //J+
+      .add("year", year)
+      .add("month", month)
+      .add("day", day)
+      .toString();
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public int getDay()
-  {
+  public int getDay() {
     return day;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public String getDayString()
-  {
+  public String getDayString() {
     StringBuilder value = new StringBuilder();
 
     value.append(getMonthString()).append("-");
@@ -202,25 +115,11 @@ public class Day
     return value.toString();
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public int getMonth()
-  {
+  public int getMonth() {
     return month;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public String getMonthString()
-  {
+  public String getMonthString() {
     StringBuilder value = new StringBuilder();
 
     value.append(year).append("-");
@@ -229,55 +128,23 @@ public class Day
     return value.toString();
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public int getYear()
-  {
+  public int getYear() {
     return year;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public String getYearString()
-  {
+  public String getYearString() {
     return String.valueOf(year);
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param value
-   * @param nr
-   */
-  private void append(StringBuilder value, int nr)
-  {
-    if (nr < 10)
-    {
+  private void append(StringBuilder value, int nr) {
+    if (nr < 10) {
       value.append("0");
     }
 
     value.append(nr);
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private int day;
-
-  /** Field description */
   private int month;
-
-  /** Field description */
   private int year;
 }

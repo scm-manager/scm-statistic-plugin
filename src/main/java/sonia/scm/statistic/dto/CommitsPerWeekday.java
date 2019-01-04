@@ -29,16 +29,10 @@
  *
  */
 
-
 package sonia.scm.statistic.dto;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.common.collect.Multiset;
-
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,48 +41,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "commits-per-weekday")
-public class CommitsPerWeekday
-{
+public class CommitsPerWeekday {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public CommitsPerWeekday() {}
+  public CommitsPerWeekday() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param commitsPerWeekday
-   */
-  public CommitsPerWeekday(Multiset<String> commitsPerWeekday)
-  {
+  public CommitsPerWeekday(Multiset<String> commitsPerWeekday) {
     this.commitsPerWeekday = commitsPerWeekday;
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public Multiset<String> getCommitsPerWeekday()
-  {
+  public Multiset<String> getCommitsPerWeekday() {
     return commitsPerWeekday;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   @XmlElement(name = "weekday")
   @XmlJavaTypeAdapter(XmlMultisetStringAdapter.class)
   private Multiset<String> commitsPerWeekday;
+
 }

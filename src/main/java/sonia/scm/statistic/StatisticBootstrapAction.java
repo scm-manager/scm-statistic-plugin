@@ -29,11 +29,7 @@
  *
  */
 
-
-
 package sonia.scm.statistic;
-
-//~--- non-JDK imports --------------------------------------------------------
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.inject.Inject;
@@ -49,8 +45,6 @@ import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryManager;
 import sonia.scm.web.security.PrivilegedAction;
 
-//~--- JDK imports ------------------------------------------------------------
-
 import java.io.IOException;
 
 import java.util.concurrent.ExecutorService;
@@ -58,47 +52,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 /**
- *
  * @author Sebastian Sdorra
  */
-public class StatisticBootstrapAction implements PrivilegedAction
-{
+public class StatisticBootstrapAction implements PrivilegedAction {
 
-  /** Field description */
   private static final String THREAD_EXECUTOR = "StatisticExcecutor";
+  private static final Logger LOG = LoggerFactory.getLogger(BootstrapExecutor.class);
 
-  /**
-   * the logger for BootstrapExecutor
-   */
-  private static final Logger logger =
-    LoggerFactory.getLogger(BootstrapExecutor.class);
-
-  //~--- constructors ---------------------------------------------------------
-
-  /**
-   * Constructs ...
-   *
-   *
-   * @param repositoryMananger
-   * @param manager
-   */
   @Inject
   public StatisticBootstrapAction(RepositoryManager repositoryMananger,
-    StatisticManager manager)
-  {
+                                  StatisticManager manager) {
     this.repositoryMananger = repositoryMananger;
     this.manager = manager;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   */
   @Override
-  public void run()
-  {
+  public void run() {
     Subject subject = SecurityUtils.getSubject();
     Runnable runnable = new BootstrapExecutor(repositoryMananger, manager);
 
@@ -106,52 +75,23 @@ public class StatisticBootstrapAction implements PrivilegedAction
     new Thread(runnable, THREAD_EXECUTOR).start();
   }
 
-  //~--- inner classes --------------------------------------------------------
+  private static class BootstrapExecutor implements Runnable {
 
-  /**
-   * Class description
-   *
-   *
-   * @version        Enter version here..., 12/08/02
-   * @author         Enter your name here...
-   */
-  private static class BootstrapExecutor implements Runnable
-  {
-
-    /**
-     * Constructs ...
-     *
-     *
-     * @param repositoryManager
-     * @param manager
-     */
     public BootstrapExecutor(RepositoryManager repositoryManager,
-      StatisticManager manager)
-    {
+                             StatisticManager manager) {
       this.repositoryManager = repositoryManager;
       this.manager = manager;
     }
 
-    //~--- methods ------------------------------------------------------------
-
-    /**
-     * Method description
-     *
-     */
     @Override
-    public void run()
-    {
+    public void run() {
       ExecutorService executor = createExecutorService();
 
-      for (Repository repository : repositoryManager.getAll())
-      {
-        try
-        {
+      for (Repository repository : repositoryManager.getAll()) {
+        try {
           handleRepository(executor, repository);
-        }
-        catch (IOException ex)
-        {
-          logger.warn(
+        } catch (IOException ex) {
+          LOG.warn(
             "could not create bootstrap statistic for repository ".concat(
               repository.getId()), ex);
         }
@@ -161,90 +101,45 @@ public class StatisticBootstrapAction implements PrivilegedAction
       executor.shutdown();
     }
 
-    /**
-     * Method description
-     *
-     *
-     * @return
-     */
-    private ExecutorService createExecutorService()
-    {
+    private ExecutorService createExecutorService() {
       ThreadFactory factory = createThreadFactory();
 
-      //J-
       return new SubjectAwareExecutorService(
         Executors.newFixedThreadPool(2,
-        factory)
+          factory)
       );
-      //J+
     }
 
-    /**
-     * Method description
-     *
-     *
-     * @return
-     */
-    private ThreadFactory createThreadFactory()
-    {
-      //J-
+    private ThreadFactory createThreadFactory() {
       return new ThreadFactoryBuilder().setNameFormat(
-          StatisticBootstrapWorker.THREADNAME_PATTERN)
+        StatisticBootstrapWorker.THREADNAME_PATTERN)
         .build();
-      //J+
     }
 
-    /**
-     * Method description
-     *
-     *
-     * @param executor
-     * @param repository
-     *
-     * @throws IOException
-     */
     private void handleRepository(ExecutorService executor,
-      Repository repository)
-      throws IOException
-    {
-      if (!manager.contains(repository))
-      {
+                                  Repository repository)
+      throws IOException {
+      if (!manager.contains(repository)) {
         executor.execute(new StatisticBootstrapWorker(manager, repository));
-      }
-      else
-      {
-        StatisticData data = manager.get(repository);
+      } else {
+        StatisticData data = manager.getData(repository);
 
-        if (data.getVersion() != StatisticData.VERSION)
-        {
-          logger.warn(
+        if (data.getVersion() != StatisticData.VERSION) {
+          LOG.warn(
             "data version version of {} is {} and not {}, so we have to reindex",
             repository.getId(), data.getVersion(), StatisticData.VERSION);
           manager.remove(repository);
           executor.execute(new StatisticBootstrapWorker(manager, repository));
-        }
-        else if (logger.isDebugEnabled())
-        {
-          logger.debug("index of {} is ok", repository.getId());
+        } else if (LOG.isDebugEnabled()) {
+          LOG.debug("index of {} is ok", repository.getId());
         }
       }
     }
 
-    //~--- fields -------------------------------------------------------------
-
-    /** Field description */
     private StatisticManager manager;
-
-    /** Field description */
     private RepositoryManager repositoryManager;
   }
 
-
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private StatisticManager manager;
-
-  /** Field description */
   private RepositoryManager repositoryMananger;
 }

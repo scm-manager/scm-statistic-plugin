@@ -29,66 +29,34 @@
  *
  */
 
-
-
 package sonia.scm.statistic.xml;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import com.google.common.base.Objects;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- *
  * @author Sebastian Sdorra
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XmlMultisetStringElement
-{
+public class XmlMultisetStringElement {
 
-  /**
-   * Constructs ...
-   *
-   */
-  public XmlMultisetStringElement() {}
+  public XmlMultisetStringElement() {
+  }
 
-  /**
-   * Constructs ...
-   *
-   *
-   * @param value
-   * @param count
-   */
-  public XmlMultisetStringElement(String value, int count)
-  {
+  public XmlMultisetStringElement(String value, int count) {
     this.value = value;
     this.count = count;
   }
 
-  //~--- methods --------------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @param obj
-   *
-   * @return
-   */
   @Override
-  public boolean equals(Object obj)
-  {
-    if (obj == null)
-    {
+  public boolean equals(Object obj) {
+    if (obj == null) {
       return false;
     }
 
-    if (getClass() != obj.getClass())
-    {
+    if (getClass() != obj.getClass()) {
       return false;
     }
 
@@ -98,47 +66,19 @@ public class XmlMultisetStringElement
       && Objects.equal(count, other.count);
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     return Objects.hashCode(value, count);
   }
 
-  //~--- get methods ----------------------------------------------------------
-
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public int getCount()
-  {
+  public int getCount() {
     return count;
   }
 
-  /**
-   * Method description
-   *
-   *
-   * @return
-   */
-  public String getValue()
-  {
+  public String getValue() {
     return value;
   }
 
-  //~--- fields ---------------------------------------------------------------
-
-  /** Field description */
   private int count;
-
-  /** Field description */
   private String value;
 }
