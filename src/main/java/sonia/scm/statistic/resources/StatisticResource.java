@@ -53,7 +53,7 @@ import javax.ws.rs.PathParam;
  *
  * @author Sebastian Sdorra
  */
-@Path("plugins/statistic")
+@Path("v2/plugins/statistic")
 public class StatisticResource
 {
 

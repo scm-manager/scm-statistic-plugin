@@ -123,7 +123,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("commits-per-author")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public CommitsPerAuthor getCommitPerAuthor(@QueryParam("limit")
   @DefaultValue("10") int limit)
   {
@@ -138,7 +138,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("commits-per-hour")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public CommitsPerHour getCommitPerHour()
   {
     return StatisticCollector.collectCommitsPerHour(data);
@@ -152,7 +152,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("commits-per-month")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public CommitsPerMonth getCommitPerMonth()
   {
     return StatisticCollector.collectCommitsPerMonth(data);
@@ -166,7 +166,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("commits-per-weekday")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public CommitsPerWeekday getCommitPerWeekday()
   {
     return StatisticCollector.collectCommitsPerWeekday(data);
@@ -180,7 +180,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("commits-per-year")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public CommitsPerMonth getCommitPerYear()
   {
     return StatisticCollector.collectCommitsPerYear(data);
@@ -194,7 +194,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("file-modification-count")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public FileModificationCount getFileModificationCount()
   {
     return StatisticCollector.collectFileModificationCount(data);
@@ -208,7 +208,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("raw")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public StatisticData getRaw()
   {
     return data;
@@ -224,7 +224,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("top-modified-files")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public TopModifiedFiles getTopModifiedFiles(@QueryParam("limit")
   @DefaultValue("10") int limit)
   {
@@ -242,7 +242,7 @@ public class StatisticSubResource
    */
   @GET
   @Path("top-words")
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   public TopWords getTopWords(@QueryParam("limit")
   @DefaultValue("10") int limit, @QueryParam("excludes") String excludes)
   {
