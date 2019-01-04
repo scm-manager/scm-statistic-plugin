@@ -1,0 +1,10 @@
+[ignore]
+.*/node_modules/module-deps/.*
+
+[include]
+src/main/js/.*
+
+[libs]
+./node_modules/@scm-manager/ui-components/flow-typed
+
+[options]

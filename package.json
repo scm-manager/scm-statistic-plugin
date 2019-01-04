@@ -1,0 +1,19 @@
+{
+  "name": "@scm-manager/statistic-plugin",
+  "license": "BSD-3-Clause",
+  "main": "src/main/js/index.js",
+  "scripts": {
+    "build": "ui-bundler plugin",
+    "watch": "ui-bundler plugin -w",
+    "lint": "ui-bundler lint",
+    "flow": "flow check"
+  },
+  "dependencies": {
+    "@scm-manager/ui-components": "^2.0.0-20181111-155341",
+    "@scm-manager/ui-extensions": "^0.1.1",
+    "@scm-manager/ui-types": "^2.0.0-20181111-155341"
+  },
+  "devDependencies": {
+    "@scm-manager/ui-bundler": "^0.0.21"
+  }
+}
