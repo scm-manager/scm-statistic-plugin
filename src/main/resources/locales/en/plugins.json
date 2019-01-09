@@ -4,12 +4,31 @@
     "title": "Statistic",
     "charts": {
       "commitsPerAuthor": "Commits per Author",
-      "commitsPerMonth": "Commits per Month",
       "commitsPerHour": "Commity per Hour",
+      "commitsPerMonth": "Commits per Month",
+      "commitsPerYear": "Commity per Year",
       "commitsPerWeekday": "Commits per Weekday",
       "fileModificationCount": "File modification count",
-      "modifiedFiles": "Top modified Files",
-      "wordCount": "Top Word Count"
+      "topModifiedFiles": "Top modified Files",
+      "topWords": "Top Words"
+    },
+    "weekdays": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July"
     },
     "rebuildButton": "Rebuild statistic"
   }

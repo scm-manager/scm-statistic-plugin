@@ -103,17 +103,17 @@ public class StatisticSubResource {
   }
 
   @GET
-  @Path("commits-per-weekday")
-  @Produces(MediaType.APPLICATION_JSON)
-  public CommitsPerWeekday getCommitPerWeekday() {
-    return StatisticCollector.collectCommitsPerWeekday(data);
-  }
-
-  @GET
   @Path("commits-per-year")
   @Produces(MediaType.APPLICATION_JSON)
   public CommitsPerMonth getCommitPerYear() {
     return StatisticCollector.collectCommitsPerYear(data);
+  }
+
+  @GET
+  @Path("commits-per-weekday")
+  @Produces(MediaType.APPLICATION_JSON)
+  public CommitsPerWeekday getCommitPerWeekday() {
+    return StatisticCollector.collectCommitsPerWeekday(data);
   }
 
   @GET
