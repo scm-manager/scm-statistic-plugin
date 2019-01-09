@@ -1,21 +1,23 @@
 // @flow
 import React from "react";
 import { binder } from "@scm-manager/ui-extensions";
-import { NavLink } from "@scm-manager/ui-components";
+import GlobalStatisticNavLink from "./GlobalStatisticNavLink";
 import GlobalStatistic from "./GlobalStatistic";
 import { Route } from "react-router-dom";
 
 const StatisticRoute = ({ url }) => {
-  return (
-    <NavLink to={`${url}/statistic`} label="scm-statistic-plugin.nav-link" />
-  );
+  return <GlobalStatisticNavLink url={url} />;
 };
 
 binder.bind("repository.navigation", StatisticRoute); // TODO: rename StatisticRoute
 
-const StatisticRoute2 = ({ url }) => {
+const StatisticRoute2 = ({ url, repository }) => {
   return (
-    <Route path={`${url}/statistic`} render={() => <GlobalStatistic />} exact />
+    <Route
+      path={`${url}/statistic`}
+      render={() => <GlobalStatistic repository={repository} />}
+      exact
+    />
   );
 };
 

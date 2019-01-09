@@ -6,7 +6,8 @@
     "build": "ui-bundler plugin",
     "watch": "ui-bundler plugin -w",
     "lint": "ui-bundler lint",
-    "flow": "flow check"
+    "flow": "flow check",
+    "test": "ui-bundler test --ci"
   },
   "dependencies": {
     "@scm-manager/ui-components": "^2.0.0-20181111-155341",
@@ -14,6 +15,10 @@
     "@scm-manager/ui-types": "^2.0.0-20181111-155341"
   },
   "devDependencies": {
-    "@scm-manager/ui-bundler": "^0.0.21"
+    "@scm-manager/ui-bundler": "^0.0.21",
+    "fetch-mock": "^6.5.0",
+    "jest": "^23.6.0",
+    "node-fetch": "^2.3.0",
+    "react-router-dom": "^4.3.1"
   }
 }

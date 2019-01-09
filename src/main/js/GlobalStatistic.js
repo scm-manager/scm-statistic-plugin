@@ -1,24 +1,65 @@
 // @flow
 import React from "react";
-import { Title } from "@scm-manager/ui-components";
+import type { Repository } from "@scm-manager/ui-types";
+import { Title, Button, ErrorNotification } from "@scm-manager/ui-components";
 import { translate } from "react-i18next";
-import Button from "@scm-manager/ui-components/src/buttons/Button";
+import { getCommitsPerAuthor } from "./statistics";
 
 type Props = {
-  link: string,
+  repository: Repository,
   t: string => string
 };
 
-class GlobalStatistic extends React.Component<Props> {
+type State = {
+  loading: boolean,
+  commitsPerAuthor: string[],
+  error?: boolean
+};
+
+class GlobalStatistic extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      commitsPerAuthor: [],
+      loading: false
+    };
+  }
+
+  componentDidMount() {
+    const { repository } = this.props;
+
+    this.setState({ ...this.state, loading: true });
+    getCommitsPerAuthor(repository._links.branches.href).then(result => {
+      // <--
+      if (result.error) {
+        this.setState({
+          loading: false,
+          error: result.error
+        });
+      } else {
+        this.setState({
+          commitsPerAuthor: result,
+          loading: false
+        });
+      }
+    });
+  }
+
   render() {
-    const { t, link } = this.props;
+    const { t } = this.props;
+    const { loading, error } = this.state;
+
+    if (error) {
+      return <ErrorNotification error={error} />;
+    }
+
     return (
       <>
         <Title title={t("scm-statistic-plugin.title")} />
         <div>
           <div className="columns">
             <div className="column is-half">
-              {t("scm-statistic-plugin.charts.commitsPerAuthor")}
+              <p>{t("scm-statistic-plugin.charts.commitsPerAuthor")}</p>
             </div>
             <div className="column is-half">
               {t("scm-statistic-plugin.charts.commitsPerMonth")}
