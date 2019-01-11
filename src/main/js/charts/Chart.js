@@ -17,10 +17,9 @@ const styles = {
 };
 
 class Chart extends React.Component<Props> {
-  componentDidMount() {}
-
   render() {
     const { children, classes } = this.props;
+    //TODO: add link and Title to return!
     return (
       <div className={classNames("column is-half", classes.higherMaxColumn)}>
         <div className="media">
