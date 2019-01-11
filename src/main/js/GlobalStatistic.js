@@ -13,7 +13,7 @@ import {
   getTopModifiedFiles,
   getTopWords
 } from "./statistics";
-import { Bar, Pie, Line, Doughnut } from "react-chartjs-2";
+import { Bar, Pie, Line } from "react-chartjs-2";
 
 type Props = {
   repository: Repository,
@@ -332,7 +332,7 @@ class GlobalStatistic extends React.Component<Props, State> {
       return (
         <div className="column is-half">
           {t("scm-statistic-plugin.charts.fileModificationCount")}
-          <Doughnut data={data} />
+          <Pie data={data} />
         </div>
       );
     } else {
@@ -368,7 +368,7 @@ class GlobalStatistic extends React.Component<Props, State> {
       return (
         <div className="column is-half">
           {t("scm-statistic-plugin.charts.topModifiedFiles")}
-          <Doughnut data={data} />
+          <Pie data={data} />
         </div>
       );
     } else {
