@@ -332,7 +332,7 @@ class GlobalStatistic extends React.Component<Props, State> {
       return (
         <div className="column is-half">
           {t("scm-statistic-plugin.charts.fileModificationCount")}
-          <Doughnut data={data} />
+          <Pie data={data} />
         </div>
       );
     } else {
