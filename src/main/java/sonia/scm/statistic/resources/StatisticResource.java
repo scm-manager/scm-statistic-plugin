@@ -75,15 +75,15 @@ public class StatisticResource {
       .method("getSubResource")
       .parameters(namespace, name);
     Links.Builder statisticLinks = Links.linkingTo().single(
-      Link.link("commits-per-author", subResourceLinkBuilder.method("getCommitPerAuthor").parameters().href()),
-      Link.link("commits-per-hour", subResourceLinkBuilder.method("getCommitPerHour").parameters().href()),
-      Link.link("commits-per-month", subResourceLinkBuilder.method("getCommitPerMonth").parameters().href()),
-      Link.link("commits-per-year", subResourceLinkBuilder.method("getCommitPerYear").parameters().href()),
-      Link.link("commits-per-weekday", subResourceLinkBuilder.method("getCommitPerWeekday").parameters().href()),
-      Link.link("file-modification-count", subResourceLinkBuilder.method("getFileModificationCount").parameters().href()),
+      Link.link("commitsPerAuthor", subResourceLinkBuilder.method("getCommitPerAuthor").parameters().href()),
+      Link.link("commitsPerHour", subResourceLinkBuilder.method("getCommitPerHour").parameters().href()),
+      Link.link("commitsPerMonth", subResourceLinkBuilder.method("getCommitPerMonth").parameters().href()),
+      Link.link("commitsPerYear", subResourceLinkBuilder.method("getCommitPerYear").parameters().href()),
+      Link.link("commitsPerWeekday", subResourceLinkBuilder.method("getCommitPerWeekday").parameters().href()),
+      Link.link("fileModificationCount", subResourceLinkBuilder.method("getFileModificationCount").parameters().href()),
       Link.link("raw", subResourceLinkBuilder.method("getRaw").parameters().href()),
-      Link.link("top-modified-files", subResourceLinkBuilder.method("getTopModifiedFiles").parameters().href()),
-      Link.link("top-words", subResourceLinkBuilder.method("getTopWords").parameters().href())
+      Link.link("topModifiedFiles", subResourceLinkBuilder.method("getTopModifiedFiles").parameters().href()),
+      Link.link("topWords", subResourceLinkBuilder.method("getTopWords").parameters().href())
     );
     if (RepositoryPermissions.modify(repositoryManager.get(new NamespaceAndName(namespace, name))).isPermitted()) {
       statisticLinks.single(Link.link("rebuild", subResourceLinkBuilder.method("rebuild").parameters().href()));
