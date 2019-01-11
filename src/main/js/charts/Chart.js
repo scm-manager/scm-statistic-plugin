@@ -23,6 +23,16 @@ class Chart extends React.Component<Props> {
     const { children, classes } = this.props;
     return (
       <div className={classNames("column is-half", classes.higherMaxColumn)}>
+        <div className="media">
+          <div className="media-content">PlatzhalterText</div>
+          <div className="media-right">
+            <span className="icon is-small">
+              <a href="">
+                <i className="fas fa-search-plus" />
+              </a>
+            </span>
+          </div>
+        </div>
         {children}
       </div>
     );
