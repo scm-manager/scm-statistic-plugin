@@ -15,6 +15,7 @@ class GlobalStatisticNavLink extends React.Component<Props> {
     return (
       <NavLink
         to={`${url}/statistic`}
+        icon="fas fa-chart-pie"
         label={t("scm-statistic-plugin.navLink")}
       />
     );
