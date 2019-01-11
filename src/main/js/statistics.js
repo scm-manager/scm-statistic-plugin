@@ -1,6 +1,19 @@
 //@flow
 import { apiClient } from "@scm-manager/ui-components";
 
+export function getLinksForStatistics(url: string){
+  return apiClient
+    .get(url)
+    .then(response => response.json())
+    .then(collection => {
+      return collection._links;
+    })
+    .catch(err=> {
+      return {error: err};
+    });
+}
+
+
 export function getCommitsPerAuthor(url: string) {
   return apiClient
     .get(url)

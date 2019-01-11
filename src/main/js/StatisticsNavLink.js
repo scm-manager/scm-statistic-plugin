@@ -8,7 +8,7 @@ type Props = {
   t: string => string
 };
 
-class GlobalStatisticNavLink extends React.Component<Props> {
+class StatisticsNavLink extends React.Component<Props> {
   render() {
     const { url, t } = this.props;
 
@@ -22,4 +22,4 @@ class GlobalStatisticNavLink extends React.Component<Props> {
   }
 }
 
-export default translate("plugins")(GlobalStatisticNavLink);
+export default translate("plugins")(StatisticsNavLink);

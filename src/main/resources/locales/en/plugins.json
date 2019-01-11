@@ -4,9 +4,9 @@
     "title": "Statistic",
     "charts": {
       "commitsPerAuthor": "Commits per Author",
-      "commitsPerHour": "Commity per Hour",
+      "commitsPerHour": "Commits per Hour",
       "commitsPerMonth": "Commits per Month",
-      "commitsPerYear": "Commity per Year",
+      "commitsPerYear": "Commits per Year",
       "commitsPerWeekday": "Commits per Weekday",
       "fileModificationCount": "File modification count",
       "topModifiedFiles": "Top modified Files",
