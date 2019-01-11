@@ -39,6 +39,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sonia.scm.plugin.Extension;
+import sonia.scm.repository.NamespaceAndName;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryPermissions;
 import sonia.scm.repository.api.RepositoryServiceFactory;
@@ -95,11 +96,11 @@ public class StatisticManager {
   }
 
   public void rebuild(Repository repository) {
+    RepositoryPermissions.modify(repository).check();
     LOG.warn("rebuild statistic for repository {}", repository.getId());
 
     Subject subject = SecurityUtils.getSubject();
 
-    subject.checkRole(Role.ADMIN);
     remove(repository);
 
     Runnable worker = new StatisticBootstrapWorker(this, repository);

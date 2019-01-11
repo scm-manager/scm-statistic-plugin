@@ -39,6 +39,7 @@ import sonia.scm.api.v2.resources.ScmPathInfoStore;
 import sonia.scm.repository.NamespaceAndName;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryManager;
+import sonia.scm.repository.RepositoryPermissions;
 import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.StatisticManager;
 
@@ -73,19 +74,22 @@ public class StatisticResource {
     LinkBuilder subResourceLinkBuilder = new LinkBuilder(scmPathInfoStore.get().get(), StatisticResource.class, StatisticSubResource.class)
       .method("getSubResource")
       .parameters(namespace, name);
+    Links.Builder statisticLinks = Links.linkingTo().single(
+      Link.link("commits-per-author", subResourceLinkBuilder.method("getCommitPerAuthor").parameters().href()),
+      Link.link("commits-per-hour", subResourceLinkBuilder.method("getCommitPerHour").parameters().href()),
+      Link.link("commits-per-month", subResourceLinkBuilder.method("getCommitPerMonth").parameters().href()),
+      Link.link("commits-per-year", subResourceLinkBuilder.method("getCommitPerYear").parameters().href()),
+      Link.link("commits-per-weekday", subResourceLinkBuilder.method("getCommitPerWeekday").parameters().href()),
+      Link.link("file-modification-count", subResourceLinkBuilder.method("getFileModificationCount").parameters().href()),
+      Link.link("raw", subResourceLinkBuilder.method("getRaw").parameters().href()),
+      Link.link("top-modified-files", subResourceLinkBuilder.method("getTopModifiedFiles").parameters().href()),
+      Link.link("top-words", subResourceLinkBuilder.method("getTopWords").parameters().href())
+    );
+    if (RepositoryPermissions.modify(repositoryManager.get(new NamespaceAndName(namespace, name))).isPermitted()) {
+      statisticLinks.single(Link.link("rebuild", subResourceLinkBuilder.method("rebuild").parameters().href()));
+    }
     return Response.ok(new IndexDto(
-      Links.linkingTo().single(
-        Link.link("commits-per-author", subResourceLinkBuilder.method("getCommitPerAuthor").parameters().href()),
-        Link.link("commits-per-hour", subResourceLinkBuilder.method("getCommitPerHour").parameters().href()),
-        Link.link("commits-per-month", subResourceLinkBuilder.method("getCommitPerMonth").parameters().href()),
-        Link.link("commits-per-year", subResourceLinkBuilder.method("getCommitPerYear").parameters().href()),
-        Link.link("commits-per-weekday", subResourceLinkBuilder.method("getCommitPerWeekday").parameters().href()),
-        Link.link("file-modification-count", subResourceLinkBuilder.method("getFileModificationCount").parameters().href()),
-        Link.link("raw", subResourceLinkBuilder.method("getRaw").parameters().href()),
-        Link.link("top-modified-files", subResourceLinkBuilder.method("getTopModifiedFiles").parameters().href()),
-        Link.link("top-words", subResourceLinkBuilder.method("getTopWords").parameters().href()),
-        Link.link("rebuild", subResourceLinkBuilder.method("rebuild").parameters().href())
-      ).build())).build();
+      statisticLinks.build())).build();
   }
 
   @Path("{namespace}/{name}")
