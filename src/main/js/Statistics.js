@@ -2,10 +2,11 @@
 import React from "react";
 import type { Repository } from "@scm-manager/ui-types";
 import {
-  Title,
-  Button,
+  Loading,
   ErrorNotification,
-  Loading
+  Title,
+  SubmitButton,
+  confirmAlert
 } from "@scm-manager/ui-components";
 import { translate } from "react-i18next";
 import {
@@ -60,6 +61,28 @@ class GlobalStatistic extends React.Component<Props, State> {
     });
   }
 
+  rebuildStatistics = () => {
+    // do something
+  };
+
+  confirmRebuildStatistics = () => {
+    const { t } = this.props;
+    confirmAlert({
+      title: t("scm-statistic-plugin.confirmRebuildStatistics.title"),
+      message: t("scm-statistic-plugin.confirmRebuildStatistics.message"),
+      buttons: [
+        {
+          label: t("scm-statistic-plugin.confirmRebuildStatistics.submit"),
+          onClick: () => this.rebuildStatistics()
+        },
+        {
+          label: t("scm-statistic-plugin.confirmRebuildStatistics.cancel"),
+          onClick: () => null
+        }
+      ]
+    });
+  };
+
   render() {
     const { t } = this.props;
     const { loading, error, statisticsLinks } = this.state;
@@ -76,23 +99,19 @@ class GlobalStatistic extends React.Component<Props, State> {
       <>
         <Title title={t("scm-statistic-plugin.title")} />
 
-        <div className="columns">
+        <div className="columns is-multiline">
           <Chart>
             <CommitsPerAuthor url={statisticsLinks.commitsPerAuthor.href} />
           </Chart>
           <Chart>
             <CommitsPerHour url={statisticsLinks.commitsPerHour.href} />
           </Chart>
-        </div>
-        <div className="columns">
           <Chart>
             <CommitsPerMonth url={statisticsLinks.commitsPerMonth.href} />
           </Chart>
           <Chart>
             <CommitsPerYear url={statisticsLinks.commitsPerYear.href} />
           </Chart>
-        </div>
-        <div className="columns">
           <Chart>
             <CommitsPerWeekday url={statisticsLinks.commitsPerWeekday.href} />
           </Chart>
@@ -101,8 +120,6 @@ class GlobalStatistic extends React.Component<Props, State> {
               url={statisticsLinks.fileModificationCount.href}
             />
           </Chart>
-        </div>
-        <div className="columns">
           <Chart>
             <TopModifiedFiles url={statisticsLinks.topModifiedFiles.href} />
           </Chart>
@@ -110,8 +127,9 @@ class GlobalStatistic extends React.Component<Props, State> {
             <TopWords url={statisticsLinks.topWords.href} />
           </Chart>
         </div>
-        <Button
+        <SubmitButton
           label={t("scm-statistic-plugin.rebuildButton")}
+          action={this.confirmRebuildStatistics}
           color="warning"
         />
       </>

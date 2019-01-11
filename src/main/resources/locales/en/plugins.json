@@ -12,6 +12,12 @@
       "topModifiedFiles": "Top modified Files",
       "topWords": "Top Words"
     },
-    "rebuildButton": "Rebuild statistic"
+    "rebuildButton": "Rebuild statistics",
+    "confirmRebuildStatistics": {
+      "title": "Rebuild statistics",
+      "message": "Do you really want to rebuild data for statistics?",
+      "submit": "Yes",
+      "cancel": "No"
+    }
   }
 }
