@@ -5,9 +5,8 @@ export function getCommitsPerAuthor(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
-    .then(collection => collection.author)
-    .then(authors => {
-      return authors.map(a => a);
+    .then(collection => {
+      return collection.author;
     })
     .catch(err => {
       return { error: err };
@@ -18,9 +17,8 @@ export function getCommitsPerHour(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
-    .then(collection => collection.hour)
-    .then(hours => {
-      return hours.map(h => h);
+    .then(collection => {
+      return collection.hour;
     })
     .catch(err => {
       return { error: err };
@@ -31,9 +29,8 @@ export function getCommitsPerMonth(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
-    .then(collection => collection.month)
-    .then(months => {
-      return months.map(m => m);
+    .then(collection => {
+      return collection.month;
     })
     .catch(err => {
       return { error: err };
@@ -44,9 +41,8 @@ export function getCommitsPerYear(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
-    .then(collection => collection.year)
-    .then(years => {
-      return years.map(y => y);
+    .then(collection => {
+      return collection.month;
     })
     .catch(err => {
       return { error: err };
@@ -57,9 +53,8 @@ export function getCommitsPerWeekday(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
-    .then(collection => collection.weekday)
-    .then(weekdays => {
-      return weekdays.map(d => d);
+    .then(collection => {
+      return collection.weekday;
     })
     .catch(err => {
       return { error: err };
@@ -70,9 +65,8 @@ export function getFileModificationCount(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
-    .then(collection => collection.modification)
-    .then(modifications => {
-      return modifications.map(m => m);
+    .then(collection => {
+      return collection.modification;
     })
     .catch(err => {
       return { error: err };
@@ -83,9 +77,8 @@ export function getTopModifiedFiles(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
-    .then(collection => collection.file)
-    .then(files => {
-      return files.map(f => f);
+    .then(collection => {
+      return collection.file;
     })
     .catch(err => {
       return { error: err };
@@ -96,9 +89,8 @@ export function getTopWords(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
-    .then(collection => collection.word)
-    .then(words => {
-      return words.map(w => w);
+    .then(collection => {
+      return collection.word;
     })
     .catch(err => {
       return { error: err };

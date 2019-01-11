@@ -43,7 +43,7 @@ describe("API get statistics", () => {
     );
 
     getCommitsPerAuthor(PATH + "/commits-per-author").then(response => {
-      expect(response).toEqual(commitsPerAuthor.author); // Is .author notation okay?
+      expect(response).toEqual(commitsPerAuthor.author);
       done();
     });
   });
@@ -84,7 +84,7 @@ describe("API get statistics", () => {
     fetchMock.getOnce("/api/v2" + PATH + "/commits-per-hour", commitsPerHour);
 
     getCommitsPerHour(PATH + "/commits-per-hour").then(response => {
-      expect(response).toEqual(commitsPerHour.hour); // Is .hour notation okay?
+      expect(response).toEqual(commitsPerHour.hour);
       done();
     });
   });
@@ -121,7 +121,7 @@ describe("API get statistics", () => {
     fetchMock.getOnce("/api/v2" + PATH + "/commits-per-month", commitsPerMonth);
 
     getCommitsPerMonth(PATH + "/commits-per-month").then(response => {
-      expect(response).toEqual(commitsPerMonth.month); // Is .month notation okay?
+      expect(response).toEqual(commitsPerMonth.month);
       done();
     });
   });
@@ -138,7 +138,7 @@ describe("API get statistics", () => {
   });
 
   const commitsPerYear: commitsPerYear = {
-    year: [
+    month: [
       {
         count: 42,
         value: "2018-12"
@@ -158,7 +158,7 @@ describe("API get statistics", () => {
     fetchMock.getOnce("/api/v2" + PATH + "/commits-per-year", commitsPerYear);
 
     getCommitsPerYear(PATH + "/commits-per-year").then(response => {
-      expect(response).toEqual(commitsPerYear.year); // Is .year notation okay?
+      expect(response).toEqual(commitsPerYear.month);
       done();
     });
   });
@@ -198,7 +198,7 @@ describe("API get statistics", () => {
     );
 
     getCommitsPerWeekday(PATH + "/commits-per-weekday").then(response => {
-      expect(response).toEqual(commitsPerWeekday.weekday); // Is .weekday notation okay?
+      expect(response).toEqual(commitsPerWeekday.weekday);
       done();
     });
   });
@@ -239,7 +239,7 @@ describe("API get statistics", () => {
 
     getFileModificationCount(PATH + "/file-modification-count").then(
       response => {
-        expect(response).toEqual(fileModificationCount.modification); // Is .modification notation okay?
+        expect(response).toEqual(fileModificationCount.modification);
         done();
       }
     );
@@ -282,7 +282,7 @@ describe("API get statistics", () => {
     );
 
     getTopModifiedFiles(PATH + "/top-modified-files").then(response => {
-      expect(response).toEqual(topModifiedFiles.file); // Is .modification notation okay?
+      expect(response).toEqual(topModifiedFiles.file);
       done();
     });
   });
@@ -319,7 +319,7 @@ describe("API get statistics", () => {
     fetchMock.getOnce("/api/v2" + PATH + "/top-words", topWords);
 
     getTopWords(PATH + "/top-words").then(response => {
-      expect(response).toEqual(topWords.word); // Is .word notation okay?
+      expect(response).toEqual(topWords.word);
       done();
     });
   });
