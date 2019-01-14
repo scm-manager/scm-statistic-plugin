@@ -13,7 +13,6 @@ export function getLinksForStatistics(url: string){
     });
 }
 
-
 export function getCommitsPerAuthor(url: string) {
   return apiClient
     .get(url)
@@ -104,6 +103,17 @@ export function getTopWords(url: string) {
     .then(response => response.json())
     .then(collection => {
       return collection.word;
+    })
+    .catch(err => {
+      return { error: err };
+    });
+}
+
+export function rebuildStatistics(url: string) {
+  return apiClient
+    .post(url)
+    .then(() => {
+      return {success: true};
     })
     .catch(err => {
       return { error: err };

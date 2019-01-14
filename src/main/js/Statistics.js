@@ -20,7 +20,7 @@ import {
   TopModifiedFiles,
   TopWords
 } from "./charts";
-import { getLinksForStatistics } from "./statistics";
+import {getLinksForStatistics, rebuildStatistics} from "./statistics";
 
 type Props = {
   repository: Repository,
@@ -62,7 +62,20 @@ class GlobalStatistic extends React.Component<Props, State> {
   }
 
   rebuildStatistics = () => {
-    // do something
+    const {statisticsLinks} = this.state;
+    this.setState({ ...this.state, loading: true });
+
+    rebuildStatistics(statisticsLinks.rebuild.href).then(result => {
+      if(result.error){
+        this.setState({
+          error: result.error,
+          loading: false
+        });
+      }
+      else {
+        //rebuild
+      }
+    });
   };
 
   confirmRebuildStatistics = () => {

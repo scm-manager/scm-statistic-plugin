@@ -8,7 +8,7 @@ import {
   getCommitsPerWeekday,
   getFileModificationCount,
   getTopModifiedFiles,
-  getTopWords
+  getTopWords, rebuildStatistics
 } from "./statistics";
 
 describe("API get statistics", () => {
@@ -333,5 +333,27 @@ describe("API get statistics", () => {
       expect(response.error).toBeDefined();
       done();
     });
+  });
+
+  it("should rebuild successfully", done => {
+    fetchMock.postOnce("/api/v2" + PATH + "/rebuild", {
+      status: 204
+    });
+
+    rebuildStatistics(PATH + "/rebuild").then(response => {
+      expect(response).toEqual({success: true});
+      done();
+    })
+  });
+
+  it("should fail on rebuild ", done => {
+    fetchMock.postOnce("/api/v2" + PATH + "/rebuild", {
+      status: 500
+    });
+
+    rebuildStatistics(PATH + "/rebuild").then(response => {
+      expect(response.error).toBeDefined();
+      done();
+    })
   });
 });

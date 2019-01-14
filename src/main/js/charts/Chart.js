@@ -23,7 +23,7 @@ class Chart extends React.Component<Props> {
     return (
       <div className={classNames("column is-half", classes.higherMaxColumn)}>
         <div className="media">
-          <div className="media-content">PlatzhalterText</div>
+          <div className="media-content">{children}</div>
           <div className="media-right">
             <span className="icon is-small">
               <a href="">
@@ -32,7 +32,6 @@ class Chart extends React.Component<Props> {
             </span>
           </div>
         </div>
-        {children}
       </div>
     );
   }
