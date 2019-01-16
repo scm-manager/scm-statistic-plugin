@@ -60,6 +60,12 @@ class CommitsPerMonth extends React.Component<Props, State> {
 
     let labels = [];
     let datas = [];
+    const options = {
+      maintainAspectRatio: false,	// Don't maintain w/h ratio
+      legend: {
+        position: 'bottom'
+      }
+    };
     for (let singleCommitsPerMonth of commitsPerMonth) {
       labels.push(singleCommitsPerMonth.value);
       datas.push(singleCommitsPerMonth.count);
@@ -79,7 +85,7 @@ class CommitsPerMonth extends React.Component<Props, State> {
     return (
       <>
         {t("scm-statistic-plugin.charts.commitsPerMonth")}
-        <Line data={data} />
+        <Line data={data} options={options} />
       </>
     );
   }

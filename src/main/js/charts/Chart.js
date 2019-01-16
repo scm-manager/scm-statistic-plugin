@@ -21,7 +21,10 @@ const styles = {
   detailedViewButton: {
     cursor: "pointer",
     float:"right"
-  }
+  },
+  canvasContainer: {
+  height: "30vh"
+}
 };
 
 class Chart extends React.Component<Props, State> {
@@ -64,8 +67,8 @@ class Chart extends React.Component<Props, State> {
               />
             </header>
             <section className="modal-card-body">
-              <div className="content">
-                {children}
+              <div  className={classNames("content", classes.canvasContainer)}>
+                <article className={classNames(classes.canvasContainer)}>{children}</article>
               </div>
             </section>
           </div>
@@ -82,7 +85,7 @@ class Chart extends React.Component<Props, State> {
                 <i className="fas fa-search-plus"/>
             </span>
           </div>
-            {children}
+          <article className={classNames(classes.canvasContainer)}>{children}</article>
 
         </div>
       </>

@@ -60,6 +60,13 @@ class CommitsPerHour extends React.Component<Props, State> {
 
     let labels = [];
     let datas = [];
+
+    const options = {
+      maintainAspectRatio: false,	// Don't maintain w/h ratio
+      legend: {
+        position: 'bottom'
+      }
+    };
     for (let singleCommitsPerHour of commitsPerHour) {
       labels.push(singleCommitsPerHour.value);
       datas.push(singleCommitsPerHour.count);
@@ -79,7 +86,7 @@ class CommitsPerHour extends React.Component<Props, State> {
     return (
       <>
         {t("scm-statistic-plugin.charts.commitsPerHour")}
-        <Line data={data} />
+        <Line data={data} options={options}/>
       </>
     );
   }

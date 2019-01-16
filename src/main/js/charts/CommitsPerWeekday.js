@@ -60,6 +60,12 @@ class CommitsPerWeekday extends React.Component<Props, State> {
 
     let labels = [];
     let datas = [];
+    const options = {
+      maintainAspectRatio: false,	// Don't maintain w/h ratio
+      legend: {
+        position: 'bottom'
+      }
+    };
     for (let singleCommitPerWeekday of commitsPerWeekday) {
       labels.push(singleCommitPerWeekday.value);
       datas.push(singleCommitPerWeekday.count);
@@ -79,7 +85,7 @@ class CommitsPerWeekday extends React.Component<Props, State> {
     return (
       <>
         {t("scm-statistic-plugin.charts.commitsPerWeekday")}
-        <Bar data={data} />
+        <Bar data={data} options={options} />
       </>
     );
   }

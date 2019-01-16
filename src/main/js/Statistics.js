@@ -33,6 +33,8 @@ type State = {
   statisticsLinks?: any //TODO
 };
 
+
+
 class GlobalStatistic extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -113,7 +115,7 @@ class GlobalStatistic extends React.Component<Props, State> {
     return (
       <>
         <Title title={t("scm-statistic-plugin.title")} />
-        <div className="columns is-multiline">
+        <div className="columns is-multiline is-vcentered">
           <Chart>
             <CommitsPerAuthor url={statisticsLinks.commitsPerAuthor.href} />
           </Chart>
@@ -135,11 +137,12 @@ class GlobalStatistic extends React.Component<Props, State> {
             />
           </Chart>
           <Chart>
-            <TopModifiedFiles url={statisticsLinks.topModifiedFiles.href} />
-          </Chart>
-          <Chart>
             <TopWords url={statisticsLinks.topWords.href} />
           </Chart>
+          <Chart>
+            <TopModifiedFiles url={statisticsLinks.topModifiedFiles.href} />
+          </Chart>
+
         </div>
         <SubmitButton
           label={t("scm-statistic-plugin.rebuildButton")}

@@ -73,6 +73,14 @@ class CommitsPerAuthor extends React.Component<Props, State> {
       "maroon",
       "navy"
     ];
+
+    const options = {
+      maintainAspectRatio: false,	// Don't maintain w/h ratio
+      legend: {
+        position: 'bottom'
+      }
+    };
+
     for (let singleCommitsPerAuthor of commitsPerAuthor) {
       labels.push(singleCommitsPerAuthor.value);
       datas.push(singleCommitsPerAuthor.count);
@@ -92,7 +100,7 @@ class CommitsPerAuthor extends React.Component<Props, State> {
     return (
       <>
         {t("scm-statistic-plugin.charts.commitsPerAuthor")}
-        <Pie data={data} />
+        <Pie data={data} options={options}/>
       </>
     );
   }
