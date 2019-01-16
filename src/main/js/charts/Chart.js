@@ -4,9 +4,10 @@ import { translate } from "react-i18next";
 import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import classNames from "classnames";
 import injectSheet from "react-jss";
+import type StatisticData from "./../DataTypes";
 
 type RenderProps = {
-  statisticData: [],
+  statisticData: StatisticData,
   options: any
 };
 
@@ -23,7 +24,7 @@ type State = {
   error?: Error,
   loading: boolean,
   showModal: boolean,
-  statisticData?: []
+  statisticData?: StatisticData
 };
 
 const styles = {
@@ -59,8 +60,19 @@ class Chart extends React.Component<Props, State> {
           error: result.error
         });
       } else {
+
+        let count = [];
+        let value = [];
+
+        for (let statisticData of result) {
+          value.push(statisticData.value);
+          count.push(statisticData.count);
+        }
         this.setState({
-          statisticData: result,
+          statisticData: {
+            value: value,
+            count: count
+          },
           loading: false
         });
       }
@@ -84,6 +96,27 @@ class Chart extends React.Component<Props, State> {
     this.getStatistics();
   }
 
+  createChartsObject() {
+    const {classes} = this.props;
+    console.log(this.state.statisticData);
+
+    const renderProps: RenderProps = {
+      statisticData: this.state.statisticData,
+      options: {
+        maintainAspectRatio: false, // Don't maintain w/h ratio
+        legend: {
+          position: "bottom"
+        }
+      }
+    };
+
+    return (
+      <article className={classNames(classes.canvasContainer)}>
+        {this.props.render(renderProps)}
+      </article>
+    );
+  }
+
   render() {
     const { t, classes } = this.props;
     const { error, loading, statisticData, showModal } = this.state;
@@ -96,7 +129,7 @@ class Chart extends React.Component<Props, State> {
       return <Loading />;
     }
 
-    if (statisticData.length <= 0) {
+    if (statisticData.value <= 0 || statisticData.label <= 0) {
       return (
         <div className="notification is-warning">
           {t("scm-statistic-plugin.noData")}
@@ -104,15 +137,7 @@ class Chart extends React.Component<Props, State> {
       );
     }
 
-    const renderProps: RenderProps = {
-      statisticData: this.state.statisticData,
-      options: {
-        maintainAspectRatio: false, // Don't maintain w/h ratio
-        legend: {
-          position: "bottom"
-        }
-      }
-    };
+
 
     let modal = null;
     if (showModal) {
@@ -132,9 +157,7 @@ class Chart extends React.Component<Props, State> {
             </header>
             <section className="modal-card-body">
               <div className={classNames("content", classes.canvasContainer)}>
-                <article className={classNames(classes.canvasContainer)}>
-                  {this.props.render(renderProps)}
-                </article>
+                {this.createChartsObject()}
               </div>
             </section>
           </div>
@@ -155,9 +178,7 @@ class Chart extends React.Component<Props, State> {
               <i className="fas fa-search-plus" />
             </span>
           </div>
-          <article className={classNames(classes.canvasContainer)}>
-            {this.props.render(renderProps)}
-          </article>
+          {this.createChartsObject()}
         </div>
       );
     }

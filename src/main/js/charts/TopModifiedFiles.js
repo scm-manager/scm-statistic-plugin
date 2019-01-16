@@ -1,24 +1,21 @@
 // @flow
 import React from "react";
-import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import { translate } from "react-i18next";
-import { getTopModifiedFiles } from "./../statistics";
 import { Doughnut } from "react-chartjs-2";
+import type StatisticData from "./../DataTypes";
 
 type Props = {
-  statisticData: [],
+  statisticData: StatisticData,
   options: any,
   t: string => string
 };
+
 
 class TopModifiedFiles extends React.Component<Props> {
 
   render() {
     const { t, options, statisticData } = this.props;
 
-
-    let labels = [];
-    let datas = [];
     let colors = [
       "yellow",
       "blue",
@@ -34,18 +31,13 @@ class TopModifiedFiles extends React.Component<Props> {
     ];
 
 
-    for (let singleModifiedFiles of statisticData) {
-      labels.push(singleModifiedFiles.value);
-      datas.push(singleModifiedFiles.count);
-    }
-
     const data = {
-      labels: labels,
+      labels: statisticData.value,
       datasets: [
         {
           label: t("scm-statistic-plugin.charts.topModifiedFiles"),
           backgroundColor: colors,
-          data: datas
+          data: statisticData.count
         }
       ]
     };

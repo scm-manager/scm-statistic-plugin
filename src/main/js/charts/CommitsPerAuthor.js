@@ -2,9 +2,10 @@
 import React from "react";
 import { translate } from "react-i18next";
 import { Pie } from "react-chartjs-2";
+import type StatisticData from "./../DataTypes";
 
 type Props = {
-  statisticData: [],
+  statisticData: StatisticData,
   options: any,
   t: string => string
 };
@@ -16,8 +17,6 @@ class CommitsPerAuthor extends React.Component<Props> {
   render() {
     const { t, statisticData, options } = this.props;
 
-    let labels = [];
-    let datas = [];
     let colors = [
       "yellow",
       "blue",
@@ -32,18 +31,13 @@ class CommitsPerAuthor extends React.Component<Props> {
       "navy"
     ];
 
-    for (let singleCommitsPerAuthor of statisticData) {
-      labels.push(singleCommitsPerAuthor.value);
-      datas.push(singleCommitsPerAuthor.count);
-    }
-
     const data = {
-      labels: labels,
+      labels: statisticData.value,
       datasets: [
         {
           label: t("scm-statistic-plugin.charts.commitsPerAuthor"),
           backgroundColor: colors,
-          data: datas
+          data: statisticData.count
         }
       ]
     };

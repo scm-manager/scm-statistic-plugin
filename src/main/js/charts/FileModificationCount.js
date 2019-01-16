@@ -1,15 +1,15 @@
 // @flow
 import React from "react";
-import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import { translate } from "react-i18next";
-import { getFileModificationCount } from "./../statistics";
 import { Pie } from "react-chartjs-2";
+import type StatisticData from "./../DataTypes";
 
 type Props = {
-  statisticData: [],
+  statisticData: StatisticData,
   options: any,
   t: string => string
 };
+
 
 
 class FileModificationCount extends React.Component<Props> {
@@ -18,18 +18,10 @@ class FileModificationCount extends React.Component<Props> {
   render() {
     const { t, statisticData, options } = this.props;
 
-
-    let labels = [];
-    let datas = [];
-    for (let singleFileModificationCount of statisticData) {
-      labels.push(singleFileModificationCount.value);
-      datas.push(singleFileModificationCount.count);
-    }
-
     let colors = [];
 
-    for (let fileModification of statisticData) {
-      switch (fileModification.value) {
+    for (let fileModification of statisticData.value) {
+      switch (fileModification) {
         case "removed":
           colors.push("#ff3860");
           break;
@@ -43,12 +35,12 @@ class FileModificationCount extends React.Component<Props> {
     }
 
     const data = {
-      labels: labels,
+      labels: statisticData.value,
       datasets: [
         {
           label: t("scm-statistic-plugin.charts.fileModificationCount"),
           backgroundColor: colors,
-          data: datas
+          data: statisticData.count
         }
       ]
     };

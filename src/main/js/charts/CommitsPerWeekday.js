@@ -1,15 +1,15 @@
 // @flow
 import React from "react";
-import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import { translate } from "react-i18next";
-import { getCommitsPerWeekday } from "./../statistics";
 import { Bar } from "react-chartjs-2";
+import type StatisticData from "./../DataTypes";
 
 type Props = {
-  statisticData: [],
+  statisticData: StatisticData,
   options: any,
   t: string => string
 };
+
 
 class CommitsPerWeekday extends React.Component<Props> {
 
@@ -17,21 +17,14 @@ class CommitsPerWeekday extends React.Component<Props> {
   render() {
     const { t, statisticData, options } = this.props;
 
-    let labels = [];
-    let datas = [];
-
-    for (let singleCommitPerWeekday of statisticData) {
-      labels.push(singleCommitPerWeekday.value);
-      datas.push(singleCommitPerWeekday.count);
-    }
 
     const data = {
-      labels: labels,
+      labels: statisticData.value,
       datasets: [
         {
           label: t("scm-statistic-plugin.charts.commitsPerWeekday"),
           backgroundColor: "#33b2e8",
-          data: datas
+          data: statisticData.count
         }
       ]
     };
