@@ -16,10 +16,11 @@ type State = {
 
 const styles = {
   higherMaxColumn: {
-    maxHeight: "225px !important"
+    maxHeight: "none !important"
   },
-  pointer: {
-    cursor: "pointer"
+  detailedViewButton: {
+    cursor: "pointer",
+    float:"right"
   }
 };
 
@@ -76,14 +77,13 @@ class Chart extends React.Component<Props, State> {
       <>
         {modal}
         <div className={classNames("column is-half", classes.higherMaxColumn)}>
-          <div className="media">
-            <div className="media-content">{children}</div>
-            <div className={classNames(classes.pointer, "media-right")} onClick={this.showModal}>
+          <div className={classNames(classes.detailedViewButton)} onClick={this.showModal}>
             <span className="icon is-small">
                 <i className="fas fa-search-plus"/>
             </span>
-            </div>
           </div>
+            {children}
+
         </div>
       </>
     );
