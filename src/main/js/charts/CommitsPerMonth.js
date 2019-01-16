@@ -61,9 +61,9 @@ class CommitsPerMonth extends React.Component<Props, State> {
     let labels = [];
     let datas = [];
     const options = {
-      maintainAspectRatio: false,	// Don't maintain w/h ratio
+      maintainAspectRatio: false, // Don't maintain w/h ratio
       legend: {
-        position: 'bottom'
+        position: "bottom"
       }
     };
     for (let singleCommitsPerMonth of commitsPerMonth) {

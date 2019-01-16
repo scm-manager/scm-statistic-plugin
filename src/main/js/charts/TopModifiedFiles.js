@@ -75,9 +75,9 @@ class TopModifiedFiles extends React.Component<Props, State> {
     ];
 
     const options = {
-      maintainAspectRatio: false,	// Don't maintain w/h ratio
+      maintainAspectRatio: false, // Don't maintain w/h ratio
       legend: {
-        position: 'bottom'
+        position: "bottom"
       }
     };
     for (let singleModifiedFiles of topModifiedFiles) {
@@ -99,7 +99,7 @@ class TopModifiedFiles extends React.Component<Props, State> {
     return (
       <>
         {t("scm-statistic-plugin.charts.topModifiedFiles")}
-        <Doughnut data={data} options={options}/>
+        <Doughnut data={data} options={options} />
       </>
     );
   }

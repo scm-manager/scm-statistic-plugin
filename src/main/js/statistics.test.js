@@ -8,7 +8,8 @@ import {
   getCommitsPerWeekday,
   getFileModificationCount,
   getTopModifiedFiles,
-  getTopWords, rebuildStatistics
+  getTopWords,
+  rebuildStatistics
 } from "./statistics";
 
 describe("API get statistics", () => {
@@ -341,9 +342,9 @@ describe("API get statistics", () => {
     });
 
     rebuildStatistics(PATH + "/rebuild").then(response => {
-      expect(response).toEqual({success: true});
+      expect(response).toEqual({ success: true });
       done();
-    })
+    });
   });
 
   it("should fail on rebuild ", done => {
@@ -354,6 +355,6 @@ describe("API get statistics", () => {
     rebuildStatistics(PATH + "/rebuild").then(response => {
       expect(response.error).toBeDefined();
       done();
-    })
+    });
   });
 });

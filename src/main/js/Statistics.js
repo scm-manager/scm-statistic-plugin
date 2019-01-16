@@ -20,7 +20,7 @@ import {
   TopModifiedFiles,
   TopWords
 } from "./charts";
-import {getLinksForStatistics, rebuildStatistics} from "./statistics";
+import { getLinksForStatistics, rebuildStatistics } from "./statistics";
 
 type Props = {
   repository: Repository,
@@ -32,8 +32,6 @@ type State = {
   error?: boolean,
   statisticsLinks?: any //TODO
 };
-
-
 
 class GlobalStatistic extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -64,20 +62,19 @@ class GlobalStatistic extends React.Component<Props, State> {
   }
 
   rebuildStatistics = () => {
-    const {statisticsLinks} = this.state;
+    const { statisticsLinks } = this.state;
     this.setState({ ...this.state, loading: true });
 
     rebuildStatistics(statisticsLinks.rebuild.href).then(result => {
-      if(result.error){
+      if (result.error) {
         this.setState({
           error: result.error,
           loading: false
         });
-      }
-      else {
+      } else {
         this.setState({
           loading: false
-        })
+        });
       }
     });
   };
@@ -142,7 +139,6 @@ class GlobalStatistic extends React.Component<Props, State> {
           <Chart>
             <TopModifiedFiles url={statisticsLinks.topModifiedFiles.href} />
           </Chart>
-
         </div>
         <SubmitButton
           label={t("scm-statistic-plugin.rebuildButton")}

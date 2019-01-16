@@ -67,9 +67,9 @@ class FileModificationCount extends React.Component<Props, State> {
 
     let colors = [];
     const options = {
-      maintainAspectRatio: false,	// Don't maintain w/h ratio
+      maintainAspectRatio: false, // Don't maintain w/h ratio
       legend: {
-        position: 'bottom'
+        position: "bottom"
       }
     };
     for (let fileModification of fileModificationCount) {
@@ -100,7 +100,7 @@ class FileModificationCount extends React.Component<Props, State> {
     return (
       <>
         {t("scm-statistic-plugin.charts.fileModificationCount")}
-        <Pie data={data} options={options}/>
+        <Pie data={data} options={options} />
       </>
     );
   }

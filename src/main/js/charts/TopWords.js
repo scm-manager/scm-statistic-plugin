@@ -61,9 +61,9 @@ class TopWords extends React.Component<Props, State> {
     let labels = [];
     let datas = [];
     const options = {
-      maintainAspectRatio: false,	// Don't maintain w/h ratio
+      maintainAspectRatio: false, // Don't maintain w/h ratio
       legend: {
-        position: 'bottom'
+        position: "bottom"
       }
     };
     for (let singleTopWords of topWords) {
@@ -85,7 +85,7 @@ class TopWords extends React.Component<Props, State> {
     return (
       <>
         {t("scm-statistic-plugin.charts.topWords")}
-        <Bar data={data} options={options}/>
+        <Bar data={data} options={options} />
       </>
     );
   }

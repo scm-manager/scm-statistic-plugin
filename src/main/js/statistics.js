@@ -1,15 +1,15 @@
 //@flow
 import { apiClient } from "@scm-manager/ui-components";
 
-export function getLinksForStatistics(url: string){
+export function getLinksForStatistics(url: string) {
   return apiClient
     .get(url)
     .then(response => response.json())
     .then(collection => {
       return collection._links;
     })
-    .catch(err=> {
-      return {error: err};
+    .catch(err => {
+      return { error: err };
     });
 }
 
@@ -113,7 +113,7 @@ export function rebuildStatistics(url: string) {
   return apiClient
     .post(url)
     .then(() => {
-      return {success: true};
+      return { success: true };
     })
     .catch(err => {
       return { error: err };
