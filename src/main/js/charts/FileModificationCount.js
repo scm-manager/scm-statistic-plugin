@@ -1,8 +1,8 @@
 // @flow
 import React from "react";
-import { translate } from "react-i18next";
 import { Pie } from "react-chartjs-2";
 import type StatisticData from "./../DataTypes";
+import { translate } from "react-i18next";
 
 type Props = {
   statisticData: StatisticData,
@@ -10,11 +10,7 @@ type Props = {
   t: string => string
 };
 
-
-
 class FileModificationCount extends React.Component<Props> {
-
-
   render() {
     const { t, statisticData, options } = this.props;
 
@@ -30,6 +26,9 @@ class FileModificationCount extends React.Component<Props> {
           break;
         case "modified":
           colors.push("#ffdd57");
+          break;
+        default:
+          colors.push("#bbb");
           break;
       }
     }

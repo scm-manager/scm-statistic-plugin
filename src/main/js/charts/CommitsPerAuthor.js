@@ -1,8 +1,8 @@
 // @flow
 import React from "react";
-import { translate } from "react-i18next";
 import { Pie } from "react-chartjs-2";
 import type StatisticData from "./../DataTypes";
+import { translate } from "react-i18next";
 
 type Props = {
   statisticData: StatisticData,
@@ -10,10 +10,7 @@ type Props = {
   t: string => string
 };
 
-
 class CommitsPerAuthor extends React.Component<Props> {
-
-
   render() {
     const { t, statisticData, options } = this.props;
 

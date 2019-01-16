@@ -25,7 +25,12 @@ import {
   rebuildStatistics,
   getCommitsPerAuthor,
   getTopModifiedFiles,
-  getTopWords, getFileModificationCount, getCommitsPerWeekday, getCommitsPerYear, getCommitsPerMonth, getCommitsPerHour
+  getTopWords,
+  getFileModificationCount,
+  getCommitsPerWeekday,
+  getCommitsPerYear,
+  getCommitsPerMonth,
+  getCommitsPerHour
 } from "./statistics";
 
 type Props = {
@@ -36,7 +41,7 @@ type Props = {
 type State = {
   loading: boolean,
   error?: boolean,
-  statisticsLinks?: any //TODO
+  statisticsLinks?: StatisticLinks
 };
 
 class GlobalStatistic extends React.Component<Props, State> {
@@ -119,14 +124,54 @@ class GlobalStatistic extends React.Component<Props, State> {
       <>
         <Title title={t("scm-statistic-plugin.title")} />
         <div className="columns is-multiline is-vcentered">
-          <Chart render={props => <CommitsPerAuthor {...props} />} getData={() => getCommitsPerAuthor(statisticsLinks.commitsPerAuthor.href)}/>
-          <Chart render={props => <CommitsPerHour {...props} />} getData={() => getCommitsPerHour(statisticsLinks.commitsPerHour.href)}/>
-          <Chart render={props => <CommitsPerMonth {...props} />} getData={() => getCommitsPerMonth(statisticsLinks.commitsPerMonth.href)}/>
-          <Chart render={props => <CommitsPerYear {...props} />} getData={() => getCommitsPerYear(statisticsLinks.commitsPerYear.href)}/>
-          <Chart render={props => <CommitsPerWeekday {...props} />} getData={() => getCommitsPerWeekday(statisticsLinks.commitsPerWeekday.href)}/>
-          <Chart render={props => <FileModificationCount {...props} />} getData={() => getFileModificationCount(statisticsLinks.fileModificationCount.href)}/>
-          <Chart render={props => <TopWords {...props} />} getData={() => getTopWords(statisticsLinks.topWords.href)}/>
-          <Chart render={props => <TopModifiedFiles {...props} />} getData={() => getTopModifiedFiles(statisticsLinks.topModifiedFiles.href)}/>
+          <Chart
+            render={props => <CommitsPerAuthor {...props} />}
+            getData={() =>
+              getCommitsPerAuthor(statisticsLinks.commitsPerAuthor.href)
+            }
+          />
+          <Chart
+            render={props => <CommitsPerHour {...props} />}
+            getData={() =>
+              getCommitsPerHour(statisticsLinks.commitsPerHour.href)
+            }
+          />
+          <Chart
+            render={props => <CommitsPerMonth {...props} />}
+            getData={() =>
+              getCommitsPerMonth(statisticsLinks.commitsPerMonth.href)
+            }
+          />
+          <Chart
+            render={props => <CommitsPerYear {...props} />}
+            getData={() =>
+              getCommitsPerYear(statisticsLinks.commitsPerYear.href)
+            }
+          />
+          <Chart
+            render={props => <CommitsPerWeekday {...props} />}
+            getData={() =>
+              getCommitsPerWeekday(statisticsLinks.commitsPerWeekday.href)
+            }
+          />
+          <Chart
+            render={props => <FileModificationCount {...props} />}
+            getData={() =>
+              getFileModificationCount(
+                statisticsLinks.fileModificationCount.href
+              )
+            }
+          />
+          <Chart
+            render={props => <TopWords {...props} />}
+            getData={() => getTopWords(statisticsLinks.topWords.href)}
+          />
+          <Chart
+            render={props => <TopModifiedFiles {...props} />}
+            getData={() =>
+              getTopModifiedFiles(statisticsLinks.topModifiedFiles.href)
+            }
+          />
         </div>
         <SubmitButton
           label={t("scm-statistic-plugin.rebuildButton")}

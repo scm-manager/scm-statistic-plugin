@@ -15,7 +15,7 @@ import {
 describe("API get statistics", () => {
   const PATH = "/statistic/scmadmin/TestRepo";
 
-  const commitsPerAuthor: commitsPerAuthor = {
+  const commitsPerAuthor = {
     author: [
       {
         count: 42,
@@ -60,7 +60,7 @@ describe("API get statistics", () => {
     });
   });
 
-  const commitsPerHour: commitsPerHour = {
+  const commitsPerHour = {
     hour: [
       {
         count: 2,
@@ -101,7 +101,7 @@ describe("API get statistics", () => {
     });
   });
 
-  const commitsPerMonth: commitsPerMonth = {
+  const commitsPerMonth = {
     month: [
       {
         count: 42,
@@ -138,7 +138,7 @@ describe("API get statistics", () => {
     });
   });
 
-  const commitsPerYear: commitsPerYear = {
+  const commitsPerYear = {
     year: [
       {
         count: 42,
@@ -159,7 +159,7 @@ describe("API get statistics", () => {
     fetchMock.getOnce("/api/v2" + PATH + "/commits-per-year", commitsPerYear);
 
     getCommitsPerYear(PATH + "/commits-per-year").then(response => {
-      expect(response).toEqual(commitsPerYear.month);
+      expect(response).toEqual(commitsPerYear.year);
       done();
     });
   });
@@ -175,7 +175,7 @@ describe("API get statistics", () => {
     });
   });
 
-  const commitsPerWeekday: commitsPerWeekday = {
+  const commitsPerWeekday = {
     weekday: [
       {
         count: 1,
@@ -215,7 +215,7 @@ describe("API get statistics", () => {
     });
   });
 
-  const fileModificationCount: fileModificationCount = {
+  const fileModificationCount = {
     modification: [
       {
         count: 20,
@@ -259,7 +259,7 @@ describe("API get statistics", () => {
     );
   });
 
-  const topModifiedFiles: topModifiedFiles = {
+  const topModifiedFiles = {
     file: [
       {
         count: 20,
@@ -299,7 +299,7 @@ describe("API get statistics", () => {
     });
   });
 
-  const topWords: topWords = {
+  const topWords = {
     word: [
       {
         count: 20,

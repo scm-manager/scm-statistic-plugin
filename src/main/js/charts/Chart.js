@@ -60,7 +60,6 @@ class Chart extends React.Component<Props, State> {
           error: result.error
         });
       } else {
-
         let count = [];
         let value = [];
 
@@ -97,9 +96,7 @@ class Chart extends React.Component<Props, State> {
   }
 
   createChartsObject() {
-    const {classes} = this.props;
-    console.log(this.state.statisticData);
-
+    const { classes } = this.props;
     const renderProps: RenderProps = {
       statisticData: this.state.statisticData,
       options: {
@@ -137,8 +134,6 @@ class Chart extends React.Component<Props, State> {
       );
     }
 
-
-
     let modal = null;
     if (showModal) {
       modal = (
@@ -165,23 +160,21 @@ class Chart extends React.Component<Props, State> {
       );
     }
 
-
     return (
-
-        <div className={classNames("column is-half", classes.columnSettings)}>
-          {modal}
-          <div
-            className={classNames(classes.detailedViewButton)}
-            onClick={this.showModal}
-          >
-            <span className="icon is-small">
-              <i className="fas fa-search-plus" />
-            </span>
-          </div>
-          {this.createChartsObject()}
+      <div className={classNames("column is-half", classes.columnSettings)}>
+        {modal}
+        <div
+          className={classNames(classes.detailedViewButton)}
+          onClick={this.showModal}
+        >
+          <span className="icon is-small">
+            <i className="fas fa-search-plus" />
+          </span>
         </div>
-      );
-    }
+        {this.createChartsObject()}
+      </div>
+    );
+  }
 }
 
 export default injectSheet(styles)(translate("plugins")(Chart));

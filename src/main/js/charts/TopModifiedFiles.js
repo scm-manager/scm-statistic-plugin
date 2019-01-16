@@ -1,8 +1,8 @@
 // @flow
 import React from "react";
-import { translate } from "react-i18next";
 import { Doughnut } from "react-chartjs-2";
 import type StatisticData from "./../DataTypes";
+import { translate } from "react-i18next";
 
 type Props = {
   statisticData: StatisticData,
@@ -10,9 +10,7 @@ type Props = {
   t: string => string
 };
 
-
 class TopModifiedFiles extends React.Component<Props> {
-
   render() {
     const { t, options, statisticData } = this.props;
 
@@ -29,7 +27,6 @@ class TopModifiedFiles extends React.Component<Props> {
       "maroon",
       "navy"
     ];
-
 
     const data = {
       labels: statisticData.value,
