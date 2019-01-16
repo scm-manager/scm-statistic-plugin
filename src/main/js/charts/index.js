@@ -1,6 +1,4 @@
 //@flow
-
-export { default as ChartStructure } from "./ChartStructure";
 export { default as Chart } from "./Chart";
 export { default as CommitsPerAuthor } from "./CommitsPerAuthor";
 export { default as CommitsPerHour } from "./CommitsPerHour";

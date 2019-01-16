@@ -11,7 +11,6 @@ type RenderProps = {
 };
 
 type Props = {
-  url: string,
   render: (props: RenderProps) => any,
   getData: (url: string) => void,
 
@@ -52,8 +51,8 @@ class Chart extends React.Component<Props, State> {
   }
 
   getStatistics() {
-    const { url, getData } = this.props;
-    getData(url).then(result => {
+    const { getData } = this.props;
+    getData().then(result => {
       if (result.error) {
         this.setState({
           loading: false,
