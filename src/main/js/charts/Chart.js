@@ -24,7 +24,8 @@ const styles = {
     float: "right"
   },
   canvasContainer: {
-    height: "30vh"
+    height: "30vh",
+    marginBottom: "5px"
   }
 };
 
