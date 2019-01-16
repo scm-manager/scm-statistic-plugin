@@ -160,6 +160,7 @@ public class StatisticManager {
       ChangesetCollector collector = ChangesetCollectorFactory.createCollector(statistics);
 
       collector.collect(statistics, PAGE_SIZE);
+      statistics.commit();
     }
   }
 

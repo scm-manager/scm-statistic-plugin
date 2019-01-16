@@ -127,7 +127,7 @@ class Chart extends React.Component<Props, State> {
       content = <Loading />;
     } else if (statisticData.value <= 0 || statisticData.label <= 0) {
       content = (
-        <div className="notification is-warning">
+        <div className="notification is-info">
           {t("scm-statistic-plugin.noData")}
         </div>
       );
