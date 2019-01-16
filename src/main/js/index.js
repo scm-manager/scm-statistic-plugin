@@ -5,13 +5,13 @@ import StatisticsNavLink from "./StatisticsNavLink";
 import Statistics from "./Statistics";
 import { Route } from "react-router-dom";
 
-const StatisticRoute = ({ url }) => {
+const StatisticNavLink = ({ url }) => {
   return <StatisticsNavLink url={url} />;
 };
 
-binder.bind("repository.navigation", StatisticRoute); // TODO: rename StatisticRoute
+binder.bind("repository.navigation", StatisticNavLink);
 
-const StatisticRoute2 = ({ url, repository }) => {
+const StatisticRoute = ({ url, repository }) => {
   return (
     <Route
       path={`${url}/statistic`}
@@ -21,4 +21,4 @@ const StatisticRoute2 = ({ url, repository }) => {
   );
 };
 
-binder.bind("repository.route", StatisticRoute2); // TODO: rename StatisticRoute2
+binder.bind("repository.route", StatisticRoute);
