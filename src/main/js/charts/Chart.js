@@ -15,8 +15,9 @@ type State = {
 }
 
 const styles = {
-  higherMaxColumn: {
-    maxHeight: "none !important"
+  columnSettings: {
+    maxHeight: "none !important",
+    marginBottom: "1.5rem"
   },
   detailedViewButton: {
     cursor: "pointer",
@@ -79,7 +80,7 @@ class Chart extends React.Component<Props, State> {
     return (
       <>
         {modal}
-        <div className={classNames("column is-half", classes.higherMaxColumn)}>
+        <div className={classNames("column is-half", classes.columnSettings)}>
           <div className={classNames(classes.detailedViewButton)} onClick={this.showModal}>
             <span className="icon is-small">
                 <i className="fas fa-search-plus"/>
