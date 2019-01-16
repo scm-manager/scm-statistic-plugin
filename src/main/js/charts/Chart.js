@@ -45,9 +45,8 @@ class Chart extends React.Component<Props, State> {
   };
 
   render() {
-    const {children, classes} = this.props;
+    const {children, classes, t} = this.props;
     const {showModal} = this.state;
-    //TODO: add link and Title to return! - ?
 
     let modal = null;
     if (showModal) {
@@ -56,7 +55,7 @@ class Chart extends React.Component<Props, State> {
           <div className="modal-background" />
           <div className="modal-card">
             <header className="modal-card-head">
-              <p className="modal-card-title">{"Titel"}</p>
+              <p className="modal-card-title">{t("scm-statistic-plugin.charts.detailedView")}</p>
               <button
                 className="delete"
                 aria-label="close"

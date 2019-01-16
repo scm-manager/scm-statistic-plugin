@@ -10,7 +10,8 @@
       "commitsPerWeekday": "Commits per Weekday",
       "fileModificationCount": "File modification count",
       "topModifiedFiles": "Top modified Files",
-      "topWords": "Top Words"
+      "topWords": "Top Words",
+      "detailedView": "Detailed View"
     },
     "rebuildButton": "Rebuild statistics",
     "confirmRebuildStatistics": {
