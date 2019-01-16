@@ -111,7 +111,6 @@ class GlobalStatistic extends React.Component<Props, State> {
     return (
       <>
         <Title title={t("scm-statistic-plugin.title")} />
-
         <div className="columns is-multiline">
           <Chart>
             <CommitsPerAuthor url={statisticsLinks.commitsPerAuthor.href} />

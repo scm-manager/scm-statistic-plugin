@@ -32,9 +32,15 @@ class Chart extends React.Component<Props, State> {
     };
   }
 
-  showModal = () => { //TODO: does not work yet - guess because this component is called in column environment
+  showModal = () => {
     this.setState({
       showModal: true
+    })
+  };
+
+  onClose = () => {
+    this.setState({
+      showModal: false
     })
   };
 
@@ -46,13 +52,25 @@ class Chart extends React.Component<Props, State> {
     let modal = null;
     if (showModal) {
       modal = (
-        <div className="modal">
-          <div className="modal-background"></div>
-          <div className="modal-content">
-            {children}
+        <div className="modal is-active">
+          <div className="modal-background" />
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title">{"Titel"}</p>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={() => this.onClose()}
+              />
+            </header>
+            <section className="modal-card-body">
+              <div className="content">
+                {children}
+              </div>
+            </section>
           </div>
-          <button className="modal-close is-large" aria-label="close"></button>
-        </div>);
+        </div>
+        );
     }
 
     return (
