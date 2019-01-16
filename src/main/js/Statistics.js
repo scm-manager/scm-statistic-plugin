@@ -22,7 +22,6 @@ import {
 } from "./charts";
 import {
   getLinksForStatistics,
-  rebuildStatistics,
   getCommitsPerAuthor,
   getTopModifiedFiles,
   getTopWords,
@@ -30,7 +29,8 @@ import {
   getCommitsPerWeekday,
   getCommitsPerYear,
   getCommitsPerMonth,
-  getCommitsPerHour
+  getCommitsPerHour,
+  rebuildStatistics
 } from "./statistics";
 
 type Props = {
@@ -48,14 +48,12 @@ class GlobalStatistic extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      loading: false
+      loading: true
     };
   }
 
   componentDidMount() {
     const { repository } = this.props;
-
-    this.setState({ ...this.state, loading: true });
 
     getLinksForStatistics(repository._links.statistics.href).then(result => {
       if (result.error) {

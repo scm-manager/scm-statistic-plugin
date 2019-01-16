@@ -118,60 +118,64 @@ class Chart extends React.Component<Props, State> {
     const { t, classes } = this.props;
     const { error, loading, statisticData, showModal } = this.state;
 
+    let content = null;
+    let modal = null;
+
     if (error) {
-      return <ErrorNotification error={error} />;
-    }
-
-    if (loading || !statisticData) {
-      return <Loading />;
-    }
-
-    if (statisticData.value <= 0 || statisticData.label <= 0) {
-      return (
+      content = <ErrorNotification error={error} />;
+    } else if (loading || !statisticData) {
+      content = <Loading />;
+    } else if (statisticData.value <= 0 || statisticData.label <= 0) {
+      content = (
         <div className="notification is-warning">
           {t("scm-statistic-plugin.noData")}
         </div>
       );
-    }
-
-    let modal = null;
-    if (showModal) {
-      modal = (
-        <div className="modal is-active">
-          <div className="modal-background" />
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">
-                {t("scm-statistic-plugin.charts.detailedView")}
-              </p>
-              <button
-                className="delete"
-                aria-label="close"
-                onClick={() => this.onClose()}
-              />
-            </header>
-            <section className="modal-card-body">
-              <div className={classNames("content", classes.canvasContainer)}>
-                {this.createChartsObject()}
-              </div>
-            </section>
+    } else {
+      if (showModal) {
+        modal = (
+          <div className="modal is-active">
+            <div className="modal-background" />
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">
+                  {t("scm-statistic-plugin.charts.detailedView")}
+                </p>
+                <button
+                  className="delete"
+                  aria-label="close"
+                  onClick={() => this.onClose()}
+                />
+              </header>
+              <section className="modal-card-body">
+                <div className={classNames("content", classes.canvasContainer)}>
+                  {this.createChartsObject()}
+                </div>
+              </section>
+            </div>
           </div>
-        </div>
+        );
+      }
+
+      content = (
+        <>
+          {modal}
+          <div
+            className={classNames(classes.detailedViewButton)}
+            onClick={this.showModal}
+          >
+            <span className="icon is-small">
+              <i className="fas fa-search-plus" />
+            </span>
+          </div>
+          {this.createChartsObject()}
+        </>
       );
     }
 
     return (
       <div className={classNames("column is-half", classes.columnSettings)}>
-        {modal}
-        <div
-          className={classNames(classes.detailedViewButton)}
-          onClick={this.showModal}
-        >
-          <span className="icon is-small">
-            <i className="fas fa-search-plus" />
-          </span>
-        </div>
-        {this.createChartsObject()}
+        {content}
       </div>
     );
   }
