@@ -6,81 +6,29 @@ import { getFileModificationCount } from "./../statistics";
 import { Pie } from "react-chartjs-2";
 
 type Props = {
-  url: string,
+  statisticData: [],
+  options: any,
   t: string => string
 };
 
-type State = {
-  loading: boolean,
-  fileModificationCount?: [],
-  error?: boolean
-};
 
-class FileModificationCount extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false
-    };
-  }
+class FileModificationCount extends React.Component<Props> {
 
-  getStatistics() {
-    const { url } = this.props;
-    getFileModificationCount(url).then(result => {
-      if (result.error) {
-        this.setState({
-          loading: false,
-          error: result.error
-        });
-      } else {
-        this.setState({
-          fileModificationCount: result,
-          loading: false
-        });
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.setState({ ...this.state, loading: true });
-    this.getStatistics();
-  }
 
   render() {
-    const { t } = this.props;
-    const { loading, error, fileModificationCount } = this.state;
+    const { t, statisticData, options } = this.props;
 
-    if (error) {
-      return <ErrorNotification error={error} />;
-    }
-
-    if (loading || !fileModificationCount) {
-      return <Loading />;
-    }
-
-    if (fileModificationCount.length <= 0) {
-      return (
-        <div className="notification is-warning">
-          {t("scm-statistic-plugin.noData")}
-        </div>
-      );
-    }
 
     let labels = [];
     let datas = [];
-    for (let singleFileModificationCount of fileModificationCount) {
+    for (let singleFileModificationCount of statisticData) {
       labels.push(singleFileModificationCount.value);
       datas.push(singleFileModificationCount.count);
     }
 
     let colors = [];
-    const options = {
-      maintainAspectRatio: false, // Don't maintain w/h ratio
-      legend: {
-        position: "bottom"
-      }
-    };
-    for (let fileModification of fileModificationCount) {
+
+    for (let fileModification of statisticData) {
       switch (fileModification.value) {
         case "removed":
           colors.push("#ff3860");

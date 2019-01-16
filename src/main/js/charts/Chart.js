@@ -1,17 +1,30 @@
-// @flow
-import * as React from "react";
+//@flow
+import React from "react";
 import { translate } from "react-i18next";
-import injectSheet from "react-jss";
+import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import classNames from "classnames";
+import injectSheet from "react-jss";
+
+type RenderProps = {
+  statisticData: [],
+  options: any
+};
 
 type Props = {
+  url: string,
+  render: (props: RenderProps) => any,
+  getData: (url: string) => void,
+
+  // context props
   t: string => string,
-  classes: any,
-  children: React.Node
+  classes: any
 };
 
 type State = {
-  showModal: boolean
+  error?: Error,
+  loading: boolean,
+  showModal: boolean,
+  statisticData?: []
 };
 
 const styles = {
@@ -33,8 +46,26 @@ class Chart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      loading: true,
       showModal: false
     };
+  }
+
+  getStatistics() {
+    const { url, getData } = this.props;
+    getData(url).then(result => {
+      if (result.error) {
+        this.setState({
+          loading: false,
+          error: result.error
+        });
+      } else {
+        this.setState({
+          statisticData: result,
+          loading: false
+        });
+      }
+    });
   }
 
   showModal = () => {
@@ -49,9 +80,40 @@ class Chart extends React.Component<Props, State> {
     });
   };
 
+  componentDidMount() {
+    this.setState({ ...this.state, loading: true });
+    this.getStatistics();
+  }
+
   render() {
-    const { children, classes, t } = this.props;
-    const { showModal } = this.state;
+    const { t, classes } = this.props;
+    const { error, loading, statisticData, showModal } = this.state;
+
+    if (error) {
+      return <ErrorNotification error={error} />;
+    }
+
+    if (loading || !statisticData) {
+      return <Loading />;
+    }
+
+    if (statisticData.length <= 0) {
+      return (
+        <div className="notification is-warning">
+          {t("scm-statistic-plugin.noData")}
+        </div>
+      );
+    }
+
+    const renderProps: RenderProps = {
+      statisticData: this.state.statisticData,
+      options: {
+        maintainAspectRatio: false, // Don't maintain w/h ratio
+        legend: {
+          position: "bottom"
+        }
+      }
+    };
 
     let modal = null;
     if (showModal) {
@@ -72,7 +134,7 @@ class Chart extends React.Component<Props, State> {
             <section className="modal-card-body">
               <div className={classNames("content", classes.canvasContainer)}>
                 <article className={classNames(classes.canvasContainer)}>
-                  {children}
+                  {this.props.render(renderProps)}
                 </article>
               </div>
             </section>
@@ -81,10 +143,11 @@ class Chart extends React.Component<Props, State> {
       );
     }
 
+
     return (
-      <>
-        {modal}
+
         <div className={classNames("column is-half", classes.columnSettings)}>
+          {modal}
           <div
             className={classNames(classes.detailedViewButton)}
             onClick={this.showModal}
@@ -94,12 +157,11 @@ class Chart extends React.Component<Props, State> {
             </span>
           </div>
           <article className={classNames(classes.canvasContainer)}>
-            {children}
+            {this.props.render(renderProps)}
           </article>
         </div>
-      </>
-    );
-  }
+      );
+    }
 }
 
 export default injectSheet(styles)(translate("plugins")(Chart));

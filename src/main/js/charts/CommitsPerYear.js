@@ -6,75 +6,23 @@ import { getCommitsPerYear } from "./../statistics";
 import { Bar } from "react-chartjs-2";
 
 type Props = {
-  url: string,
+  statisticData: [],
+  options: any,
   t: string => string
 };
 
-type State = {
-  loading: boolean,
-  commitsPerYear?: [],
-  error?: boolean
-};
 
-class CommitsPerYear extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false
-    };
-  }
+class CommitsPerYear extends React.Component<Props> {
 
-  getStatistics() {
-    const { url } = this.props;
-    getCommitsPerYear(url).then(result => {
-      if (result.error) {
-        this.setState({
-          loading: false,
-          error: result.error
-        });
-      } else {
-        this.setState({
-          commitsPerYear: result,
-          loading: false
-        });
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.setState({ ...this.state, loading: true });
-    this.getStatistics();
-  }
 
   render() {
-    const { t } = this.props;
-    const { loading, error, commitsPerYear } = this.state;
+    const { t, statisticData, options } = this.props;
 
-    if (error) {
-      return <ErrorNotification error={error} />;
-    }
-
-    if (loading || !commitsPerYear) {
-      return <Loading />;
-    }
-
-    if (commitsPerYear.length <= 0) {
-      return (
-        <div className="notification is-warning">
-          {t("scm-statistic-plugin.noData")}
-        </div>
-      );
-    }
 
     let labels = [];
     let datas = [];
-    const options = {
-      maintainAspectRatio: false, // Don't maintain w/h ratio
-      legend: {
-        position: "bottom"
-      }
-    };
-    for (let singleCommitsPerYear of commitsPerYear) {
+
+    for (let singleCommitsPerYear of statisticData) {
       labels.push(singleCommitsPerYear.value);
       datas.push(singleCommitsPerYear.count);
     }

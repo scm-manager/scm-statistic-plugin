@@ -6,65 +6,16 @@ import { getTopModifiedFiles } from "./../statistics";
 import { Doughnut } from "react-chartjs-2";
 
 type Props = {
-  url: string,
+  statisticData: [],
+  options: any,
   t: string => string
 };
 
-type State = {
-  loading: boolean,
-  topModifiedFiles?: [],
-  error?: boolean
-};
-
-class TopModifiedFiles extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false
-    };
-  }
-
-  getStatistics() {
-    const { url } = this.props;
-    getTopModifiedFiles(url).then(result => {
-      if (result.error) {
-        this.setState({
-          loading: false,
-          error: result.error
-        });
-      } else {
-        this.setState({
-          topModifiedFiles: result,
-          loading: false
-        });
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.setState({ ...this.state, loading: true });
-    this.getStatistics();
-  }
+class TopModifiedFiles extends React.Component<Props> {
 
   render() {
-    const { t } = this.props;
-    const { loading, error, topModifiedFiles } = this.state;
+    const { t, options, statisticData } = this.props;
 
-    if (error) {
-      return <ErrorNotification error={error} />;
-    }
-
-    if (loading || !topModifiedFiles) {
-      return <Loading />;
-    }
-
-    if (topModifiedFiles.length <= 0) {
-      return (
-        <div className="notification is-warning">
-          {t("scm-statistic-plugin.noData")}
-        </div>
-      );
-    }
 
     let labels = [];
     let datas = [];
@@ -82,13 +33,8 @@ class TopModifiedFiles extends React.Component<Props, State> {
       "navy"
     ];
 
-    const options = {
-      maintainAspectRatio: false, // Don't maintain w/h ratio
-      legend: {
-        position: "bottom"
-      }
-    };
-    for (let singleModifiedFiles of topModifiedFiles) {
+
+    for (let singleModifiedFiles of statisticData) {
       labels.push(singleModifiedFiles.value);
       datas.push(singleModifiedFiles.count);
     }

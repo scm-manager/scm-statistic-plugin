@@ -6,76 +6,22 @@ import { getCommitsPerHour } from "./../statistics";
 import { Line } from "react-chartjs-2";
 
 type Props = {
-  url: string,
+  statisticData: [],
+  options: any,
   t: string => string
 };
 
-type State = {
-  loading: boolean,
-  commitsPerHour?: [],
-  error?: boolean
-};
 
 class CommitsPerHour extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false
-    };
-  }
 
-  getStatistics() {
-    const { url } = this.props;
-    getCommitsPerHour(url).then(result => {
-      if (result.error) {
-        this.setState({
-          loading: false,
-          error: result.error
-        });
-      } else {
-        this.setState({
-          commitsPerHour: result,
-          loading: false
-        });
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.setState({ ...this.state, loading: true });
-    this.getStatistics();
-  }
 
   render() {
-    const { t } = this.props;
-    const { loading, error, commitsPerHour } = this.state;
-
-    if (error) {
-      return <ErrorNotification error={error} />;
-    }
-
-    if (loading || !commitsPerHour) {
-      return <Loading />;
-    }
-
-    if (commitsPerHour.length <= 0) {
-      return (
-        <div className="notification is-warning">
-          {t("scm-statistic-plugin.noData")}
-        </div>
-      );
-    }
+    const { t, statisticData, options } = this.props;
 
     let labels = [];
     let datas = [];
 
-    const options = {
-      maintainAspectRatio: false, // Don't maintain w/h ratio
-      legend: {
-        position: "bottom"
-      }
-    };
-    for (let singleCommitsPerHour of commitsPerHour) {
+    for (let singleCommitsPerHour of statisticData) {
       labels.push(singleCommitsPerHour.value);
       datas.push(singleCommitsPerHour.count);
     }

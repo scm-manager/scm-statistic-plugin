@@ -1,70 +1,20 @@
 // @flow
 import React from "react";
-import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import { translate } from "react-i18next";
-import { getCommitsPerAuthor } from "./../statistics";
 import { Pie } from "react-chartjs-2";
 
 type Props = {
-  url: string,
+  statisticData: [],
+  options: any,
   t: string => string
 };
 
-type State = {
-  loading: boolean,
-  commitsPerAuthor?: [],
-  error?: boolean
-};
 
-class CommitsPerAuthor extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false
-    };
-  }
+class CommitsPerAuthor extends React.Component<Props> {
 
-  getStatistics() {
-    const { url } = this.props;
-    getCommitsPerAuthor(url).then(result => {
-      if (result.error) {
-        this.setState({
-          loading: false,
-          error: result.error
-        });
-      } else {
-        this.setState({
-          commitsPerAuthor: result,
-          loading: false
-        });
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.setState({ ...this.state, loading: true });
-    this.getStatistics();
-  }
 
   render() {
-    const { t } = this.props;
-    const { loading, error, commitsPerAuthor } = this.state;
-
-    if (error) {
-      return <ErrorNotification error={error} />;
-    }
-
-    if (loading || !commitsPerAuthor) {
-      return <Loading />;
-    }
-
-    if (commitsPerAuthor.length <= 0) {
-      return (
-        <div className="notification is-warning">
-          {t("scm-statistic-plugin.noData")}
-        </div>
-      );
-    }
+    const { t, statisticData, options } = this.props;
 
     let labels = [];
     let datas = [];
@@ -82,14 +32,7 @@ class CommitsPerAuthor extends React.Component<Props, State> {
       "navy"
     ];
 
-    const options = {
-      maintainAspectRatio: false, // Don't maintain w/h ratio
-      legend: {
-        position: "bottom"
-      }
-    };
-
-    for (let singleCommitsPerAuthor of commitsPerAuthor) {
+    for (let singleCommitsPerAuthor of statisticData) {
       labels.push(singleCommitsPerAuthor.value);
       datas.push(singleCommitsPerAuthor.count);
     }
