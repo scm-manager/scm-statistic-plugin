@@ -58,6 +58,14 @@ class FileModificationCount extends React.Component<Props, State> {
       return <Loading />;
     }
 
+    if (fileModificationCount.length <= 0) {
+      return (
+        <div className="notification is-warning">
+          {t("scm-statistic-plugin.noData")}
+        </div>
+      );
+    }
+
     let labels = [];
     let datas = [];
     for (let singleFileModificationCount of fileModificationCount) {
