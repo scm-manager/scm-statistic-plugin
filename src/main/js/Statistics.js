@@ -73,7 +73,9 @@ class GlobalStatistic extends React.Component<Props, State> {
         });
       }
       else {
-        //rebuild
+        this.setState({
+          loading: false
+        })
       }
     });
   };

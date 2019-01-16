@@ -16,7 +16,7 @@ type State = {
 
 const styles = {
   higherMaxColumn: {
-    maxHeight: "225px !important" // ?
+    maxHeight: "225px !important"
   },
   pointer: {
     cursor: "pointer"
