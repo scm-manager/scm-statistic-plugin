@@ -42,13 +42,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeMultiset;
 import com.google.common.primitives.Ints;
 
-import sonia.scm.statistic.dto.CommitsPerAuthor;
-import sonia.scm.statistic.dto.CommitsPerHour;
-import sonia.scm.statistic.dto.CommitsPerMonth;
-import sonia.scm.statistic.dto.CommitsPerWeekday;
-import sonia.scm.statistic.dto.FileModificationCount;
-import sonia.scm.statistic.dto.TopModifiedFiles;
-import sonia.scm.statistic.dto.TopWords;
+import sonia.scm.statistic.dto.*;
 
 import java.util.Calendar;
 
@@ -109,14 +103,14 @@ public class StatisticCollector {
     return new CommitsPerWeekday(weekdays);
   }
 
-  public static CommitsPerMonth collectCommitsPerYear(StatisticData data) {
-    Multiset<String> commitsPerMonth = TreeMultiset.create();
+  public static CommitsPerYear collectCommitsPerYear(StatisticData data) {
+    Multiset<String> commitsPerYear = TreeMultiset.create();
 
     for (Entry<Day> e : data.getCommitsPerDay().entrySet()) {
-      commitsPerMonth.add(e.getElement().getYearString(), e.getCount());
+      commitsPerYear.add(e.getElement().getYearString(), e.getCount());
     }
 
-    return new CommitsPerMonth(commitsPerMonth);
+    return new CommitsPerYear(commitsPerYear);
   }
 
   public static FileModificationCount collectFileModificationCount(

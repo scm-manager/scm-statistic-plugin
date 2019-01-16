@@ -41,13 +41,7 @@ import sonia.scm.repository.Repository;
 import sonia.scm.statistic.StatisticCollector;
 import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.StatisticManager;
-import sonia.scm.statistic.dto.CommitsPerAuthor;
-import sonia.scm.statistic.dto.CommitsPerHour;
-import sonia.scm.statistic.dto.CommitsPerMonth;
-import sonia.scm.statistic.dto.CommitsPerWeekday;
-import sonia.scm.statistic.dto.FileModificationCount;
-import sonia.scm.statistic.dto.TopModifiedFiles;
-import sonia.scm.statistic.dto.TopWords;
+import sonia.scm.statistic.dto.*;
 
 import java.io.IOException;
 
@@ -105,7 +99,7 @@ public class StatisticSubResource {
   @GET
   @Path("commits-per-year")
   @Produces(MediaType.APPLICATION_JSON)
-  public CommitsPerMonth getCommitPerYear() {
+  public CommitsPerYear getCommitPerYear() {
     return StatisticCollector.collectCommitsPerYear(data);
   }
 

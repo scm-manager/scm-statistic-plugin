@@ -54,7 +54,7 @@ export function getCommitsPerYear(url: string) {
     .get(url)
     .then(response => response.json())
     .then(collection => {
-      return collection.month;
+      return collection.year;
     })
     .catch(err => {
       return { error: err };

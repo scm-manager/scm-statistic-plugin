@@ -138,7 +138,7 @@ describe("API get statistics", () => {
   });
 
   const commitsPerYear: commitsPerYear = {
-    month: [
+    year: [
       {
         count: 42,
         value: "2018-12"
