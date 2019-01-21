@@ -1,7 +1,7 @@
 {
   "scm-statistic-plugin": {
-    "navLink": "Statistic",
-    "title": "Statistic",
+    "navLink": "Statistics",
+    "title": "Statistics",
     "noData": "No data found.",
     "charts": {
       "commitsPerAuthor": "Commits per Author",
