@@ -1,5 +1,6 @@
 //@flow
-import type { Links } from "./hal";
+
+import type { Links } from "@scm-manager/ui-types";
 
 export type StatisticLinks = {
   _links: Links[]
@@ -7,5 +8,6 @@ export type StatisticLinks = {
 
 export type StatisticData = {
   value: [],
-  label: []
+  label: [],
+  count: number,
 };
