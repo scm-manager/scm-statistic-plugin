@@ -39,11 +39,9 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sonia.scm.plugin.Extension;
-import sonia.scm.repository.NamespaceAndName;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryPermissions;
 import sonia.scm.repository.api.RepositoryServiceFactory;
-import sonia.scm.security.Role;
 import sonia.scm.statistic.collector.ChangesetCollector;
 import sonia.scm.statistic.collector.ChangesetCollectorFactory;
 import sonia.scm.store.DataStore;
@@ -120,8 +118,7 @@ public class StatisticManager {
     getStore(repository).remove(repository.getId());
   }
 
-  void store(Statistics statistics)
-    throws IOException {
+  void store(Statistics statistics) {
     Repository repository = statistics.getRepository();
     RepositoryPermissions.modify(repository).check();
 
@@ -132,7 +129,7 @@ public class StatisticManager {
     getStore(repository).put(repository.getId(), statistics.getStatisticData());
   }
 
-  public Statistics get(Repository repository) throws IOException {
+  public Statistics get(Repository repository) {
     StatisticData data = getData(repository);
     return new Statistics(this, serviceFactory.create(repository), data);
   }
