@@ -13,7 +13,7 @@ type RenderProps = {
 
 type Props = {
   render: (props: RenderProps) => any,
-  getData: (url: string) => void,
+  getData: void => Promise<any>,
 
   // context props
   t: string => string,
