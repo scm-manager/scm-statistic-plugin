@@ -10,7 +10,7 @@ type Props = {
   t: string => string
 };
 
-class CommitsPerHour extends React.Component<Props, State> {
+class CommitsPerHour extends React.Component<Props> {
   render() {
     const { t, statisticData, options } = this.props;
 
