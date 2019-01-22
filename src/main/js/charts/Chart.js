@@ -97,6 +97,11 @@ class Chart extends React.Component<Props, State> {
 
   createChartsObject() {
     const { classes } = this.props;
+
+    if (!this.state.statisticData) {
+      return null;
+    }
+    
     const renderProps: RenderProps = {
       statisticData: this.state.statisticData,
       options: {
@@ -125,7 +130,7 @@ class Chart extends React.Component<Props, State> {
       content = <ErrorNotification error={error} />;
     } else if (loading || !statisticData) {
       content = <Loading />;
-    } else if (statisticData.value <= 0 || statisticData.label <= 0) {
+    } else if (statisticData.value.length === 0 || statisticData.count.length === 0) {
       content = (
         <div className="notification is-info">
           {t("scm-statistic-plugin.noData")}

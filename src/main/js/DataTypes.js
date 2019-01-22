@@ -8,6 +8,5 @@ export type StatisticLinks = {
 
 export type StatisticData = {
   value: [],
-  label: [],
-  count: number,
+  count: [],
 };
