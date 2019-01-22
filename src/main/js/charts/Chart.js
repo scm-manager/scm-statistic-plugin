@@ -4,7 +4,7 @@ import { translate } from "react-i18next";
 import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import classNames from "classnames";
 import injectSheet from "react-jss";
-import type StatisticData from "./../DataTypes";
+import type { StatisticData } from "./../DataTypes";
 
 type RenderProps = {
   statisticData: StatisticData,

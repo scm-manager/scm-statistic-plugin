@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 import { Bar } from "react-chartjs-2";
-import type StatisticData from "./../DataTypes";
+import type { StatisticData } from "../DataTypes";
 import { translate } from "react-i18next";
 
 type Props = {

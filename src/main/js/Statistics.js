@@ -32,6 +32,7 @@ import {
   getCommitsPerHour,
   rebuildStatistics
 } from "./statistics";
+import type { StatisticLinks } from "./DataTypes";
 
 type Props = {
   repository: Repository,
