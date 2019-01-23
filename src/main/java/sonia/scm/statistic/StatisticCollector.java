@@ -41,8 +41,15 @@ import com.google.common.collect.Multisets;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeMultiset;
 import com.google.common.primitives.Ints;
+import sonia.scm.statistic.dto.CommitsPerAuthor;
+import sonia.scm.statistic.dto.CommitsPerHour;
+import sonia.scm.statistic.dto.CommitsPerMonth;
+import sonia.scm.statistic.dto.CommitsPerWeekday;
+import sonia.scm.statistic.dto.CommitsPerYear;
+import sonia.scm.statistic.dto.FileModificationCount;
+import sonia.scm.statistic.dto.TopModifiedFiles;
+import sonia.scm.statistic.dto.TopWords;
 
-import sonia.scm.statistic.dto.*;
 
 import java.util.Calendar;
 
@@ -50,6 +57,8 @@ import java.util.Calendar;
  * @author Sebastian Sdorra
  */
 public class StatisticCollector {
+
+  private StatisticCollector() {}
 
   public static CommitsPerAuthor collectCommitsPerAuthor(StatisticData data,
                                                          int limit) {
@@ -205,6 +214,7 @@ public class StatisticCollector {
       case Calendar.SUNDAY:
         label = "Sunday";
         break;
+      default: break;
     }
 
     return label;
