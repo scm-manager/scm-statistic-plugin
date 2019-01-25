@@ -15,17 +15,17 @@ class TopModifiedFiles extends React.Component<Props> {
     const { t, options, statisticData } = this.props;
 
     let colors = [
-      "yellow",
-      "blue",
-      "green",
-      "orange",
-      "red",
-      "purple",
-      "cyan",
-      "magenta",
-      "teal",
-      "maroon",
-      "navy"
+      "#33b2e8",
+      "#66c5ee",
+      "#99d8f3",
+      "#ccecf9",
+      "#00d1df",
+      "#40dde7",
+      "#7fe8ef",
+      "#bff3f7",
+      "#ffdd57",
+      "#ffe681",
+      "#ffeeab"
     ];
 
     const data = {

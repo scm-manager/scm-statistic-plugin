@@ -15,17 +15,17 @@ class CommitsPerAuthor extends React.Component<Props> {
     const { t, statisticData, options } = this.props;
 
     let colors = [
-      "yellow",
-      "blue",
-      "green",
-      "orange",
-      "red",
-      "purple",
-      "cyan",
-      "magenta",
-      "teal",
-      "maroon",
-      "navy"
+      "#33b2e8",
+      "#66c5ee",
+      "#99d8f3",
+      "#00d1df",
+      "#40dde7",
+      "#7fe8ef",
+      "#ffdd57",
+      "#ffe681",
+      "#ffeeab",
+      "#ff3860",
+      "#ff6a88"
     ];
 
     const data = {
