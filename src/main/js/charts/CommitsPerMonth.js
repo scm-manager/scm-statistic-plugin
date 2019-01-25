@@ -19,7 +19,10 @@ class CommitsPerMonth extends React.Component<Props> {
       datasets: [
         {
           label: t("scm-statistic-plugin.charts.commitsPerMonth"),
-          backgroundColor: "#33b2e8",
+          backgroundColor: "#66c5ee",
+          borderColor: "#33b2e8",
+          pointBackgroundColor: "#33b2e8",
+          pointBorderColor: "#1689b2",
           data: statisticData.count
         }
       ]

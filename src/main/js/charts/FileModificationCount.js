@@ -19,13 +19,13 @@ class FileModificationCount extends React.Component<Props> {
     for (let fileModification of statisticData.value) {
       switch (fileModification) {
         case "removed":
-          colors.push("#ff3860");
+          colors.push("#ff92a8");
           break;
         case "added":
-          colors.push("#23d160");
+          colors.push("#00d1df");
           break;
         case "modified":
-          colors.push("#ffdd57");
+          colors.push("#ffdd65");
           break;
         default:
           colors.push("#bbb");
