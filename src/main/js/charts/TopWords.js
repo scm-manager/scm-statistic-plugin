@@ -19,7 +19,7 @@ class TopWords extends React.Component<Props> {
       datasets: [
         {
           label: t("scm-statistic-plugin.charts.topWords"),
-          backgroundColor: "#33b2e8",
+          backgroundColor: "#66c5ee",
           data: statisticData.count
         }
       ]

@@ -19,7 +19,7 @@ class CommitsPerWeekday extends React.Component<Props> {
       datasets: [
         {
           label: t("scm-statistic-plugin.charts.commitsPerWeekday"),
-          backgroundColor: "#33b2e8",
+          backgroundColor: "#66c5ee",
           data: statisticData.count
         }
       ]
