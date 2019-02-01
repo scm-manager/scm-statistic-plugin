@@ -1,0 +1,25 @@
+{
+  "scm-statistic-plugin": {
+    "navLink": "Statistiken",
+    "title": "Statistiken",
+    "noData": "Keine Daten gefunden.",
+    "charts": {
+      "commitsPerAuthor": "Commits per Autor",
+      "commitsPerHour": "Commits per Stunde",
+      "commitsPerMonth": "Commits per Monat",
+      "commitsPerYear": "Commits per Jahr",
+      "commitsPerWeekday": "Commits per Wochentag",
+      "fileModificationCount": "Anzahl Bearbeitung von Dateien",
+      "topModifiedFiles": "Top bearbeitete Dateien",
+      "topWords": "Top Wörter",
+      "detailedView": "Detailansicht"
+    },
+    "rebuildButton": "Rebuild statistics",
+    "confirmRebuildStatistics": {
+      "title": "Statistiken neu berechnen",
+      "message": "Sollen die Statistiken wirklich neu berechnet werden?",
+      "submit": "Ja",
+      "cancel": "Nein"
+    }
+  }
+}
