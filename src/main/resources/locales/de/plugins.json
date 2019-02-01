@@ -9,12 +9,12 @@
       "commitsPerMonth": "Commits per Monat",
       "commitsPerYear": "Commits per Jahr",
       "commitsPerWeekday": "Commits per Wochentag",
-      "fileModificationCount": "Anzahl Bearbeitung von Dateien",
+      "fileModificationCount": "Anzahl Bearbeitungen von Dateien",
       "topModifiedFiles": "Top bearbeitete Dateien",
-      "topWords": "Top WÃ¶rter",
+      "topWords": "Top Wörter",
       "detailedView": "Detailansicht"
     },
-    "rebuildButton": "Rebuild statistics",
+    "rebuildButton": "Statistiken neu berechnen",
     "confirmRebuildStatistics": {
       "title": "Statistiken neu berechnen",
       "message": "Sollen die Statistiken wirklich neu berechnet werden?",
