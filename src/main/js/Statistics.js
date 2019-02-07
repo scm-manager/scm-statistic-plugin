@@ -4,7 +4,7 @@ import type { Repository } from "@scm-manager/ui-types";
 import {
   Loading,
   ErrorNotification,
-  Title,
+  Subtitle,
   SubmitButton,
   confirmAlert
 } from "@scm-manager/ui-components";
@@ -121,7 +121,7 @@ class GlobalStatistic extends React.Component<Props, State> {
 
     return (
       <>
-        <Title title={t("scm-statistic-plugin.title")} />
+        <Subtitle subtitle={t("scm-statistic-plugin.title")} />
         <div className="columns is-multiline is-vcentered">
           <Chart
             render={props => <CommitsPerAuthor {...props} />}
