@@ -27,7 +27,6 @@ class CommitsPerWeekday extends React.Component<Props> {
 
     return (
       <>
-        {t("scm-statistic-plugin.charts.commitsPerWeekday")}
         <Bar data={data} options={options} />
       </>
     );

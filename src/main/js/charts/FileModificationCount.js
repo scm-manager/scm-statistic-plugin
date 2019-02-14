@@ -46,7 +46,6 @@ class FileModificationCount extends React.Component<Props> {
 
     return (
       <>
-        {t("scm-statistic-plugin.charts.fileModificationCount")}
         <Pie data={data} options={options} />
       </>
     );

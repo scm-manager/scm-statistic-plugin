@@ -27,7 +27,6 @@ class CommitsPerYear extends React.Component<Props> {
 
     return (
       <>
-        {t("scm-statistic-plugin.charts.commitsPerYear")}
         <Bar data={data} options={options} />
       </>
     );

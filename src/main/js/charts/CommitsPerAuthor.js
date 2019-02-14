@@ -41,7 +41,6 @@ class CommitsPerAuthor extends React.Component<Props> {
 
     return (
       <>
-        {t("scm-statistic-plugin.charts.commitsPerAuthor")}
         <Pie data={data} options={options} />
       </>
     );

@@ -5,6 +5,7 @@ import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import classNames from "classnames";
 import injectSheet from "react-jss";
 import type { StatisticData } from "./../DataTypes";
+import NoDataFound from "../NoDataFound";
 
 type RenderProps = {
   statisticData: StatisticData,
@@ -14,6 +15,7 @@ type RenderProps = {
 type Props = {
   render: (props: RenderProps) => any,
   getData: void => Promise<any>,
+  title: string,
 
   // context props
   t: string => string,
@@ -101,7 +103,7 @@ class Chart extends React.Component<Props, State> {
     if (!this.state.statisticData) {
       return null;
     }
-    
+
     const renderProps: RenderProps = {
       statisticData: this.state.statisticData,
       options: {
@@ -130,13 +132,12 @@ class Chart extends React.Component<Props, State> {
       content = <ErrorNotification error={error} />;
     } else if (loading || !statisticData) {
       content = <Loading />;
-    } else if (statisticData.value.length === 0 || statisticData.count.length === 0) {
-      content = (
-        <div className="notification is-info">
-          {t("scm-statistic-plugin.noData")}
-        </div>
-      );
-    } else {
+    }
+    else if (statisticData.value.length === 0 || statisticData.count.length === 0) {
+      content = <NoDataFound />
+      ;
+    }
+    else {
       if (showModal) {
         modal = (
           <div className="modal is-active">
@@ -180,6 +181,7 @@ class Chart extends React.Component<Props, State> {
 
     return (
       <div className={classNames("column is-half", classes.columnSettings)}>
+        {this.props.title}
         {content}
       </div>
     );
