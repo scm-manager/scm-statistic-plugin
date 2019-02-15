@@ -27,7 +27,6 @@ class TopWords extends React.Component<Props> {
 
     return (
       <>
-        {t("scm-statistic-plugin.charts.topWords")}
         <Bar data={data} options={options} />
       </>
     );

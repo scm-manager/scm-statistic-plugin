@@ -41,7 +41,6 @@ class TopModifiedFiles extends React.Component<Props> {
 
     return (
       <>
-        {t("scm-statistic-plugin.charts.topModifiedFiles")}
         <Doughnut data={data} options={options} />
       </>
     );

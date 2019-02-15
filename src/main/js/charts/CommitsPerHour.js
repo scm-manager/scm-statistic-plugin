@@ -30,7 +30,6 @@ class CommitsPerHour extends React.Component<Props> {
 
     return (
       <>
-        {t("scm-statistic-plugin.charts.commitsPerHour")}
         <Line data={data} options={options} />
       </>
     );

@@ -128,30 +128,35 @@ class GlobalStatistic extends React.Component<Props, State> {
             getData={() =>
               getCommitsPerAuthor(statisticsLinks.commitsPerAuthor.href)
             }
+            title={t("scm-statistic-plugin.charts.commitsPerAuthor")}
           />
           <Chart
             render={props => <CommitsPerHour {...props} />}
             getData={() =>
               getCommitsPerHour(statisticsLinks.commitsPerHour.href)
             }
+            title={t("scm-statistic-plugin.charts.commitsPerHour")}
           />
           <Chart
             render={props => <CommitsPerMonth {...props} />}
             getData={() =>
               getCommitsPerMonth(statisticsLinks.commitsPerMonth.href)
             }
+            title={t("scm-statistic-plugin.charts.commitsPerMonth")}
           />
           <Chart
             render={props => <CommitsPerYear {...props} />}
             getData={() =>
               getCommitsPerYear(statisticsLinks.commitsPerYear.href)
             }
+            title={t("scm-statistic-plugin.charts.commitsPerYear")}
           />
           <Chart
             render={props => <CommitsPerWeekday {...props} />}
             getData={() =>
               getCommitsPerWeekday(statisticsLinks.commitsPerWeekday.href)
             }
+            title={t("scm-statistic-plugin.charts.commitsPerWeekday")}
           />
           <Chart
             render={props => <FileModificationCount {...props} />}
@@ -160,16 +165,19 @@ class GlobalStatistic extends React.Component<Props, State> {
                 statisticsLinks.fileModificationCount.href
               )
             }
+            title={t("scm-statistic-plugin.charts.fileModificationCount")}
           />
           <Chart
             render={props => <TopWords {...props} />}
             getData={() => getTopWords(statisticsLinks.topWords.href)}
+            title={t("scm-statistic-plugin.charts.topWords")}
           />
           <Chart
             render={props => <TopModifiedFiles {...props} />}
             getData={() =>
               getTopModifiedFiles(statisticsLinks.topModifiedFiles.href)
             }
+            title={t("scm-statistic-plugin.charts.topModifiedFiles")}
           />
         </div>
         <SubmitButton
