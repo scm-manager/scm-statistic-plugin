@@ -1,0 +1,14 @@
+<repository-permissions>
+  <verbs>
+    <verb>readStatistics</verb>
+    <verb>computeStatistics</verb>
+  </verbs>
+  <roles>
+    <role>
+      <name>READ</name>
+      <verbs>
+        <verb>readStatistics</verb>
+      </verbs>
+    </role>
+  </roles>
+</repository-permissions>

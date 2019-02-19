@@ -56,6 +56,9 @@ import java.io.IOException;
 @Singleton
 public class StatisticManager {
 
+  public static final String ACTION_COMPUTE_STATISTICS = "computeStatistics";
+  public static final String ACTION_READ_STATISTICS = "readStatistics";
+
   private static final int PAGE_SIZE = 100;
   private static final String STORE = "statistic";
   private static final Logger LOG =
@@ -79,7 +82,7 @@ public class StatisticManager {
   }
 
   public void createStatistic(Repository repository) throws IOException {
-    RepositoryPermissions.modify(repository).check();
+    RepositoryPermissions.custom(ACTION_COMPUTE_STATISTICS, repository).check();
 
     try {
       createBootstrapStatistic(repository);
@@ -94,7 +97,7 @@ public class StatisticManager {
   }
 
   public void rebuild(Repository repository) {
-    RepositoryPermissions.modify(repository).check();
+    RepositoryPermissions.custom(ACTION_COMPUTE_STATISTICS, repository).check();
     LOG.warn("rebuild statistic for repository {}", repository.getId());
 
     Subject subject = SecurityUtils.getSubject();
@@ -114,13 +117,13 @@ public class StatisticManager {
     LOG.debug("try to remove statistic for repository {}",
       repository.getId());
 
-    RepositoryPermissions.modify(repository).check();
+    RepositoryPermissions.custom(ACTION_COMPUTE_STATISTICS, repository).check();
     getStore(repository).remove(repository.getId());
   }
 
   void store(Statistics statistics) {
     Repository repository = statistics.getRepository();
-    RepositoryPermissions.modify(repository).check();
+    RepositoryPermissions.custom(ACTION_COMPUTE_STATISTICS, repository).check();
 
     if (LOG.isDebugEnabled()) {
       LOG.debug("update statistic for repository {}", repository.getName());
@@ -135,7 +138,7 @@ public class StatisticManager {
   }
 
   public StatisticData getData(Repository repository) {
-    RepositoryPermissions.read(repository).check();
+    RepositoryPermissions.custom(ACTION_READ_STATISTICS, repository).check();
 
     StatisticData data = getStore(repository).get(repository.getId());
 
@@ -146,7 +149,7 @@ public class StatisticManager {
   }
 
   private void createBootstrapStatistic(Repository repository) throws IOException {
-    RepositoryPermissions.modify(repository).check();
+    RepositoryPermissions.custom(ACTION_COMPUTE_STATISTICS, repository).check();
 
     if (LOG.isDebugEnabled()) {
       LOG.debug("create bootstrap statistic for repository {}",
