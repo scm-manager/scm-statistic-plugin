@@ -85,7 +85,7 @@ public class StatisticResource {
       Link.link("topModifiedFiles", subResourceLinkBuilder.method("getTopModifiedFiles").parameters().href()),
       Link.link("topWords", subResourceLinkBuilder.method("getTopWords").parameters().href())
     );
-    if (RepositoryPermissions.modify(repositoryManager.get(new NamespaceAndName(namespace, name))).isPermitted()) {
+    if (RepositoryPermissions.custom(StatisticManager.ACTION_COMPUTE_STATISTICS, repositoryManager.get(new NamespaceAndName(namespace, name))).isPermitted()) {
       statisticLinks.single(Link.link("rebuild", subResourceLinkBuilder.method("rebuild").parameters().href()));
     }
     return Response.ok(new IndexDto(

@@ -9,6 +9,7 @@ import sonia.scm.api.v2.resources.ScmPathInfoStore;
 import sonia.scm.plugin.Extension;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryPermissions;
+import sonia.scm.statistic.StatisticManager;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -27,7 +28,7 @@ public class RepositoryHalEnricher implements HalEnricher {
   @Override
   public void enrich(HalEnricherContext context, HalAppender appender) {
     Repository repository = context.oneRequireByType(Repository.class);
-    if (RepositoryPermissions.read(repository).isPermitted()) {
+    if (RepositoryPermissions.custom(StatisticManager.ACTION_READ_STATISTICS, repository).isPermitted()) {
       String statisticsIndexUrl = new LinkBuilder(scmPathInfoStore.get().get(), StatisticResource.class)
         .method("getStatisticsIndex")
         .parameters(repository.getNamespace(), repository.getName())
