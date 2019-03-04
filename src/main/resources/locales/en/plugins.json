@@ -29,6 +29,12 @@
           "displayName": "Recompute statistics",
           "description": "May recompute the statistics for all repositories"
         }
+      },
+      "readStatistics": {
+        "*": {
+          "displayName": "read statistics",
+          "description": "May read the statistics for all repositories"
+        }
       }
     }
   },
