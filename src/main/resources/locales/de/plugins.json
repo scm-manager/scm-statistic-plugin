@@ -29,6 +29,12 @@
           "displayName": "Statistiken neu berechnen",
           "description": "Darf die Statistiken für alle Repositories neu berechnen."
         }
+      },
+      "readStatistics": {
+        "*": {
+          "displayName": "Statistiken sehen",
+          "description": "Darf die Statistiken für alle Repositories sehen."
+        }
       }
     }
   },

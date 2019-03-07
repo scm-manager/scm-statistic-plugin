@@ -2,4 +2,7 @@
   <permission>
     <value>repository:computeStatistics:*</value>
   </permission>
+  <permission>
+    <value>repository:readStatistics:*</value>
+  </permission>
 </permissions>

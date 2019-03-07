@@ -5,11 +5,15 @@ import StatisticsNavLink from "./StatisticsNavLink";
 import Statistics from "./Statistics";
 import { Route } from "react-router-dom";
 
+const statisticPredicate = ({ url, repository }) => {
+  return repository._links && repository._links.statistics && repository._links.statistics .href;
+};
+
 const StatisticNavLink = ({ url }) => {
   return <StatisticsNavLink url={url} />;
 };
 
-binder.bind("repository.navigation", StatisticNavLink);
+binder.bind("repository.navigation", StatisticNavLink, statisticPredicate);
 
 const StatisticRoute = ({ url, repository }) => {
   return (
@@ -21,4 +25,4 @@ const StatisticRoute = ({ url, repository }) => {
   );
 };
 
-binder.bind("repository.route", StatisticRoute);
+binder.bind("repository.route", StatisticRoute, statisticPredicate);
