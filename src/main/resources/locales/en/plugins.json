@@ -32,7 +32,7 @@
       },
       "readStatistics": {
         "*": {
-          "displayName": "read statistics",
+          "displayName": "Read statistics",
           "description": "May read the statistics for all repositories"
         }
       }
@@ -41,11 +41,11 @@
   "verbs": {
     "repository": {
       "readStatistics": {
-        "displayName": "read statistics",
+        "displayName": "Read statistics",
         "description": "May read the statistics"
       },
       "computeStatistics": {
-        "displayName": "recompute statistics",
+        "displayName": "Recompute statistics",
         "description": "May recompute the statistics"
       }
     }

@@ -50,10 +50,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import static sonia.scm.statistic.StatisticsPermissions.isComputeForAllReposPermitted;
-import static sonia.scm.statistic.StatisticsPermissions.isComputeForRepoPermitted;
-import static sonia.scm.statistic.StatisticsPermissions.isReadForAllReposPermitted;
-import static sonia.scm.statistic.StatisticsPermissions.isReadForRepoPermitted;
+import static sonia.scm.statistic.StatisticsPermissions.isComputePermitted;
+import static sonia.scm.statistic.StatisticsPermissions.isReadPermitted;
 
 /**
  * @author Sebastian Sdorra
@@ -76,7 +74,7 @@ public class StatisticResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getStatisticsIndex(@PathParam("namespace") String namespace, @PathParam("name") String name) {
     Repository repository = repositoryManager.get(new NamespaceAndName(namespace, name));
-    if (!isReadForAllReposPermitted() && !isReadForRepoPermitted(repository)) {
+    if (!isReadPermitted(repository)) {
       throw new WebApplicationException(Response.status(Response.Status.FORBIDDEN).build());
     }
     LinkBuilder subResourceLinkBuilder = new LinkBuilder(scmPathInfoStore.get().get(), StatisticResource.class, StatisticSubResource.class)
@@ -93,7 +91,7 @@ public class StatisticResource {
       Link.link("topModifiedFiles", subResourceLinkBuilder.method("getTopModifiedFiles").parameters().href()),
       Link.link("topWords", subResourceLinkBuilder.method("getTopWords").parameters().href())
     );
-    if (isComputeForAllReposPermitted() || isComputeForRepoPermitted(repository)) {
+    if (isComputePermitted(repository)) {
       statisticLinks.single(Link.link("rebuild", subResourceLinkBuilder.method("rebuild").parameters().href()));
     }
     return Response.ok(new IndexDto(

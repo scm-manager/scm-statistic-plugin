@@ -12,8 +12,7 @@ import sonia.scm.repository.Repository;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import static sonia.scm.statistic.StatisticsPermissions.isReadForAllReposPermitted;
-import static sonia.scm.statistic.StatisticsPermissions.isReadForRepoPermitted;
+import static sonia.scm.statistic.StatisticsPermissions.isReadPermitted;
 
 @Extension
 @Enrich(Repository.class)
@@ -29,7 +28,7 @@ public class RepositoryHalEnricher implements HalEnricher {
   @Override
   public void enrich(HalEnricherContext context, HalAppender appender) {
     Repository repository = context.oneRequireByType(Repository.class);
-    if (isReadForAllReposPermitted() || isReadForRepoPermitted(repository)) {
+    if (isReadPermitted(repository)) {
       String statisticsIndexUrl = new LinkBuilder(scmPathInfoStore.get().get(), StatisticResource.class)
         .method("getStatisticsIndex")
         .parameters(repository.getNamespace(), repository.getName())
