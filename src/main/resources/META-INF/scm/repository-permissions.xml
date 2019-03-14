@@ -10,5 +10,11 @@
         <verb>readStatistics</verb>
       </verbs>
     </role>
+    <role>
+      <name>WRITE</name>
+      <verbs>
+        <verb>readStatistics</verb>
+      </verbs>
+    </role>
   </roles>
 </repository-permissions>
