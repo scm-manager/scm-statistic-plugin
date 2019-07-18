@@ -32,6 +32,7 @@ type State = {
 const styles = {
   columnSettings: {
     maxHeight: "none !important",
+    height: "unset !important",
     marginBottom: "1.5rem"
   },
   detailedViewButton: {
