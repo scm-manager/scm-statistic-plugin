@@ -35,16 +35,11 @@
 
 <plugin>
   <scm-version>2</scm-version>
+
   <information>
-    <author>Sebastian Sdorra</author>
-    <screenshots>
-      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.01.png</screenshot>
-      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.02.png</screenshot>
-      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.03.png</screenshot>
-      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.04.png</screenshot>
-      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.05.png</screenshot>
-      <screenshot>http://download.scm-manager.org/images/scm-statistic-plugin/screenshot.06.png</screenshot>
-    </screenshots>
+    <displayName>Statistic</displayName>
+    <author>Cloudogu GmbH</author>
+    <category>Information</category>
   </information>
 
   <conditions>
