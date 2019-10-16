@@ -25,5 +25,8 @@
   "prettier": "@scm-manager/prettier-config",
   "eslintConfig": {
     "extends": "@scm-manager/eslint-config"
+  },
+  "devDependencies": {
+    "fetch-mock": "^7.5.1"
   }
 }
