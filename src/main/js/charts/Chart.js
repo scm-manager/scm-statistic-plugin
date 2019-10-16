@@ -2,8 +2,7 @@
 import React from "react";
 import { translate } from "react-i18next";
 import { ErrorNotification, Loading } from "@scm-manager/ui-components";
-import classNames from "classnames";
-import injectSheet from "react-jss";
+import styled from "styled-components";
 import type { StatisticData } from "./../DataTypes";
 import NoDataFound from "../NoDataFound";
 
@@ -18,8 +17,7 @@ type Props = {
   title: string,
 
   // context props
-  t: string => string,
-  classes: any
+  t: string => string
 };
 
 type State = {
@@ -29,22 +27,26 @@ type State = {
   statisticData?: StatisticData
 };
 
-const styles = {
-  columnSettings: {
-    maxHeight: "none !important",
-    height: "unset !important",
-    marginBottom: "1.5rem"
-  },
-  detailedViewButton: {
-    cursor: "pointer",
-    float: "right"
-  },
-  canvasContainer: {
-    height: "30vh",
-    marginBottom: "5px"
-  }
-};
+const ColumnSettings = styled.div`
+  max-height: none !important;
+  height: unset !important;
+  margin-bottom: 1.5rem;
+`;
 
+const DetailedViewButton = styled.div`
+  float: right;
+  cursor: pointer;
+`;
+
+const CanvasContainerDiv = styled.div`
+  margin-bottom: 5px;
+  height: 30vh;
+`;
+
+const CanvasContainerArticle = styled.article`
+  margin-bottom: 5px;
+  height: 30vh;
+`;
 class Chart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -99,8 +101,6 @@ class Chart extends React.Component<Props, State> {
   }
 
   createChartsObject() {
-    const { classes } = this.props;
-
     if (!this.state.statisticData) {
       return null;
     }
@@ -116,14 +116,14 @@ class Chart extends React.Component<Props, State> {
     };
 
     return (
-      <article className={classNames(classes.canvasContainer)}>
+      <CanvasContainerArticle>
         {this.props.render(renderProps)}
-      </article>
+      </CanvasContainerArticle>
     );
   }
 
   render() {
-    const { t, classes } = this.props;
+    const { t } = this.props;
     const { error, loading, statisticData, showModal } = this.state;
 
     let content = null;
@@ -133,12 +133,12 @@ class Chart extends React.Component<Props, State> {
       content = <ErrorNotification error={error} />;
     } else if (loading || !statisticData) {
       content = <Loading />;
-    }
-    else if (statisticData.value.length === 0 || statisticData.count.length === 0) {
-      content = <NoDataFound />
-      ;
-    }
-    else {
+    } else if (
+      statisticData.value.length === 0 ||
+      statisticData.count.length === 0
+    ) {
+      content = <NoDataFound />;
+    } else {
       if (showModal) {
         modal = (
           <div className="modal is-active">
@@ -155,9 +155,9 @@ class Chart extends React.Component<Props, State> {
                 />
               </header>
               <section className="modal-card-body">
-                <div className={classNames("content", classes.canvasContainer)}>
+                <CanvasContainerDiv className="content">
                   {this.createChartsObject()}
-                </div>
+                </CanvasContainerDiv>
               </section>
             </div>
           </div>
@@ -167,26 +167,23 @@ class Chart extends React.Component<Props, State> {
       content = (
         <>
           {modal}
-          <div
-            className={classNames(classes.detailedViewButton)}
-            onClick={this.showModal}
-          >
+          <DetailedViewButton onClick={this.showModal}>
             <span className="icon is-small">
               <i className="fas fa-search-plus" />
             </span>
-          </div>
+          </DetailedViewButton>
           {this.createChartsObject()}
         </>
       );
     }
 
     return (
-      <div className={classNames("column is-half", classes.columnSettings)}>
+      <ColumnSettings className="column is-half">
         {this.props.title}
         {content}
-      </div>
+      </ColumnSettings>
     );
   }
 }
 
-export default injectSheet(styles)(translate("plugins")(Chart));
+export default translate("plugins")(Chart);

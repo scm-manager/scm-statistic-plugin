@@ -1,12 +1,16 @@
 // @flow
 import React from "react";
+import { Route } from "react-router-dom";
 import { binder } from "@scm-manager/ui-extensions";
 import StatisticsNavLink from "./StatisticsNavLink";
 import Statistics from "./Statistics";
-import { Route } from "react-router-dom";
 
-const statisticPredicate = ({ url, repository }) => {
-  return repository._links && repository._links.statistics && repository._links.statistics .href;
+const statisticPredicate = ({ repository }) => {
+  return (
+    repository._links &&
+    repository._links.statistics &&
+    repository._links.statistics.href
+  );
 };
 
 const StatisticNavLink = ({ url }) => {
