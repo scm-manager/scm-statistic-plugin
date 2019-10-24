@@ -1,13 +1,11 @@
-// @flow
 import React from "react";
 import { Line } from "react-chartjs-2";
-import type { StatisticData } from "../DataTypes";
-import { translate } from "react-i18next";
+import { StatisticData } from "../DataTypes";
+import { withTranslation, WithTranslation } from "react-i18next";
 
-type Props = {
-  statisticData: StatisticData,
-  options: any,
-  t: string => string
+type Props = WithTranslation & {
+  statisticData: StatisticData;
+  options: any;
 };
 
 class CommitsPerMonth extends React.Component<Props> {
@@ -36,4 +34,4 @@ class CommitsPerMonth extends React.Component<Props> {
   }
 }
 
-export default translate("plugins")(CommitsPerMonth);
+export default withTranslation("plugins")(CommitsPerMonth);

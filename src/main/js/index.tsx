@@ -1,4 +1,3 @@
-// @flow
 import React from "react";
 import { Route } from "react-router-dom";
 import { binder } from "@scm-manager/ui-extensions";
@@ -6,11 +5,7 @@ import StatisticsNavLink from "./StatisticsNavLink";
 import Statistics from "./Statistics";
 
 const statisticPredicate = ({ repository }) => {
-  return (
-    repository._links &&
-    repository._links.statistics &&
-    repository._links.statistics.href
-  );
+  return repository._links && repository._links.statistics && repository._links.statistics.href;
 };
 
 const StatisticNavLink = ({ url }) => {
@@ -20,13 +15,7 @@ const StatisticNavLink = ({ url }) => {
 binder.bind("repository.navigation", StatisticNavLink, statisticPredicate);
 
 const StatisticRoute = ({ url, repository }) => {
-  return (
-    <Route
-      path={`${url}/statistic`}
-      render={() => <Statistics repository={repository} />}
-      exact
-    />
-  );
+  return <Route path={`${url}/statistic`} render={() => <Statistics repository={repository} />} exact />;
 };
 
 binder.bind("repository.route", StatisticRoute, statisticPredicate);

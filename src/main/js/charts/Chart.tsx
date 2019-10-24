@@ -1,30 +1,26 @@
-//@flow
 import React from "react";
-import { translate } from "react-i18next";
+import { withTranslation, WithTranslation } from "react-i18next";
 import { ErrorNotification, Loading } from "@scm-manager/ui-components";
 import styled from "styled-components";
-import type { StatisticData } from "./../DataTypes";
+import { StatisticData } from "../DataTypes";
 import NoDataFound from "../NoDataFound";
 
 type RenderProps = {
-  statisticData: StatisticData,
-  options: any
+  statisticData: StatisticData;
+  options: any;
 };
 
-type Props = {
-  render: (props: RenderProps) => any,
-  getData: void => Promise<any>,
-  title: string,
-
-  // context props
-  t: string => string
+type Props = WithTranslation & {
+  render: (props: RenderProps) => any;
+  getData: (p: void) => Promise<any>;
+  title: string;
 };
 
 type State = {
-  error?: Error,
-  loading: boolean,
-  showModal: boolean,
-  statisticData?: StatisticData
+  error?: Error;
+  loading: boolean;
+  showModal: boolean;
+  statisticData?: StatisticData;
 };
 
 const ColumnSettings = styled.div`
@@ -65,10 +61,10 @@ class Chart extends React.Component<Props, State> {
           error: result.error
         });
       } else {
-        let count = [];
-        let value = [];
+        const count = [];
+        const value = [];
 
-        for (let statisticData of result) {
+        for (const statisticData of result) {
           value.push(statisticData.value);
           count.push(statisticData.count);
         }
@@ -96,7 +92,10 @@ class Chart extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    this.setState({ ...this.state, loading: true });
+    this.setState({
+      ...this.state,
+      loading: true
+    });
     this.getStatistics();
   }
 
@@ -115,11 +114,7 @@ class Chart extends React.Component<Props, State> {
       }
     };
 
-    return (
-      <CanvasContainerArticle>
-        {this.props.render(renderProps)}
-      </CanvasContainerArticle>
-    );
+    return <CanvasContainerArticle>{this.props.render(renderProps)}</CanvasContainerArticle>;
   }
 
   render() {
@@ -133,10 +128,7 @@ class Chart extends React.Component<Props, State> {
       content = <ErrorNotification error={error} />;
     } else if (loading || !statisticData) {
       content = <Loading />;
-    } else if (
-      statisticData.value.length === 0 ||
-      statisticData.count.length === 0
-    ) {
+    } else if (statisticData.value.length === 0 || statisticData.count.length === 0) {
       content = <NoDataFound />;
     } else {
       if (showModal) {
@@ -145,19 +137,11 @@ class Chart extends React.Component<Props, State> {
             <div className="modal-background" />
             <div className="modal-card">
               <header className="modal-card-head">
-                <p className="modal-card-title">
-                  {t("scm-statistic-plugin.charts.detailedView")}
-                </p>
-                <button
-                  className="delete"
-                  aria-label="close"
-                  onClick={() => this.onClose()}
-                />
+                <p className="modal-card-title">{t("scm-statistic-plugin.charts.detailedView")}</p>
+                <button className="delete" aria-label="close" onClick={() => this.onClose()} />
               </header>
               <section className="modal-card-body">
-                <CanvasContainerDiv className="content">
-                  {this.createChartsObject()}
-                </CanvasContainerDiv>
+                <CanvasContainerDiv className="content">{this.createChartsObject()}</CanvasContainerDiv>
               </section>
             </div>
           </div>
@@ -186,4 +170,4 @@ class Chart extends React.Component<Props, State> {
   }
 }
 
-export default translate("plugins")(Chart);
+export default withTranslation("plugins")(Chart);

@@ -1,16 +1,14 @@
-// @flow
 import React from "react";
 import { Bar } from "react-chartjs-2";
-import type { StatisticData } from "../DataTypes";
-import { translate } from "react-i18next";
+import { StatisticData } from "../DataTypes";
+import { withTranslation, WithTranslation } from "react-i18next";
 
-type Props = {
-  statisticData: StatisticData,
-  options: any,
-  t: string => string
+type Props = WithTranslation & {
+  statisticData: StatisticData;
+  options: any;
 };
 
-class TopWords extends React.Component<Props> {
+class CommitsPerWeekday extends React.Component<Props> {
   render() {
     const { t, statisticData, options } = this.props;
 
@@ -18,7 +16,7 @@ class TopWords extends React.Component<Props> {
       labels: statisticData.value,
       datasets: [
         {
-          label: t("scm-statistic-plugin.charts.topWords"),
+          label: t("scm-statistic-plugin.charts.commitsPerWeekday"),
           backgroundColor: "#66c5ee",
           data: statisticData.count
         }
@@ -33,4 +31,4 @@ class TopWords extends React.Component<Props> {
   }
 }
 
-export default translate("plugins")(TopWords);
+export default withTranslation("plugins")(CommitsPerWeekday);

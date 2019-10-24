@@ -1,4 +1,3 @@
-// @flow
 import fetchMock from "fetch-mock";
 import {
   getCommitsPerAuthor,
@@ -38,10 +37,7 @@ describe("API get statistics", () => {
   });
 
   it("should get commits per author successfully", done => {
-    fetchMock.getOnce(
-      "/api/v2" + PATH + "/commits-per-author",
-      commitsPerAuthor
-    );
+    fetchMock.getOnce("/api/v2" + PATH + "/commits-per-author", commitsPerAuthor);
 
     getCommitsPerAuthor(PATH + "/commits-per-author").then(response => {
       expect(response).toEqual(commitsPerAuthor.author);
@@ -193,10 +189,7 @@ describe("API get statistics", () => {
   };
 
   it("should get commits per weekday successfully", done => {
-    fetchMock.getOnce(
-      "/api/v2" + PATH + "/commits-per-weekday",
-      commitsPerWeekday
-    );
+    fetchMock.getOnce("/api/v2" + PATH + "/commits-per-weekday", commitsPerWeekday);
 
     getCommitsPerWeekday(PATH + "/commits-per-weekday").then(response => {
       expect(response).toEqual(commitsPerWeekday.weekday);
@@ -233,17 +226,12 @@ describe("API get statistics", () => {
   };
 
   it("should get file modification count successfully", done => {
-    fetchMock.getOnce(
-      "/api/v2" + PATH + "/file-modification-count",
-      fileModificationCount
-    );
+    fetchMock.getOnce("/api/v2" + PATH + "/file-modification-count", fileModificationCount);
 
-    getFileModificationCount(PATH + "/file-modification-count").then(
-      response => {
-        expect(response).toEqual(fileModificationCount.modification);
-        done();
-      }
-    );
+    getFileModificationCount(PATH + "/file-modification-count").then(response => {
+      expect(response).toEqual(fileModificationCount.modification);
+      done();
+    });
   });
 
   it("should fail on getting file modification count", done => {
@@ -251,12 +239,10 @@ describe("API get statistics", () => {
       status: 500
     });
 
-    getFileModificationCount(PATH + "/file-modification-count").then(
-      response => {
-        expect(response.error).toBeDefined();
-        done();
-      }
-    );
+    getFileModificationCount(PATH + "/file-modification-count").then(response => {
+      expect(response.error).toBeDefined();
+      done();
+    });
   });
 
   const topModifiedFiles = {
@@ -277,10 +263,7 @@ describe("API get statistics", () => {
   };
 
   it("should get top modified files successfully", done => {
-    fetchMock.getOnce(
-      "/api/v2" + PATH + "/top-modified-files",
-      topModifiedFiles
-    );
+    fetchMock.getOnce("/api/v2" + PATH + "/top-modified-files", topModifiedFiles);
 
     getTopModifiedFiles(PATH + "/top-modified-files").then(response => {
       expect(response).toEqual(topModifiedFiles.file);
@@ -342,7 +325,9 @@ describe("API get statistics", () => {
     });
 
     rebuildStatistics(PATH + "/rebuild").then(response => {
-      expect(response).toEqual({ success: true });
+      expect(response).toEqual({
+        success: true
+      });
       done();
     });
   });

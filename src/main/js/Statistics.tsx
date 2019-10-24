@@ -1,14 +1,7 @@
-// @flow
 import React from "react";
-import type { Repository } from "@scm-manager/ui-types";
-import {
-  Loading,
-  ErrorNotification,
-  Subtitle,
-  SubmitButton,
-  confirmAlert
-} from "@scm-manager/ui-components";
-import { translate } from "react-i18next";
+import { Repository } from "@scm-manager/ui-types";
+import { Loading, ErrorNotification, Subtitle, SubmitButton, confirmAlert } from "@scm-manager/ui-components";
+import { withTranslation, WithTranslation } from "react-i18next";
 import {
   Chart,
   CommitsPerAuthor,
@@ -32,17 +25,16 @@ import {
   getCommitsPerHour,
   rebuildStatistics
 } from "./statistics";
-import type { StatisticLinks } from "./DataTypes";
+import { StatisticLinks } from "./DataTypes";
 
-type Props = {
-  repository: Repository,
-  t: string => string
+type Props = WithTranslation & {
+  repository: Repository;
 };
 
 type State = {
-  loading: boolean,
-  error?: boolean,
-  statisticsLinks?: StatisticLinks
+  loading: boolean;
+  error?: boolean;
+  statisticsLinks?: StatisticLinks;
 };
 
 class GlobalStatistic extends React.Component<Props, State> {
@@ -73,7 +65,10 @@ class GlobalStatistic extends React.Component<Props, State> {
 
   rebuildStatistics = () => {
     const { statisticsLinks } = this.state;
-    this.setState({ ...this.state, loading: true });
+    this.setState({
+      ...this.state,
+      loading: true
+    });
 
     rebuildStatistics(statisticsLinks.rebuild.href).then(result => {
       if (result.error) {
@@ -125,46 +120,32 @@ class GlobalStatistic extends React.Component<Props, State> {
         <div className="columns is-multiline is-vcentered">
           <Chart
             render={props => <CommitsPerAuthor {...props} />}
-            getData={() =>
-              getCommitsPerAuthor(statisticsLinks.commitsPerAuthor.href)
-            }
+            getData={() => getCommitsPerAuthor(statisticsLinks.commitsPerAuthor.href)}
             title={t("scm-statistic-plugin.charts.commitsPerAuthor")}
           />
           <Chart
             render={props => <CommitsPerHour {...props} />}
-            getData={() =>
-              getCommitsPerHour(statisticsLinks.commitsPerHour.href)
-            }
+            getData={() => getCommitsPerHour(statisticsLinks.commitsPerHour.href)}
             title={t("scm-statistic-plugin.charts.commitsPerHour")}
           />
           <Chart
             render={props => <CommitsPerMonth {...props} />}
-            getData={() =>
-              getCommitsPerMonth(statisticsLinks.commitsPerMonth.href)
-            }
+            getData={() => getCommitsPerMonth(statisticsLinks.commitsPerMonth.href)}
             title={t("scm-statistic-plugin.charts.commitsPerMonth")}
           />
           <Chart
             render={props => <CommitsPerYear {...props} />}
-            getData={() =>
-              getCommitsPerYear(statisticsLinks.commitsPerYear.href)
-            }
+            getData={() => getCommitsPerYear(statisticsLinks.commitsPerYear.href)}
             title={t("scm-statistic-plugin.charts.commitsPerYear")}
           />
           <Chart
             render={props => <CommitsPerWeekday {...props} />}
-            getData={() =>
-              getCommitsPerWeekday(statisticsLinks.commitsPerWeekday.href)
-            }
+            getData={() => getCommitsPerWeekday(statisticsLinks.commitsPerWeekday.href)}
             title={t("scm-statistic-plugin.charts.commitsPerWeekday")}
           />
           <Chart
             render={props => <FileModificationCount {...props} />}
-            getData={() =>
-              getFileModificationCount(
-                statisticsLinks.fileModificationCount.href
-              )
-            }
+            getData={() => getFileModificationCount(statisticsLinks.fileModificationCount.href)}
             title={t("scm-statistic-plugin.charts.fileModificationCount")}
           />
           <Chart
@@ -174,9 +155,7 @@ class GlobalStatistic extends React.Component<Props, State> {
           />
           <Chart
             render={props => <TopModifiedFiles {...props} />}
-            getData={() =>
-              getTopModifiedFiles(statisticsLinks.topModifiedFiles.href)
-            }
+            getData={() => getTopModifiedFiles(statisticsLinks.topModifiedFiles.href)}
             title={t("scm-statistic-plugin.charts.topModifiedFiles")}
           />
         </div>
@@ -191,4 +170,4 @@ class GlobalStatistic extends React.Component<Props, State> {
   }
 }
 
-export default translate("plugins")(GlobalStatistic);
+export default withTranslation("plugins")(GlobalStatistic);

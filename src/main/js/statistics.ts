@@ -1,4 +1,3 @@
-//@flow
 import { apiClient } from "@scm-manager/ui-components";
 
 export function getLinksForStatistics(url: string) {
@@ -9,7 +8,9 @@ export function getLinksForStatistics(url: string) {
       return collection._links;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -21,7 +22,9 @@ export function getCommitsPerAuthor(url: string) {
       return collection.author;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -33,7 +36,9 @@ export function getCommitsPerHour(url: string) {
       return collection.hour;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -45,7 +50,9 @@ export function getCommitsPerMonth(url: string) {
       return collection.month;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -57,7 +64,9 @@ export function getCommitsPerYear(url: string) {
       return collection.year;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -69,7 +78,9 @@ export function getCommitsPerWeekday(url: string) {
       return collection.weekday;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -81,7 +92,9 @@ export function getFileModificationCount(url: string) {
       return collection.modification;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -93,7 +106,9 @@ export function getTopModifiedFiles(url: string) {
       return collection.file;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -105,7 +120,9 @@ export function getTopWords(url: string) {
       return collection.word;
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }
 
@@ -113,9 +130,13 @@ export function rebuildStatistics(url: string) {
   return apiClient
     .post(url)
     .then(() => {
-      return { success: true };
+      return {
+        success: true
+      };
     })
     .catch(err => {
-      return { error: err };
+      return {
+        error: err
+      };
     });
 }

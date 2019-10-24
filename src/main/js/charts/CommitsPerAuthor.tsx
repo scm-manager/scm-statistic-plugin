@@ -1,20 +1,18 @@
-// @flow
 import React from "react";
 import { Pie } from "react-chartjs-2";
-import type { StatisticData } from "../DataTypes";
-import { translate } from "react-i18next";
+import { StatisticData } from "../DataTypes";
+import { withTranslation, WithTranslation } from "react-i18next";
 
-type Props = {
-  statisticData: StatisticData,
-  options: any,
-  t: string => string
+type Props = WithTranslation & {
+  statisticData: StatisticData;
+  options: any;
 };
 
 class CommitsPerAuthor extends React.Component<Props> {
   render() {
     const { t, statisticData, options } = this.props;
 
-    let colors = [
+    const colors = [
       "#ffc3cf",
       "#ff92a8",
       "#ffdd65",
@@ -47,4 +45,4 @@ class CommitsPerAuthor extends React.Component<Props> {
   }
 }
 
-export default translate("plugins")(CommitsPerAuthor);
+export default withTranslation("plugins")(CommitsPerAuthor);

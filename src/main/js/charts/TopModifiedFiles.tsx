@@ -1,20 +1,18 @@
-// @flow
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
-import type { StatisticData } from "../DataTypes";
-import { translate } from "react-i18next";
+import { StatisticData } from "../DataTypes";
+import { withTranslation, WithTranslation } from "react-i18next";
 
-type Props = {
-  statisticData: StatisticData,
-  options: any,
-  t: string => string
+type Props = WithTranslation & {
+  statisticData: StatisticData;
+  options: any;
 };
 
 class TopModifiedFiles extends React.Component<Props> {
   render() {
     const { t, options, statisticData } = this.props;
 
-    let colors = [
+    const colors = [
       "#ffc3cf",
       "#ff92a8",
       "#ffdd65",
@@ -47,4 +45,4 @@ class TopModifiedFiles extends React.Component<Props> {
   }
 }
 
-export default translate("plugins")(TopModifiedFiles);
+export default withTranslation("plugins")(TopModifiedFiles);
