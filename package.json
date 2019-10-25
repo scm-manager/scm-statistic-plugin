@@ -27,6 +27,7 @@
     "extends": "@scm-manager/eslint-config"
   },
   "devDependencies": {
-    "fetch-mock": "^7.5.1"
+    "fetch-mock": "^7.5.1",
+    "node-fetch": "^2.6.0"
   }
 }
