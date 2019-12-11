@@ -1,6 +1,6 @@
 import React from "react";
 import { Repository } from "@scm-manager/ui-types";
-import { Loading, ErrorNotification, Subtitle, SubmitButton, confirmAlert } from "@scm-manager/ui-components";
+import { Loading, ErrorNotification, Subtitle, Level, SubmitButton, confirmAlert } from "@scm-manager/ui-components";
 import { withTranslation, WithTranslation } from "react-i18next";
 import {
   Chart,
@@ -159,11 +159,15 @@ class GlobalStatistic extends React.Component<Props, State> {
             title={t("scm-statistic-plugin.charts.topModifiedFiles")}
           />
         </div>
-        <SubmitButton
-          label={t("scm-statistic-plugin.rebuildButton")}
-          action={this.confirmRebuildStatistics}
-          disabled={!statisticsLinks.rebuild}
-          color="warning"
+        <Level
+          right={
+            <SubmitButton
+              label={t("scm-statistic-plugin.rebuildButton")}
+              action={this.confirmRebuildStatistics}
+              disabled={!statisticsLinks.rebuild}
+              color="warning"
+            />
+          }
         />
       </>
     );
