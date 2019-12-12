@@ -1,6 +1,6 @@
 import React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { ErrorNotification, Loading } from "@scm-manager/ui-components";
+import { ErrorNotification, Loading, Level } from "@scm-manager/ui-components";
 import styled from "styled-components";
 import { StatisticData } from "../DataTypes";
 import NoDataFound from "../NoDataFound";
@@ -30,7 +30,6 @@ const ColumnSettings = styled.div`
 `;
 
 const DetailedViewButton = styled.div`
-  float: right;
   cursor: pointer;
 `;
 
@@ -148,16 +147,21 @@ class Chart extends React.Component<Props, State> {
         );
       }
 
-      content = (
-        <>
+      return (
+        <ColumnSettings className="column is-half">
           {modal}
-          <DetailedViewButton onClick={this.showModal}>
-            <span className="icon is-small">
-              <i className="fas fa-search-plus" />
-            </span>
-          </DetailedViewButton>
+          <Level
+            left={this.props.title}
+            right={
+              <DetailedViewButton onClick={this.showModal}>
+                <span className="icon is-small">
+                  <i className="fas fa-search-plus" />
+                </span>
+              </DetailedViewButton>
+            }
+          />
           {this.createChartsObject()}
-        </>
+        </ColumnSettings>
       );
     }
 
