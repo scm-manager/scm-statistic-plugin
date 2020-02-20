@@ -33,6 +33,13 @@ package sonia.scm.statistic.resources;
 import com.google.inject.Inject;
 import de.otto.edison.hal.Link;
 import de.otto.edison.hal.Links;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import sonia.scm.api.v2.resources.ErrorDto;
 import sonia.scm.api.v2.resources.LinkBuilder;
 import sonia.scm.api.v2.resources.ScmPathInfoStore;
 import sonia.scm.repository.NamespaceAndName;
@@ -40,6 +47,7 @@ import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryManager;
 import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.StatisticManager;
+import sonia.scm.web.VndMediaType;
 
 import javax.inject.Provider;
 import javax.ws.rs.GET;
@@ -56,6 +64,9 @@ import static sonia.scm.statistic.StatisticsPermissions.isReadPermitted;
 /**
  * @author Sebastian Sdorra
  */
+@OpenAPIDefinition(tags = {
+  @Tag(name = "Statistic Plugin", description = "Statistic plugin provided endpoints")
+})
 @Path("v2/plugins/statistic")
 public class StatisticResource {
 
@@ -69,9 +80,28 @@ public class StatisticResource {
     this.statisticManager = statisticManager;
   }
 
-  @Path("{namespace}/{name}")
   @GET
+  @Path("{namespace}/{name}")
   @Produces(MediaType.APPLICATION_JSON)
+  @Operation(summary = "Index of all statistics", description = "Returns an index of all statistics.", tags = "Statistic Plugin")
+  @ApiResponse(
+    responseCode = "200",
+    description = "success",
+    content = @Content(
+      mediaType = MediaType.APPLICATION_JSON,
+      schema = @Schema(implementation = IndexDto.class)
+    )
+  )
+  @ApiResponse(responseCode = "401", description = "not authenticated / invalid credentials")
+  @ApiResponse(responseCode = "403", description = "not authorized, the current user has no privileges to read the repository")
+  @ApiResponse(
+    responseCode = "500",
+    description = "internal server error",
+    content = @Content(
+      mediaType = VndMediaType.ERROR_TYPE,
+      schema = @Schema(implementation = ErrorDto.class)
+    )
+  )
   public Response getStatisticsIndex(@PathParam("namespace") String namespace, @PathParam("name") String name) {
     Repository repository = repositoryManager.get(new NamespaceAndName(namespace, name));
     if (!isReadPermitted(repository)) {
