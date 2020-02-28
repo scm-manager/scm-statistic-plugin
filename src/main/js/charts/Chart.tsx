@@ -148,7 +148,7 @@ class Chart extends React.Component<Props, State> {
       }
 
       return (
-        <ColumnSettings className="column is-half">
+        <ColumnSettings className="column">
           {modal}
           <Level
             left={this.props.title}
@@ -166,7 +166,7 @@ class Chart extends React.Component<Props, State> {
     }
 
     return (
-      <ColumnSettings className="column is-half">
+      <ColumnSettings className="column">
         {this.props.title}
         {content}
       </ColumnSettings>
