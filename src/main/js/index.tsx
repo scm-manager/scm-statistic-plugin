@@ -8,8 +8,8 @@ const statisticPredicate = ({ repository }) => {
   return repository._links && repository._links.statistics && repository._links.statistics.href;
 };
 
-const StatisticNavLink = ({ url, collapsedRepositoryMenu  }) => {
-  return <StatisticsNavLink url={url} collapsed={collapsedRepositoryMenu} />;
+const StatisticNavLink = ({ url }) => {
+  return <StatisticsNavLink url={url}/>;
 };
 
 binder.bind("repository.navigation", StatisticNavLink, statisticPredicate);
