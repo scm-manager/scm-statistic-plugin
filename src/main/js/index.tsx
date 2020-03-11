@@ -9,7 +9,7 @@ const statisticPredicate = ({ repository }) => {
 };
 
 const StatisticNavLink = ({ url }) => {
-  return <StatisticsNavLink url={url} />;
+  return <StatisticsNavLink url={url}/>;
 };
 
 binder.bind("repository.navigation", StatisticNavLink, statisticPredicate);

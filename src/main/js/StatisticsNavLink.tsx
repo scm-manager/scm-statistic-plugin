@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "@scm-manager/ui-components";
+import { SecondaryNavigationItem } from "@scm-manager/ui-components";
 import { withTranslation, WithTranslation } from "react-i18next";
 
 type Props = WithTranslation & {
@@ -10,7 +10,14 @@ class StatisticsNavLink extends React.Component<Props> {
   render() {
     const { url, t } = this.props;
 
-    return <NavLink to={`${url}/statistic`} icon="fas fa-chart-pie" label={t("scm-statistic-plugin.navLink")} />;
+    return (
+      <SecondaryNavigationItem
+        to={`${url}/statistic`}
+        icon="fas fa-chart-pie"
+        label={t("scm-statistic-plugin.navLink")}
+        title={t("scm-statistic-plugin.navLink")}
+      />
+    );
   }
 }
 
