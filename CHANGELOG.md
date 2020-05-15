@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Changed
 - Changeover to MIT license ([#4](https://github.com/scm-manager/scm-statistic-plugin/pull/4))
+- Adapted to new modification API ([#5](https://github.com/scm-manager/scm-statistic-plugin/pull/5))
 
 ## 2.0.0-rc2 - 2020-03-13
 ### Added

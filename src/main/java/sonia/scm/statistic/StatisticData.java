@@ -29,19 +29,15 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import sonia.scm.repository.Changeset;
 import sonia.scm.repository.Modifications;
+import sonia.scm.repository.Modified;
 import sonia.scm.repository.Person;
 import sonia.scm.statistic.xml.XmlMultisetDayAdapter;
 import sonia.scm.statistic.xml.XmlMultisetIntegerAdapter;
 import sonia.scm.statistic.xml.XmlMultisetStringAdapter;
-
-import java.util.Calendar;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -49,6 +45,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.Calendar;
+import java.util.Set;
 
 /**
  * @author Sebastian Sdorra
@@ -140,10 +138,7 @@ public class StatisticData {
     commitsPerDay.add(Day.of(cal));
     commitsPerHour.add(cal.get(Calendar.HOUR_OF_DAY));
 
-
-    for (String file : mods.getModified()) {
-      modifiedFiles.add(file);
-    }
+    mods.getModified().stream().map(Modified::getPath).forEach(modifiedFiles::add);
 
     fileModificationCount.add(MODIFICATION_ADDED, mods.getAdded().size());
     fileModificationCount.add(MODIFICATION_MODIFIED, mods.getModified().size());
