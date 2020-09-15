@@ -37,7 +37,7 @@
   },
   "devDependencies" : {
     "fetch-mock" : "^7.5.1",
-    "node-fetch" : "^2.6.0",
+    "node-fetch" : "^2.6.1",
     "@scm-manager/babel-preset" : "^2.0.0",
     "@scm-manager/eslint-config" : "^2.0.0",
     "@scm-manager/jest-preset" : "^2.0.0",
