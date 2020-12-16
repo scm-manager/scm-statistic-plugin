@@ -25,7 +25,7 @@
 -->
 <repository-permissions>
   <verbs>
-    <verb>readStatistics</verb>
+    <verb read-only="true">readStatistics</verb>
     <verb>computeStatistics</verb>
   </verbs>
   <roles>
