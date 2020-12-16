@@ -186,16 +186,17 @@ class GlobalStatistic extends React.Component<Props, State> {
             />
           </div>
         </div>
-        <Level
-          right={
-            <SubmitButton
-              label={t("scm-statistic-plugin.rebuildButton")}
-              action={this.confirmRebuildStatistics}
-              disabled={!statisticsLinks.rebuild}
-              color="warning"
-            />
-          }
-        />
+        {statisticsLinks?.rebuild && (
+          <Level
+            right={
+              <SubmitButton
+                label={t("scm-statistic-plugin.rebuildButton")}
+                action={this.confirmRebuildStatistics}
+                color="warning"
+              />
+            }
+          />
+        )}
       </>
     );
   }

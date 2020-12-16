@@ -28,7 +28,6 @@ import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,13 +37,15 @@ import sonia.scm.repository.Repository;
 import sonia.scm.statistic.StatisticCollector;
 import sonia.scm.statistic.StatisticData;
 import sonia.scm.statistic.StatisticManager;
-import sonia.scm.statistic.dto.*;
+import sonia.scm.statistic.dto.CommitsPerAuthor;
+import sonia.scm.statistic.dto.CommitsPerHour;
+import sonia.scm.statistic.dto.CommitsPerMonth;
+import sonia.scm.statistic.dto.CommitsPerWeekday;
+import sonia.scm.statistic.dto.CommitsPerYear;
+import sonia.scm.statistic.dto.FileModificationCount;
+import sonia.scm.statistic.dto.TopModifiedFiles;
+import sonia.scm.statistic.dto.TopWords;
 import sonia.scm.web.VndMediaType;
-
-import java.io.IOException;
-
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -52,7 +53,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.Iterator;
+import java.util.Set;
+
+import static sonia.scm.statistic.StatisticsPermissions.isComputePermitted;
 
 /**
  * @author Sebastian Sdorra
@@ -80,7 +87,10 @@ public class StatisticSubResource {
       schema = @Schema(implementation = ErrorDto.class)
     )
   )
-  public void rebuild() throws IOException {
+  public void rebuild() {
+    if (!isComputePermitted(repository)) {
+      throw new WebApplicationException(Response.status(Response.Status.FORBIDDEN).build());
+    }
     manager.rebuild(repository);
   }
 
