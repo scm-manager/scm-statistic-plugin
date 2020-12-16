@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Mark read only verbs to be able to see statistics in archived repositories ([#10](https://github.com/scm-manager/scm-statistic-plugin/pull/10))
 
+### Fixed
+- Add missing permission before rebuild the statistics ([#11](https://github.com/scm-manager/scm-statistic-plugin/pull/11))
+
 ## 2.0.0 - 2020-06-04
 ### Changed
 - Changeover to MIT license ([#4](https://github.com/scm-manager/scm-statistic-plugin/pull/4))
