@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- Mark read only verbs to be able to see pull requests in archived repositories ([#10](https://github.com/scm-manager/scm-statistic-plugin/pull/10))
+- Mark read only verbs to be able to see statistics in archived repositories ([#10](https://github.com/scm-manager/scm-statistic-plugin/pull/10))
 
 ## 2.0.0 - 2020-06-04
 ### Changed
