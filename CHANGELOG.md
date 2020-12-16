@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Fixed
-- Added missing permission before rebuild the statistics ([#11](https://github.com/scm-manager/scm-statistic-plugin/pull/11))
+- Add missing permission before rebuild the statistics ([#11](https://github.com/scm-manager/scm-statistic-plugin/pull/11))
 
 ## 2.0.0 - 2020-06-04
 ### Changed
