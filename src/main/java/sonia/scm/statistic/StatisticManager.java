@@ -70,7 +70,7 @@ public class StatisticManager {
   }
 
   public boolean contains(Repository repository) {
-    return getStore(repository).get(repository.getId()) != null;
+    return getStore(repository).get(STORE) != null;
   }
 
   public void createStatistic(Repository repository) throws IOException {
@@ -110,7 +110,7 @@ public class StatisticManager {
       repository.getId());
 
     RepositoryPermissions.custom(ACTION_COMPUTE_STATISTICS, repository).check();
-    getStore(repository).remove(repository.getId());
+    getStore(repository).remove(STORE);
   }
 
   void store(Statistics statistics) {
@@ -121,7 +121,7 @@ public class StatisticManager {
       LOG.debug("update statistic for repository {}", repository.getName());
     }
 
-    getStore(repository).put(repository.getId(), statistics.getStatisticData());
+    getStore(repository).put(STORE, statistics.getStatisticData());
   }
 
   public Statistics get(Repository repository) {
@@ -132,7 +132,7 @@ public class StatisticManager {
   public StatisticData getData(Repository repository) {
     RepositoryPermissions.custom(ACTION_READ_STATISTICS, repository).check();
 
-    StatisticData data = getStore(repository).get(repository.getId());
+    StatisticData data = getStore(repository).get(STORE);
 
     if (data == null) {
       data = new StatisticData();
