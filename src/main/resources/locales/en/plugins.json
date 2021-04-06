@@ -9,14 +9,14 @@
       "commitsPerMonth": "Commits per Month",
       "commitsPerYear": "Commits per Year",
       "commitsPerWeekday": "Commits per Weekday",
-      "fileModificationCount": "File modification count",
-      "topModifiedFiles": "Top modified Files",
+      "fileModificationCount": "File Modification Count",
+      "topModifiedFiles": "Top Modified Files",
       "topWords": "Top Words",
       "detailedView": "Detailed View"
     },
-    "rebuildButton": "Rebuild statistics",
+    "rebuildButton": "Rebuild Statistics",
     "confirmRebuildStatistics": {
-      "title": "Rebuild statistics",
+      "title": "Rebuild Statistics",
       "message": "Do you really want to rebuild data for statistics?",
       "submit": "Yes",
       "cancel": "No"
