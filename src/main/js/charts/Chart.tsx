@@ -23,7 +23,7 @@
  */
 import React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { ErrorNotification, Loading, Level } from "@scm-manager/ui-components";
+import { ErrorNotification, Loading, Modal, Level } from "@scm-manager/ui-components";
 import styled from "styled-components";
 import { StatisticData } from "../DataTypes";
 import NoDataFound from "../NoDataFound";
@@ -153,26 +153,16 @@ class Chart extends React.Component<Props, State> {
     } else if (statisticData.value.length === 0 || statisticData.count.length === 0) {
       content = <NoDataFound />;
     } else {
-      if (showModal) {
-        modal = (
-          <div className="modal is-active">
-            <div className="modal-background" />
-            <div className="modal-card">
-              <header className="modal-card-head">
-                <p className="modal-card-title">{t("scm-statistic-plugin.charts.detailedView")}</p>
-                <button className="delete" aria-label="close" onClick={() => this.onClose()} />
-              </header>
-              <section className="modal-card-body">
-                <CanvasContainerDiv className="content">{this.createChartsObject()}</CanvasContainerDiv>
-              </section>
-            </div>
-          </div>
-        );
-      }
+      const modalBody = <CanvasContainerDiv className="content">{this.createChartsObject()}</CanvasContainerDiv>;
 
       return (
         <ColumnSettings className="column">
-          {modal}
+          <Modal
+            title={t("scm-statistic-plugin.charts.detailedView")}
+            active={showModal}
+            body={modalBody}
+            closeFunction={() => this.onClose()}
+          />
           <Level
             left={this.props.title}
             right={
