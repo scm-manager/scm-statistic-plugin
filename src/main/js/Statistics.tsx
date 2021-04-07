@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import React from "react";
+import React, { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Repository } from "@scm-manager/ui-types";
-import { Loading, ErrorNotification, Subtitle, Level, SubmitButton, confirmAlert } from "@scm-manager/ui-components";
-import { withTranslation, WithTranslation } from "react-i18next";
+import { Loading, ErrorNotification, Subtitle } from "@scm-manager/ui-components";
 import {
   Chart,
   CommitsPerAuthor,
@@ -45,161 +45,93 @@ import {
   getCommitsPerWeekday,
   getCommitsPerYear,
   getCommitsPerMonth,
-  getCommitsPerHour,
-  rebuildStatistics
+  getCommitsPerHour
 } from "./statistics";
 import { StatisticLinks } from "./DataTypes";
+import RebuildStatistics from "./RebuildStatistics";
 
-type Props = WithTranslation & {
+type Props = {
   repository: Repository;
 };
 
-type State = {
-  loading: boolean;
-  error?: boolean;
-  statisticsLinks?: StatisticLinks;
-};
+const Statistic: FC<Props> = ({ repository }) => {
+  const [t] = useTranslation("plugins");
+  const [isLoading, setLoading] = useState(true);
+  const [statisticsLinks, setStatisticsLinks] = useState<StatisticLinks | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
-class GlobalStatistic extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: true
-    };
-  }
-
-  componentDidMount() {
-    const { repository } = this.props;
-
+  useEffect(() => {
     getLinksForStatistics(repository._links.statistics.href).then(result => {
       if (result.error) {
-        this.setState({
-          error: result.error,
-          loading: false
-        });
+        setError(result.error);
+        setLoading(false);
       } else {
-        this.setState({
-          statisticsLinks: result,
-          loading: false
-        });
+        setStatisticsLinks(result);
+        setLoading(false);
       }
     });
+  }, [isLoading]);
+
+  if (error) {
+    return <ErrorNotification error={error} />;
   }
 
-  rebuildStatistics = () => {
-    const { statisticsLinks } = this.state;
-    this.setState({
-      ...this.state,
-      loading: true
-    });
+  if (isLoading || !statisticsLinks) {
+    return <Loading />;
+  }
 
-    rebuildStatistics(statisticsLinks.rebuild.href).then(result => {
-      if (result.error) {
-        this.setState({
-          error: result.error,
-          loading: false
-        });
-      } else {
-        this.setState({
-          loading: false
-        });
-      }
-    });
-  };
-
-  confirmRebuildStatistics = () => {
-    const { t } = this.props;
-    confirmAlert({
-      title: t("scm-statistic-plugin.confirmRebuildStatistics.title"),
-      message: t("scm-statistic-plugin.confirmRebuildStatistics.message"),
-      buttons: [
-        {
-          label: t("scm-statistic-plugin.confirmRebuildStatistics.submit"),
-          onClick: () => this.rebuildStatistics()
-        },
-        {
-          label: t("scm-statistic-plugin.confirmRebuildStatistics.cancel"),
-          onClick: () => null
-        }
-      ]
-    });
-  };
-
-  render() {
-    const { t } = this.props;
-    const { loading, error, statisticsLinks } = this.state;
-
-    if (error) {
-      return <ErrorNotification error={error} />;
-    }
-
-    if (loading || !statisticsLinks) {
-      return <Loading />;
-    }
-
-    return (
-      <>
-        <Subtitle subtitle={t("scm-statistic-plugin.title")} />
-        <div className={"columns"}>
-          <div className="column">
-            <Chart
-              render={props => <CommitsPerAuthor {...props} />}
-              getData={() => getCommitsPerAuthor(statisticsLinks.commitsPerAuthor.href)}
-              title={t("scm-statistic-plugin.charts.commitsPerAuthor")}
-            />
-            <Chart
-              render={props => <CommitsPerWeekday {...props} />}
-              getData={() => getCommitsPerWeekday(statisticsLinks.commitsPerWeekday.href)}
-              title={t("scm-statistic-plugin.charts.commitsPerWeekday")}
-            />
-            <Chart
-              render={props => <TopModifiedFiles {...props} />}
-              getData={() => getTopModifiedFiles(statisticsLinks.topModifiedFiles.href)}
-              title={t("scm-statistic-plugin.charts.topModifiedFiles")}
-            />
-            <Chart
-              render={props => <CommitsPerYear {...props} />}
-              getData={() => getCommitsPerYear(statisticsLinks.commitsPerYear.href)}
-              title={t("scm-statistic-plugin.charts.commitsPerYear")}
-            />
-          </div>
-          <div className="column">
-            <Chart
-              render={props => <CommitsPerHour {...props} />}
-              getData={() => getCommitsPerHour(statisticsLinks.commitsPerHour.href)}
-              title={t("scm-statistic-plugin.charts.commitsPerHour")}
-            />
-            <Chart
-              render={props => <CommitsPerMonth {...props} />}
-              getData={() => getCommitsPerMonth(statisticsLinks.commitsPerMonth.href)}
-              title={t("scm-statistic-plugin.charts.commitsPerMonth")}
-            />
-            <Chart
-              render={props => <FileModificationCount {...props} />}
-              getData={() => getFileModificationCount(statisticsLinks.fileModificationCount.href)}
-              title={t("scm-statistic-plugin.charts.fileModificationCount")}
-            />
-            <Chart
-              render={props => <TopWords {...props} />}
-              getData={() => getTopWords(statisticsLinks.topWords.href)}
-              title={t("scm-statistic-plugin.charts.topWords")}
-            />
-          </div>
-        </div>
-        {statisticsLinks?.rebuild && (
-          <Level
-            right={
-              <SubmitButton
-                label={t("scm-statistic-plugin.rebuildButton")}
-                action={this.confirmRebuildStatistics}
-                color="warning"
-              />
-            }
+  return (
+    <>
+      <Subtitle subtitle={t("scm-statistic-plugin.title")} />
+      <div className="columns">
+        <div className="column">
+          <Chart
+            render={props => <CommitsPerAuthor {...props} />}
+            getData={() => getCommitsPerAuthor(statisticsLinks.commitsPerAuthor.href)}
+            title={t("scm-statistic-plugin.charts.commitsPerAuthor")}
           />
-        )}
-      </>
-    );
-  }
-}
+          <Chart
+            render={props => <CommitsPerWeekday {...props} />}
+            getData={() => getCommitsPerWeekday(statisticsLinks.commitsPerWeekday.href)}
+            title={t("scm-statistic-plugin.charts.commitsPerWeekday")}
+          />
+          <Chart
+            render={props => <TopModifiedFiles {...props} />}
+            getData={() => getTopModifiedFiles(statisticsLinks.topModifiedFiles.href)}
+            title={t("scm-statistic-plugin.charts.topModifiedFiles")}
+          />
+          <Chart
+            render={props => <CommitsPerYear {...props} />}
+            getData={() => getCommitsPerYear(statisticsLinks.commitsPerYear.href)}
+            title={t("scm-statistic-plugin.charts.commitsPerYear")}
+          />
+        </div>
+        <div className="column">
+          <Chart
+            render={props => <CommitsPerHour {...props} />}
+            getData={() => getCommitsPerHour(statisticsLinks.commitsPerHour.href)}
+            title={t("scm-statistic-plugin.charts.commitsPerHour")}
+          />
+          <Chart
+            render={props => <CommitsPerMonth {...props} />}
+            getData={() => getCommitsPerMonth(statisticsLinks.commitsPerMonth.href)}
+            title={t("scm-statistic-plugin.charts.commitsPerMonth")}
+          />
+          <Chart
+            render={props => <FileModificationCount {...props} />}
+            getData={() => getFileModificationCount(statisticsLinks.fileModificationCount.href)}
+            title={t("scm-statistic-plugin.charts.fileModificationCount")}
+          />
+          <Chart
+            render={props => <TopWords {...props} />}
+            getData={() => getTopWords(statisticsLinks.topWords.href)}
+            title={t("scm-statistic-plugin.charts.topWords")}
+          />
+        </div>
+      </div>
+      {statisticsLinks?.rebuild && <RebuildStatistics statisticsLinks={statisticsLinks} />}
+    </>
+  );
+};
 
-export default withTranslation("plugins")(GlobalStatistic);
+export default Statistic;
