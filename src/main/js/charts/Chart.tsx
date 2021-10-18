@@ -23,7 +23,7 @@
  */
 import React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { ErrorNotification, Loading, Level } from "@scm-manager/ui-components";
+import { ErrorNotification, Loading, Level, Modal } from "@scm-manager/ui-components";
 import styled from "styled-components";
 import { StatisticData } from "../DataTypes";
 import NoDataFound from "../NoDataFound";
@@ -155,18 +155,12 @@ class Chart extends React.Component<Props, State> {
     } else {
       if (showModal) {
         modal = (
-          <div className="modal is-active">
-            <div className="modal-background" />
-            <div className="modal-card">
-              <header className="modal-card-head">
-                <p className="modal-card-title">{t("scm-statistic-plugin.charts.detailedView")}</p>
-                <button className="delete" aria-label="close" onClick={() => this.onClose()} />
-              </header>
-              <section className="modal-card-body">
-                <CanvasContainerDiv className="content">{this.createChartsObject()}</CanvasContainerDiv>
-              </section>
-            </div>
-          </div>
+          <Modal
+            title={t("scm-statistic-plugin.charts.detailedView")}
+            closeFunction={this.onClose}
+            active={showModal}
+            body={<CanvasContainerDiv className="content">{this.createChartsObject()}</CanvasContainerDiv>}
+          />
         );
       }
 
@@ -176,7 +170,11 @@ class Chart extends React.Component<Props, State> {
           <Level
             left={this.props.title}
             right={
-              <DetailedViewButton onClick={this.showModal}>
+              <DetailedViewButton
+                onClick={this.showModal}
+                tabIndex={0}
+                onKeyDown={e => e.key === "Enter" && this.showModal()}
+              >
                 <span className="icon is-small">
                   <i className="fas fa-search-plus" />
                 </span>
