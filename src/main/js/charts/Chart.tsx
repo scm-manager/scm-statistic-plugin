@@ -144,7 +144,6 @@ class Chart extends React.Component<Props, State> {
     const { error, loading, statisticData, showModal } = this.state;
 
     let content = null;
-    let modal = null;
 
     if (error) {
       content = <ErrorNotification error={error} />;
@@ -166,7 +165,7 @@ class Chart extends React.Component<Props, State> {
           <Level
             left={this.props.title}
             right={
-              <DetailedViewButton onClick={this.showModal}>
+              <DetailedViewButton onClick={this.showModal} title={t("scm-statistic-plugin.openFullscreen")}>
                 <span className="icon is-small">
                   <i className="fas fa-search-plus" />
                 </span>
