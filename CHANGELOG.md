@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- Add title to openFullscreen button ([#31](https://github.com/scm-manager/scm-statistic-plugin/pull/31))
+- Add tooltip to openFullscreen button ([#31](https://github.com/scm-manager/scm-statistic-plugin/pull/31))
 
 ## 2.1.2 - 2021-04-07
 ### Fixed
