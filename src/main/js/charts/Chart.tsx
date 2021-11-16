@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import React, {KeyboardEvent} from "react";
+import React  from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { ErrorNotification, Loading, Modal, Level, Tooltip, Icon } from "@scm-manager/ui-components";
 import styled from "styled-components";
@@ -171,9 +171,9 @@ class Chart extends React.Component<Props, State> {
                   name="search-plus"
                   color="inherit"
                   onClick={this.showModal}
+                  onEnter={this.showModal}
                   alt={t("scm-statistic-plugin.openFullscreen")}
                   tabIndex={0}
-                  onKeyDown={(e: KeyboardEvent) => e.key === "Enter" && this.showModal()}
                 />
               </Tooltip>
             }
