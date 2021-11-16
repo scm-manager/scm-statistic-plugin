@@ -14,6 +14,7 @@
       "topWords": "Top Words",
       "detailedView": "Detailed View"
     },
+    "openFullscreen": "Open in Fullscreen",
     "rebuildButton": "Rebuild Statistics",
     "confirmRebuildStatistics": {
       "title": "Rebuild Statistics",

@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import React from "react";
+import React, {KeyboardEvent} from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { ErrorNotification, Loading, Level, Modal } from "@scm-manager/ui-components";
+import { ErrorNotification, Loading, Modal, Level, Tooltip, Icon } from "@scm-manager/ui-components";
 import styled from "styled-components";
 import { StatisticData } from "../DataTypes";
 import NoDataFound from "../NoDataFound";
@@ -50,10 +50,6 @@ const ColumnSettings = styled.div`
   max-height: none !important;
   height: unset !important;
   margin-bottom: 1.5rem;
-`;
-
-const DetailedViewButton = styled.div`
-  cursor: pointer;
 `;
 
 const CanvasContainerDiv = styled.div`
@@ -170,15 +166,16 @@ class Chart extends React.Component<Props, State> {
           <Level
             left={this.props.title}
             right={
-              <DetailedViewButton
-                onClick={this.showModal}
-                tabIndex={0}
-                onKeyDown={e => e.key === "Enter" && this.showModal()}
-              >
-                <span className="icon is-small">
-                  <i className="fas fa-search-plus" />
-                </span>
-              </DetailedViewButton>
+              <Tooltip message={t("scm-statistic-plugin.openFullscreen")}>
+                <Icon
+                  name="search-plus"
+                  color="inherit"
+                  onClick={this.showModal}
+                  alt={t("scm-statistic-plugin.openFullscreen")}
+                  tabIndex={0}
+                  onKeyDown={(e: KeyboardEvent) => e.key === "Enter" && this.showModal()}
+                />
+              </Tooltip>
             }
           />
           {this.createChartsObject()}
