@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import React from "react";
+import React  from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { ErrorNotification, Loading, Modal, Level, Tooltip, Icon } from "@scm-manager/ui-components";
 import styled from "styled-components";
@@ -140,6 +140,7 @@ class Chart extends React.Component<Props, State> {
     const { error, loading, statisticData, showModal } = this.state;
 
     let content = null;
+    let modal = null;
 
     if (error) {
       content = <ErrorNotification error={error} />;
@@ -148,16 +149,20 @@ class Chart extends React.Component<Props, State> {
     } else if (statisticData.value.length === 0 || statisticData.count.length === 0) {
       content = <NoDataFound />;
     } else {
-      const modalBody = <CanvasContainerDiv className="content">{this.createChartsObject()}</CanvasContainerDiv>;
+      if (showModal) {
+        modal = (
+          <Modal
+            title={t("scm-statistic-plugin.charts.detailedView")}
+            closeFunction={this.onClose}
+            active={showModal}
+            body={<CanvasContainerDiv className="content">{this.createChartsObject()}</CanvasContainerDiv>}
+          />
+        );
+      }
 
       return (
         <ColumnSettings className="column">
-          <Modal
-            title={t("scm-statistic-plugin.charts.detailedView")}
-            active={showModal}
-            body={modalBody}
-            closeFunction={() => this.onClose()}
-          />
+          {modal}
           <Level
             left={this.props.title}
             right={
@@ -166,7 +171,9 @@ class Chart extends React.Component<Props, State> {
                   name="search-plus"
                   color="inherit"
                   onClick={this.showModal}
+                  onEnter={this.showModal}
                   alt={t("scm-statistic-plugin.openFullscreen")}
+                  tabIndex={0}
                 />
               </Tooltip>
             }
