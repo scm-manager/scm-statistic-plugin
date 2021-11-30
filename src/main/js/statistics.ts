@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { apiClient } from "@scm-manager/ui-components";
+import { apiClient } from "@scm-manager/ui-api";
 
 export function getLinksForStatistics(url: string) {
   return apiClient
