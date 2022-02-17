@@ -28,6 +28,6 @@ export type StatisticLinks = {
 };
 
 export type StatisticData = {
-  value: [];
-  count: [];
+  value: unknown[];
+  count: unknown[];
 };
