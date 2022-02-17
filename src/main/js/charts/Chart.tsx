@@ -89,9 +89,9 @@ const Chart: FC<Props> = ({ render, getData, title }) => {
         const count = [];
         const value = [];
 
-        for (const statisticData of result) {
-          value.push(statisticData.value);
-          count.push(statisticData.count);
+        for (const statsData of result) {
+          value.push(statsData.value);
+          count.push(statsData.count);
         }
         setStatisticData({
           value: value,
