@@ -56,11 +56,11 @@ const RebuildStatistics: FC<Props> = ({ statisticsLinks }) => {
         message={t("scm-statistic-plugin.confirmRebuildStatistics.message")}
         buttons={[
           {
-            className: "is-outlined",
             label: t("scm-statistic-plugin.confirmRebuildStatistics.submit"),
             onClick: () => rebuildStatistic()
           },
           {
+            className: "is-info",
             label: t("scm-statistic-plugin.confirmRebuildStatistics.cancel"),
             onClick: () => null
           }
