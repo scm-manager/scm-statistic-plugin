@@ -1,0 +1,2 @@
+- type: fixed
+  description: Permission check for event listener
