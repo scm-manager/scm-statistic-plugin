@@ -26,6 +26,7 @@ package sonia.scm.statistic.collector;
 import sonia.scm.repository.Branch;
 import sonia.scm.repository.Branches;
 import sonia.scm.repository.InternalRepositoryException;
+import sonia.scm.repository.api.Command;
 import sonia.scm.repository.api.LogCommandBuilder;
 import sonia.scm.repository.api.RepositoryService;
 import sonia.scm.statistic.Statistics;
@@ -45,14 +46,16 @@ public class NonCombinedBranchCollector extends AbstractChangesetCollector {
   public void collect(Statistics statistics, int pageSize)
     throws IOException, InternalRepositoryException {
     RepositoryService repositoryService = statistics.getRepositoryService();
-    Branches branches = repositoryService.getBranchesCommand().getBranches();
+    if (repositoryService.isSupported(Command.BRANCHES)) {
+      Branches branches = repositoryService.getBranchesCommand().getBranches();
 
-    if (branches != null) {
-      LogCommandBuilder logCommand = repositoryService.getLogCommand();
+      if (branches != null) {
+        LogCommandBuilder logCommand = repositoryService.getLogCommand();
 
-      for (Branch branch : branches) {
-        logCommand.setBranch(branch.getName());
-        append(logCommand, statistics, pageSize);
+        for (Branch branch : branches) {
+          logCommand.setBranch(branch.getName());
+          append(logCommand, statistics, pageSize);
+        }
       }
     }
   }
