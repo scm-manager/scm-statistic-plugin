@@ -1,0 +1,2 @@
+- type: fixed
+  description: Unnecessary deletion of store after repository deletion

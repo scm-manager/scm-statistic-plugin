@@ -63,17 +63,4 @@ public class StatisticListener {
       }
     });
   }
-
-  @Subscribe
-  public void onRepositoryEvent(RepositoryEvent event) {
-    if (event.getEventType() == HandlerEventType.DELETE) {
-      Repository repository = event.getItem();
-
-      LOG.trace("receive delete event for repository {}",
-        repository.getId());
-      administrationContext.runAsAdmin(() -> {
-        statisticManager.remove(repository);
-      });
-    }
-  }
 }
