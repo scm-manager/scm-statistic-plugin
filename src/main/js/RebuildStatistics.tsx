@@ -17,7 +17,7 @@
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfirmAlert, ErrorNotification, Level, SubmitButton } from "@scm-manager/ui-components";
-import { rebuildStatistics } from "./statistics";
+import { rebuildStatistics } from "./hook/statistics";
 import { StatisticLinks } from "./DataTypes";
 
 type Props = {

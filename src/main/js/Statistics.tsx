@@ -39,9 +39,10 @@ import {
   getCommitsPerYear,
   getCommitsPerMonth,
   getCommitsPerHour
-} from "./statistics";
+} from "./hook/statistics";
 import { StatisticLinks } from "./DataTypes";
 import RebuildStatistics from "./RebuildStatistics";
+import { useDocumentTitleForRepository } from "@scm-manager/ui-core";
 
 type Props = {
   repository: Repository;
@@ -52,6 +53,7 @@ const Statistic: FC<Props> = ({ repository }) => {
   const [isLoading, setLoading] = useState(true);
   const [statisticsLinks, setStatisticsLinks] = useState<StatisticLinks | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  useDocumentTitleForRepository(repository, t("scm-statistic-plugin.navLink"));
 
   useEffect(() => {
     getLinksForStatistics(repository._links.statistics.href).then(result => {
