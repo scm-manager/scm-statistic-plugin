@@ -15,23 +15,20 @@
  */
 
 import React from "react";
-import { Route } from "react-router-dom";
 import { binder } from "@scm-manager/ui-extensions";
+import { Link, Repository } from "@scm-manager/ui-types";
 import StatisticsNavLink from "./StatisticsNavLink";
 import Statistics from "./Statistics";
+import { STATISTIC_BASE } from "./routes";
 
-const statisticPredicate = ({ repository }) => {
-  return repository._links && repository._links.statistics && repository._links.statistics.href;
-};
+const statisticPredicate = ({ repository }: { repository: Repository }) =>
+  (repository?._links.statistics as Link)?.href;
 
-const StatisticNavLink = ({ url }) => {
-  return <StatisticsNavLink url={url}/>;
-};
+binder.bind("repository.navigation", StatisticsNavLink, statisticPredicate);
 
-binder.bind("repository.navigation", StatisticNavLink, statisticPredicate);
+const statisticRoute = () => ({
+  path: STATISTIC_BASE,
+  element: <Statistics />,
+});
 
-const StatisticRoute = ({ url, repository }) => {
-  return <Route path={`${url}/statistic`} render={() => <Statistics repository={repository} />} exact />;
-};
-
-binder.bind("repository.route", StatisticRoute, statisticPredicate);
+binder.bind("repository.route", statisticRoute);

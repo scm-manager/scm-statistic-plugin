@@ -17,16 +17,13 @@
 import React, { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { ErrorNotification, Level, Loading, Notification, OpenInFullscreenButton } from "@scm-manager/ui-components";
+import { OpenInFullscreenButton } from "@scm-manager/ui-components";
+import { ErrorNotification, Level, Loading, Notification } from "@scm-manager/ui-core";
 import { StatisticData } from "../DataTypes";
-
-type RenderProps = {
-  statisticData: StatisticData;
-  options: any;
-};
+import { ChartProps } from "./index";
 
 type Props = {
-  render: (props: RenderProps) => any;
+  render: (props: ChartProps) => any;
   getData: (p: void) => Promise<any>;
   title: string;
 };
@@ -46,18 +43,18 @@ const CanvasContainerArticle = styled.article`
 
 type ChartObjectProps = {
   statisticData: StatisticData;
-  render: (props: RenderProps) => any;
+  render: (props: ChartProps) => any;
 };
 
 const ChartsObject: FC<ChartObjectProps> = ({ statisticData, render }) => {
-  const renderProps: RenderProps = {
+  const renderProps: ChartProps = {
     statisticData: statisticData,
     options: {
       maintainAspectRatio: false, // Don't maintain w/h ratio
       legend: {
-        position: "bottom"
-      }
-    }
+        position: "bottom",
+      },
+    },
   };
 
   return render(renderProps);
@@ -74,7 +71,7 @@ const Chart: FC<Props> = ({ render, getData, title }) => {
   }, []);
 
   const getStatistics = () => {
-    getData().then(result => {
+    getData().then((result) => {
       if (result.error) {
         setLoading(false);
         setError(result.error);
@@ -88,7 +85,7 @@ const Chart: FC<Props> = ({ render, getData, title }) => {
         }
         setStatisticData({
           value: value,
-          count: count
+          count: count,
         });
         setLoading(false);
       }

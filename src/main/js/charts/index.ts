@@ -14,6 +14,8 @@
  * along with this program. If not, see https://www.gnu.org/licenses/.
  */
 
+import { StatisticData } from "../DataTypes";
+
 export { default as Chart } from "./Chart";
 export { default as CommitsPerAuthor } from "./CommitsPerAuthor";
 export { default as CommitsPerHour } from "./CommitsPerHour";
@@ -23,3 +25,8 @@ export { default as CommitsPerWeekday } from "./CommitsPerWeekday";
 export { default as FileModificationCount } from "./FileModificationCount";
 export { default as TopModifiedFiles } from "./TopModifiedFiles";
 export { default as TopWords } from "./TopWords";
+
+export type ChartProps = {
+  statisticData: StatisticData;
+  options: any;
+};

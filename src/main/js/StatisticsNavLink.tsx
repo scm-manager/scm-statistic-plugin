@@ -14,27 +14,25 @@
  * along with this program. If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
+import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { SecondaryNavigationItem } from "@scm-manager/ui-components";
-import { withTranslation, WithTranslation } from "react-i18next";
+import { useRepositoryFromParams } from "@scm-manager/ui-core";
+import { resolveStatistic } from "./routes";
 
-type Props = WithTranslation & {
-  url: string;
+const StatisticsNavLink: FC = () => {
+  const [t] = useTranslation("plugins");
+  const repository = useRepositoryFromParams();
+  const url = resolveStatistic(repository);
+
+  return (
+    <SecondaryNavigationItem
+      to={url}
+      icon="fas fa-chart-pie"
+      label={t("scm-statistic-plugin.navLink")}
+      title={t("scm-statistic-plugin.navLink")}
+    />
+  );
 };
 
-class StatisticsNavLink extends React.Component<Props> {
-  render() {
-    const { url, t } = this.props;
-
-    return (
-      <SecondaryNavigationItem
-        to={`${url}/statistic`}
-        icon="fas fa-chart-pie"
-        label={t("scm-statistic-plugin.navLink")}
-        title={t("scm-statistic-plugin.navLink")}
-      />
-    );
-  }
-}
-
-export default withTranslation("plugins")(StatisticsNavLink);
+export default StatisticsNavLink;

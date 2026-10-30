@@ -32,35 +32,21 @@ import java.io.IOException;
 public abstract class AbstractChangesetCollector implements ChangesetCollector {
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractChangesetCollector.class);
-  private final Statistics statistics;
+  protected final Statistics statistics;
 
   protected AbstractChangesetCollector(Statistics statistics) {
     this.statistics = statistics;
   }
 
-  protected void append(LogCommandBuilder logCommand, Statistics statistics, int pageSize)
+  protected void append(LogCommandBuilder logCommand)
     throws IOException, InternalRepositoryException {
 
     // do not cache the whole changesets of a repository
     ChangesetPagingResult result = logCommand.setDisableCache(true)
       .setPagingStart(0)
-      .setPagingLimit(pageSize)
+      .setPagingLimit(-1)
       .getChangesets();
 
-    append(statistics, result);
-
-    int total = result.getTotal();
-
-    for (int i = pageSize; i < total; i = i + pageSize) {
-      result = logCommand.setPagingStart(i)
-        .setPagingLimit(pageSize)
-        .getChangesets();
-
-      append(statistics, result);
-    }
-  }
-
-  private void append(Statistics statistics, ChangesetPagingResult result) throws IOException {
     for (Changeset c : result) {
       statistics.add(c);
     }

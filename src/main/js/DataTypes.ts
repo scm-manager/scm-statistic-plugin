@@ -14,10 +14,25 @@
  * along with this program. If not, see https://www.gnu.org/licenses/.
  */
 
-import { Links } from "@scm-manager/ui-types";
+import { Link } from "@scm-manager/ui-types";
+
+export type StatisticKey =
+  | "commitsPerAuthor"
+  | "commitsPerHour"
+  | "commitsPerMonth"
+  | "commitsPerYear"
+  | "commitsPerWeekday"
+  | "fileModificationCount"
+  | "getFileModificationCount"
+  | "raw"
+  | "getRaw"
+  | "topModifiedFiles"
+  | "getTopModifiedFiles"
+  | "topWords"
+  | "rebuild";
 
 export type StatisticLinks = {
-  _links: Links[];
+  [K in StatisticKey]: Link;
 };
 
 export type StatisticData = {

@@ -14,14 +14,11 @@
  * along with this program. If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
+import { SINGLE_REPOSITORY_BASE_ROUTE } from "@scm-manager/ui-core";
+import { Repository } from "@scm-manager/ui-types";
 
-class NoDataFound extends React.Component<WithTranslation> {
-  render() {
-    const { t } = this.props;
-    return <div className="notification is-info">{t("scm-statistic-plugin.noData")}</div>;
-  }
-}
+export const STATISTIC_BASE = "statistic";
 
-export default withTranslation("plugins")(NoDataFound);
+export const resolveStatistic = (repository: Repository) => {
+  return `/${SINGLE_REPOSITORY_BASE_ROUTE}/${repository.namespace}/${repository.name}/${STATISTIC_BASE}`;
+};

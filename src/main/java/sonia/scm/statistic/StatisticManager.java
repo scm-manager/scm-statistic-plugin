@@ -44,7 +44,6 @@ public class StatisticManager {
   public static final String ACTION_COMPUTE_STATISTICS = "computeStatistics";
   public static final String ACTION_READ_STATISTICS = "readStatistics";
 
-  private static final int PAGE_SIZE = 100;
   private static final String STORE = "statistic";
   private static final Logger LOG =
     LoggerFactory.getLogger(StatisticManager.class);
@@ -144,7 +143,7 @@ public class StatisticManager {
     try (Statistics statistics = new Statistics(this, serviceFactory.create(repository), new StatisticData())) {
       ChangesetCollector collector = ChangesetCollectorFactory.createCollector(statistics);
 
-      collector.collect(statistics, PAGE_SIZE);
+      collector.collect();
       statistics.commit();
     }
   }

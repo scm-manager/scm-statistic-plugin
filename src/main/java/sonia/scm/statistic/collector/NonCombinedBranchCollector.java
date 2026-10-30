@@ -36,7 +36,7 @@ public class NonCombinedBranchCollector extends AbstractChangesetCollector {
   }
 
   @Override
-  public void collect(Statistics statistics, int pageSize)
+  public void collect()
     throws IOException, InternalRepositoryException {
     RepositoryService repositoryService = statistics.getRepositoryService();
     if (repositoryService.isSupported(Command.BRANCHES)) {
@@ -47,7 +47,7 @@ public class NonCombinedBranchCollector extends AbstractChangesetCollector {
 
         for (Branch branch : branches) {
           logCommand.setBranch(branch.getName());
-          append(logCommand, statistics, pageSize);
+          append(logCommand);
         }
       }
     }

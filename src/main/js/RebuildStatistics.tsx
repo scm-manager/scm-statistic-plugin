@@ -16,7 +16,8 @@
 
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ConfirmAlert, ErrorNotification, Level, SubmitButton } from "@scm-manager/ui-components";
+import { ConfirmAlert } from "@scm-manager/ui-components";
+import { Button, ErrorNotification, Level } from "@scm-manager/ui-core";
 import { rebuildStatistics } from "./hook/statistics";
 import { StatisticLinks } from "./DataTypes";
 
@@ -33,8 +34,8 @@ const RebuildStatistics: FC<Props> = ({ statisticsLinks }) => {
   const rebuildStatistic = () => {
     setLoading(true);
 
-    rebuildStatistics(statisticsLinks.rebuild.href).then(result => {
-      if (result.error) {
+    rebuildStatistics(statisticsLinks.rebuild.href).then((result) => {
+      if ("error" in result) {
         setError(result.error);
       }
       setLoading(false);
@@ -50,13 +51,13 @@ const RebuildStatistics: FC<Props> = ({ statisticsLinks }) => {
         buttons={[
           {
             label: t("scm-statistic-plugin.confirmRebuildStatistics.submit"),
-            onClick: () => rebuildStatistic()
+            onClick: () => rebuildStatistic(),
           },
           {
             className: "is-info",
             label: t("scm-statistic-plugin.confirmRebuildStatistics.cancel"),
-            onClick: () => null
-          }
+            onClick: () => null,
+          },
         ]}
         close={() => setShowConfirmAlert(false)}
       />
@@ -69,12 +70,13 @@ const RebuildStatistics: FC<Props> = ({ statisticsLinks }) => {
       {showConfirmAlert && confirmAlert}
       <Level
         right={
-          <SubmitButton
-            label={t("scm-statistic-plugin.rebuildButton")}
-            action={() => setShowConfirmAlert(true)}
-            color="warning"
-            loading={isLoading || !statisticsLinks}
-          />
+          <Button
+            className="is-warning"
+            onClick={() => setShowConfirmAlert(true)}
+            isLoading={isLoading || !statisticsLinks}
+          >
+            {t("scm-statistic-plugin.rebuildButton")}
+          </Button>
         }
       />
     </>

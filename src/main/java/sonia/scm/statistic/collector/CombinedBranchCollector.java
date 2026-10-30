@@ -27,16 +27,16 @@ import java.io.IOException;
  */
 public class CombinedBranchCollector extends AbstractChangesetCollector {
 
-  CombinedBranchCollector(Statistics statistics) {
+  protected CombinedBranchCollector(Statistics statistics) {
     super(statistics);
   }
 
   @Override
-  public void collect(Statistics statistics, int pageSize)
+  public void collect()
     throws IOException, InternalRepositoryException {
     LogCommandBuilder logCommand = statistics.getRepositoryService().getLogCommand();
 
-    append(logCommand, statistics, pageSize);
+    append(logCommand);
   }
 
 }

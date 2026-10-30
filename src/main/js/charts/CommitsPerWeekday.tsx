@@ -14,37 +14,26 @@
  * along with this program. If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
+import React, { FC } from "react";
 import { Bar } from "react-chartjs-2";
-import { StatisticData } from "../DataTypes";
-import { withTranslation, WithTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { ChartProps } from "./index";
 
-type Props = WithTranslation & {
-  statisticData: StatisticData;
-  options: any;
+const CommitsPerWeekday: FC<ChartProps> = ({ statisticData, options }) => {
+  const [t] = useTranslation("plugins");
+
+  const data = {
+    labels: statisticData.value,
+    datasets: [
+      {
+        label: t("scm-statistic-plugin.charts.commitsPerWeekday"),
+        backgroundColor: "#66c5ee",
+        data: statisticData.count,
+      },
+    ],
+  };
+
+  return <Bar data={data} options={options} />;
 };
 
-class CommitsPerWeekday extends React.Component<Props> {
-  render() {
-    const { t, statisticData, options } = this.props;
-
-    const data = {
-      labels: statisticData.value,
-      datasets: [
-        {
-          label: t("scm-statistic-plugin.charts.commitsPerWeekday"),
-          backgroundColor: "#66c5ee",
-          data: statisticData.count
-        }
-      ]
-    };
-
-    return (
-      <>
-        <Bar data={data} options={options} />
-      </>
-    );
-  }
-}
-
-export default withTranslation("plugins")(CommitsPerWeekday);
+export default CommitsPerWeekday;

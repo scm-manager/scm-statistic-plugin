@@ -25,6 +25,6 @@ import java.io.IOException;
  */
 public interface ChangesetCollector {
 
-  void collect(Statistics statistics, int pageSize) throws IOException;
+  void collect() throws IOException;
 
 }

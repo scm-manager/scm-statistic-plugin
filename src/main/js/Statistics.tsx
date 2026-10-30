@@ -16,8 +16,14 @@
 
 import React, { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Repository } from "@scm-manager/ui-types";
-import { Loading, ErrorNotification, Subtitle } from "@scm-manager/ui-components";
+import {
+  Loading,
+  ErrorNotification,
+  Subtitle,
+  useDocumentTitleForRepository,
+  useRepositoryFromParams,
+} from "@scm-manager/ui-core";
+import { Link } from "@scm-manager/ui-types";
 import {
   Chart,
   CommitsPerAuthor,
@@ -27,7 +33,7 @@ import {
   CommitsPerWeekday,
   FileModificationCount,
   TopModifiedFiles,
-  TopWords
+  TopWords,
 } from "./charts";
 import {
   getLinksForStatistics,
@@ -38,25 +44,21 @@ import {
   getCommitsPerWeekday,
   getCommitsPerYear,
   getCommitsPerMonth,
-  getCommitsPerHour
+  getCommitsPerHour,
 } from "./hook/statistics";
 import { StatisticLinks } from "./DataTypes";
 import RebuildStatistics from "./RebuildStatistics";
-import { useDocumentTitleForRepository } from "@scm-manager/ui-core";
 
-type Props = {
-  repository: Repository;
-};
-
-const Statistic: FC<Props> = ({ repository }) => {
+const Statistic: FC = () => {
   const [t] = useTranslation("plugins");
   const [isLoading, setLoading] = useState(true);
   const [statisticsLinks, setStatisticsLinks] = useState<StatisticLinks | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const repository = useRepositoryFromParams();
   useDocumentTitleForRepository(repository, t("scm-statistic-plugin.navLink"));
 
   useEffect(() => {
-    getLinksForStatistics(repository._links.statistics.href).then(result => {
+    getLinksForStatistics((repository._links.statistics as Link).href).then((result) => {
       if (result.error) {
         setError(result.error);
         setLoading(false);
@@ -81,44 +83,44 @@ const Statistic: FC<Props> = ({ repository }) => {
       <div className="columns">
         <div className="column">
           <Chart
-            render={props => <CommitsPerAuthor {...props} />}
+            render={(props) => <CommitsPerAuthor {...props} />}
             getData={() => getCommitsPerAuthor(statisticsLinks.commitsPerAuthor.href)}
             title={t("scm-statistic-plugin.charts.commitsPerAuthor")}
           />
           <Chart
-            render={props => <CommitsPerWeekday {...props} />}
+            render={(props) => <CommitsPerWeekday {...props} />}
             getData={() => getCommitsPerWeekday(statisticsLinks.commitsPerWeekday.href)}
             title={t("scm-statistic-plugin.charts.commitsPerWeekday")}
           />
           <Chart
-            render={props => <TopModifiedFiles {...props} />}
+            render={(props) => <TopModifiedFiles {...props} />}
             getData={() => getTopModifiedFiles(statisticsLinks.topModifiedFiles.href)}
             title={t("scm-statistic-plugin.charts.topModifiedFiles")}
           />
           <Chart
-            render={props => <CommitsPerYear {...props} />}
+            render={(props) => <CommitsPerYear {...props} />}
             getData={() => getCommitsPerYear(statisticsLinks.commitsPerYear.href)}
             title={t("scm-statistic-plugin.charts.commitsPerYear")}
           />
         </div>
         <div className="column">
           <Chart
-            render={props => <CommitsPerHour {...props} />}
+            render={(props) => <CommitsPerHour {...props} />}
             getData={() => getCommitsPerHour(statisticsLinks.commitsPerHour.href)}
             title={t("scm-statistic-plugin.charts.commitsPerHour")}
           />
           <Chart
-            render={props => <CommitsPerMonth {...props} />}
+            render={(props) => <CommitsPerMonth {...props} />}
             getData={() => getCommitsPerMonth(statisticsLinks.commitsPerMonth.href)}
             title={t("scm-statistic-plugin.charts.commitsPerMonth")}
           />
           <Chart
-            render={props => <FileModificationCount {...props} />}
+            render={(props) => <FileModificationCount {...props} />}
             getData={() => getFileModificationCount(statisticsLinks.fileModificationCount.href)}
             title={t("scm-statistic-plugin.charts.fileModificationCount")}
           />
           <Chart
-            render={props => <TopWords {...props} />}
+            render={(props) => <TopWords {...props} />}
             getData={() => getTopWords(statisticsLinks.topWords.href)}
             title={t("scm-statistic-plugin.charts.topWords")}
           />
